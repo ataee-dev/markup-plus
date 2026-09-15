@@ -13,6 +13,7 @@ from .ast import (
     Document,
     Heading,
     HorizontalRule,
+    ImageBlock,
     ListBlock,
     Paragraph,
     Node,
@@ -164,6 +165,51 @@ def render_code_block(node: CodeBlock) -> str:
 
 
 # ============================================================
+# Image rendering
+# ============================================================
+
+def render_image(node: ImageBlock) -> str:
+    """Render an image with optional options."""
+    attrs = [
+        f'src="{html.escape(node.url, quote=True)}"',
+        f'alt="{html.escape(node.alt, quote=True)}"',
+    ]
+
+    if node.title:
+        attrs.append(f'title="{html.escape(node.title, quote=True)}"')
+
+    if node.width:
+        attrs.append(f'width="{html.escape(node.width, quote=True)}"')
+    if node.height:
+        attrs.append(f'height="{html.escape(node.height, quote=True)}"')
+
+    style = "max-width: 100%; height: auto; border-radius: 8px;"
+    img = f'<img {" ".join(attrs)} style="{style}">'
+
+    if node.link:
+        img = (
+            f'<a href="{html.escape(node.link, quote=True)}" '
+            f'target="_blank" rel="noopener noreferrer">{img}</a>'
+        )
+
+    if node.caption:
+        inner = (
+            f'<figure class="image-figure">'
+            f"{img}"
+            f'<figcaption>{render_inline(node.caption)}</figcaption>'
+            f"</figure>"
+        )
+    else:
+        inner = img
+
+    align = (node.align or "").lower()
+    if align in ("center", "left", "right"):
+        return f'<div class="image-align-{align}">{inner}</div>'
+
+    return inner
+
+
+# ============================================================
 # Block rendering
 # ============================================================
 
@@ -192,6 +238,9 @@ def render_node(node: Node) -> str:
 
     if isinstance(node, CodeBlock):
         return render_code_block(node)
+
+    if isinstance(node, ImageBlock):
+        return render_image(node)
 
     return ""
 
@@ -267,6 +316,52 @@ HEAD = """<!DOCTYPE html>
         blockquote p { margin: 0.3em 0; }
 
         hr { border: none; border-top: 2px dashed #ccc; margin: 2em 0; }
+
+        /* ============================================================
+           Images
+           ============================================================ */
+
+        .image-align-center {
+            display: flex;
+            justify-content: center;
+            margin: 1.5em 0;
+        }
+
+        .image-align-left {
+            display: flex;
+            justify-content: flex-start;
+            margin: 1.5em 0;
+        }
+
+        .image-align-right {
+            display: flex;
+            justify-content: flex-end;
+            margin: 1.5em 0;
+        }
+
+        .image-figure {
+            margin: 0;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .image-figure figcaption {
+            margin-top: 0.5em;
+            font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+        }
+
+        p img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            vertical-align: middle;
+        }
+
+        /* ============================================================
+           Code blocks
+           ============================================================ */
 
         .code-block {
             margin: 1.5em 0;
@@ -508,10 +603,6 @@ TAIL = """
         setSuccess(btn, 'Saved!');
     }
 
-    // ============================================================
-    // Preview — без iframe, مستقیم در DOM
-    // ============================================================
-
     function doPreview(block, btn) {
         var preview = block.querySelector('.code-preview');
         var isOpen = !preview.hasAttribute('hidden');
@@ -529,14 +620,12 @@ TAIL = """
         preview.innerHTML = '';
 
         if (lang === 'html' || lang === 'markup') {
-            // For HTML: insert directly (with a sandbox wrapper div)
             var wrapper = document.createElement('div');
             wrapper.style.all = 'initial';
             wrapper.style.display = 'block';
             wrapper.innerHTML = code;
             preview.appendChild(wrapper);
         } else if (lang === 'css') {
-            // For CSS: build a style element + sample content
             var style = document.createElement('style');
             style.textContent = code;
             preview.appendChild(style);
@@ -545,7 +634,6 @@ TAIL = """
             sample.innerHTML = '<h1>Heading 1</h1><p>This is a sample paragraph to preview your CSS.</p><button>Sample Button</button>';
             preview.appendChild(sample);
         } else if (lang === 'javascript' || lang === 'js') {
-            // For JS: create output area and run code with console.log override
             var output = document.createElement('div');
             output.style.fontFamily = 'monospace';
             output.style.fontSize = '14px';
@@ -567,13 +655,11 @@ TAIL = """
             };
 
             try {
-                // eslint-disable-next-line no-new-func
                 new Function(code)();
             } catch (e) {
                 output.textContent += 'Error: ' + e.message;
             }
 
-            // Restore console.log after a tick
             setTimeout(function() { console.log = originalLog; }, 100);
         } else {
             preview.textContent = 'Preview not available for this language.';
@@ -582,10 +668,6 @@ TAIL = """
         preview.removeAttribute('hidden');
         btn.classList.add('active');
     }
-
-    // ============================================================
-    // Event delegation
-    // ============================================================
 
     document.addEventListener('click', function(e) {
         var btn = e.target.closest('.code-btn');

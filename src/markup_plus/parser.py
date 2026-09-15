@@ -4,7 +4,7 @@ Markup+ Parser
 Converts tokens into an Abstract Syntax Tree (AST).
 
 Phase 1:  Headings, Paragraphs
-Phase 2:  Lists, Blockquotes, HR, Code blocks
+Phase 2:  Lists, Blockquotes, HR, Code blocks, Images
 """
 
 import re
@@ -16,6 +16,7 @@ from .ast import (
     Document,
     Heading,
     HorizontalRule,
+    ImageBlock,
     ListBlock,
     Paragraph,
 )
@@ -29,6 +30,11 @@ RE_OL_ITEM = re.compile(r"^\s*\d+\.\s+(.+?)\s*$")
 RE_HR = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
 RE_BLOCKQUOTE = re.compile(r"^\s*>\s?(.*)$")
 RE_CODE_FENCE = re.compile(r"^\s*```\s*(\w*)\s*(?:\{(.+?)\})?\s*$")
+# Image: ![alt](url "title"){options}
+RE_IMAGE = re.compile(
+    r'^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)'
+    r'(?:\{([^}]*)\})?\s*$'
+)
 
 
 class Parser:
@@ -61,6 +67,13 @@ class Parser:
                 doc.children.append(
                     self._parse_code_block(m.group(1), m.group(2), token.line)
                 )
+                continue
+
+            # Image: ![alt](url) — must come before paragraph
+            m = RE_IMAGE.match(line.strip())
+            if m:
+                doc.children.append(self._parse_image(m, token.line))
+                self._advance()
                 continue
 
             # Horizontal rule
@@ -104,6 +117,48 @@ class Parser:
         return doc
 
     # --------------------------------------------------------
+    # Image parser
+    # --------------------------------------------------------
+
+    def _parse_image(self, match: re.Match, line_num: int) -> ImageBlock:
+        alt = match.group(1)
+        url = match.group(2)
+        title = match.group(3) or ""
+        options_str = match.group(4) or ""
+
+        options = self._parse_image_options(options_str)
+
+        return ImageBlock(
+            alt=alt,
+            url=url,
+            title=title,
+            width=options.get("width", ""),
+            height=options.get("height", ""),
+            align=options.get("align", ""),
+            link=options.get("link", ""),
+            caption=options.get("caption", ""),
+            line=line_num,
+        )
+
+    def _parse_image_options(self, options_str: str) -> dict:
+        """Parse 'width=400 align=center' into a dict."""
+        if not options_str:
+            return {}
+
+        options = {}
+        pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|(\S+)))?')
+
+        for match in pattern.finditer(options_str):
+            key = match.group(1)
+            value = match.group(2) or match.group(3)
+            if value:
+                options[key] = value
+            else:
+                options[key] = True
+
+        return options
+
+    # --------------------------------------------------------
     # Block parsers
     # --------------------------------------------------------
 
@@ -111,13 +166,13 @@ class Parser:
         self, language: str, options_str: str, start_line: int
     ) -> CodeBlock:
         """Parse ```lang {options} ... ``` fenced block."""
-        self._advance()  # consume opening fence
+        self._advance()
         code_lines: List[str] = []
 
         while not self._is_at_end():
             line = self._peek().value
             if RE_CODE_FENCE.match(line):
-                self._advance()  # consume closing fence
+                self._advance()
                 break
             code_lines.append(line)
             self._advance()
@@ -139,7 +194,6 @@ class Parser:
         )
 
     def _parse_code_options(self, options_str: str) -> dict:
-        """Parse 'title="app.py" copy linenos hl=[2,4]' into a dict."""
         if not options_str:
             return {}
 

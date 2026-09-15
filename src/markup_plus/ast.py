@@ -75,6 +75,19 @@ class CodeBlock(Node):
     wrap: bool = False
 
 
+@dataclass
+class ImageBlock(Node):
+    """![alt](url "title"){width=... align=... link=...}"""
+    alt: str = ""
+    url: str = ""
+    title: str = ""
+    width: str = ""
+    height: str = ""
+    align: str = ""           # left, center, right
+    link: str = ""            # wrap in <a>
+    caption: str = ""         # below the image
+
+
 # ============================================================
 # Inline-level nodes
 # ============================================================

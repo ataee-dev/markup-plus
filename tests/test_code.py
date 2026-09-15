@@ -66,6 +66,12 @@ def test_code_block_disable_copy():
     assert node.copy is False
 
 
+def test_code_block_disable_download():
+    src = "```python {download=false}\ncode\n```"
+    node = parse_text(src).children[0]
+    assert node.download is False
+
+
 def test_code_block_linenos_option():
     src = "```python {linenos}\ncode\n```"
     node = parse_text(src).children[0]
@@ -78,8 +84,14 @@ def test_code_block_highlight_option():
     assert node.highlight == [2, 4]
 
 
+def test_code_block_wrap_option():
+    src = "```python {wrap}\ncode\n```"
+    node = parse_text(src).children[0]
+    assert node.wrap is True
+
+
 # ============================================================
-# Rendering
+# Rendering — basic
 # ============================================================
 
 def test_render_code_block():
@@ -100,23 +112,66 @@ def test_render_code_block_with_title():
     assert 'class="code-title"' in html
 
 
+# ============================================================
+# Rendering — buttons (data-action based, not function names)
+# ============================================================
+
 def test_render_code_block_has_copy_button():
     html = to_html("```python\ncode\n```")
-    assert "mupCopy" in html
+    assert 'data-action="copy"' in html
     assert "Copy" in html
 
 
 def test_render_code_block_has_download_button():
     html = to_html("```python\ncode\n```")
-    assert "mupDownload" in html
+    assert 'data-action="download"' in html
     assert "Download" in html
 
 
-def test_render_code_block_no_buttons_when_disabled():
-    html = to_html("```python {copy=false download=false}\ncode\n```")
-    assert "mupCopy" not in html
-    assert "mupDownload" not in html
+def test_render_code_block_no_copy_when_disabled():
+    html = to_html("```python {copy=false}\ncode\n```")
+    assert 'data-action="copy"' not in html
 
+
+def test_render_code_block_no_download_when_disabled():
+    html = to_html("```python {download=false}\ncode\n```")
+    assert 'data-action="download"' not in html
+
+
+def test_render_code_block_no_buttons_when_both_disabled():
+    html = to_html("```python {copy=false download=false}\ncode\n```")
+    assert 'data-action="copy"' not in html
+    assert 'data-action="download"' not in html
+
+
+# ============================================================
+# Rendering — preview button (for HTML/CSS/JS)
+# ============================================================
+
+def test_render_code_block_has_preview_for_html():
+    html = to_html("```html\n<p>hi</p>\n```")
+    assert 'data-action="preview"' in html
+    assert "Preview" in html
+
+
+def test_render_code_block_has_preview_for_css():
+    html = to_html("```css\nbody { color: red; }\n```")
+    assert 'data-action="preview"' in html
+
+
+def test_render_code_block_has_preview_for_javascript():
+    html = to_html("```javascript\nconsole.log('hi');\n```")
+    assert 'data-action="preview"' in html
+
+
+def test_render_code_block_no_preview_for_python():
+    html = to_html("```python\nprint('hi')\n```")
+    assert 'data-action="preview"' not in html
+
+
+# ============================================================
+# Rendering — line numbers
+# ============================================================
 
 def test_render_code_block_with_linenos():
     html = to_html("```python {linenos}\ncode\n```")
@@ -124,9 +179,30 @@ def test_render_code_block_with_linenos():
     assert 'class="line-num"' in html
 
 
+def test_render_code_block_with_highlight():
+    src = "```python {linenos hl=[2]}\nline1\nline2\nline3\n```"
+    html = to_html(src)
+    # The second line should have the "hl" class
+    assert "code-line hl" in html or 'class="code-line hl"' in html
+
+
+# ============================================================
+# Security — HTML escaping inside code blocks
+# ============================================================
+
 def test_code_block_escapes_html():
     html = to_html("```\n<script>alert(1)</script>\n```")
+    # The raw <script> should be escaped inside <pre><code>
     assert "&lt;script&gt;" in html
+    # Ensure the code block itself doesn't execute the script
+    # (Prism.js script tags exist in <head>, so we check the code body specifically)
+    # Extract the code content
+    start = html.find('<pre><code')
+    if start != -1:
+        end = html.find('</code></pre>', start)
+        code_section = html[start:end]
+        assert "<script>alert" not in code_section
+        assert "&lt;script&gt;alert" in code_section
 
 
 def test_inline_code_not_confused_with_block():

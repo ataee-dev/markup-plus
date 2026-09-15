@@ -1,0 +1,38 @@
+# Images Demo
+
+## Simple Image
+
+![A sample image](https://picsum.photos/400/200)
+
+## With Title
+
+![Sample](https://picsum.photos/300/200 "Sample title")
+
+## With Custom Width
+
+![Small image](https://picsum.photos/600/300){width=300}
+
+## Centered
+
+![Centered image](https://picsum.photos/500/250){align=center}
+
+## With Caption
+
+![Beautiful view](https://picsum.photos/400/250){caption="A beautiful landscape"}
+
+## Clickable Image
+
+![Click me](https://picsum.photos/300/200){link=https://example.com}
+
+## Fully Featured
+
+![Full featured](https://picsum.photos/500/300){
+    width=400
+    align=center
+    caption="Fully featured image"
+    link=https://example.com
+}
+
+## Inline Image
+
+Here's an image inline: ![icon](https://picsum.photos/20/20) right here in the text.
