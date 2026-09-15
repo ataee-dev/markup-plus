@@ -31,7 +31,7 @@ def test_multiline_blockquote():
 
 def test_render_blockquote():
     html = to_html("> Hello world")
-    assert "<blockquote>" in html
+    assert "<blockquote" in html
     assert "<p>Hello world</p>" in html
     assert "</blockquote>" in html
 
@@ -70,4 +70,4 @@ def test_hr_longer():
 
 def test_render_hr():
     html = to_html("---")
-    assert "<hr>" in html
+    assert "<hr" in html

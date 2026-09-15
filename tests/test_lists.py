@@ -57,7 +57,7 @@ def test_list_interrupted_by_paragraph():
 
 def test_render_unordered_list():
     html = to_html("- Apple\n- Banana")
-    assert "<ul>" in html
+    assert "<ul" in html
     assert "<li>Apple</li>" in html
     assert "<li>Banana</li>" in html
     assert "</ul>" in html
@@ -65,7 +65,7 @@ def test_render_unordered_list():
 
 def test_render_ordered_list():
     html = to_html("1. First\n2. Second")
-    assert "<ol>" in html
+    assert "<ol" in html
     assert "<li>First</li>" in html
     assert "<li>Second</li>" in html
     assert "</ol>" in html

@@ -1,0 +1,45 @@
+# Links & Formatting Demo
+
+## Simple Links
+
+Visit [Google](https://google.com) for search.
+
+Check out [GitHub](https://github.com) for code.
+
+## Links with Title
+
+Read the [documentation](https://docs.example.com "Official Docs") for details.
+
+See the [API reference](https://api.example.com "Complete API").
+
+## Autolinks
+
+Go to <https://github.com> for the source.
+
+Visit <https://markup-plus.dev> for docs.
+
+## Strikethrough
+
+This is ~~outdated~~ text.
+
+The price was ~~$99~~ now **$49**!
+
+## Combined Formatting
+
+Read the **[official docs](https://docs.example.com)** for more.
+
+This is ~~**bold and strikethrough**~~ together.
+
+Visit <https://example.com> for *everything* you need.
+
+## Links in Lists
+
+- [Google](https://google.com)
+- [GitHub](https://github.com)
+- ~~[Removed link](https://old.com)~~
+
+## Links with Formatting
+
+Visit [**GitHub**](https://github.com) — it's *awesome*!
+
+Read [`markup-plus`](https://npmjs.com/markup-plus) on npm.

@@ -26,6 +26,7 @@ class Node:
 class Document(Node):
     """Root node — contains all blocks."""
     children: List[Node] = field(default_factory=list)
+    meta: dict = field(default_factory=dict)  # Front matter (for future)
 
 
 @dataclass
@@ -43,9 +44,10 @@ class Paragraph(Node):
 
 @dataclass
 class ListBlock(Node):
-    """Ordered or unordered list."""
+    """Ordered or unordered list. `checked` for task lists (True/False/None)."""
     ordered: bool = False
     items: List[str] = field(default_factory=list)
+    checked: List = field(default_factory=list)
 
 
 @dataclass
@@ -77,21 +79,7 @@ class CodeBlock(Node):
 
 @dataclass
 class ImageBlock(Node):
-    """
-    ![alt](url "title"){width=... align=... link=... caption=... desc=... zoomable=...}
-
-    Attributes:
-        alt:         Alt text
-        url:         Image URL
-        title:       HTML title attribute
-        width:       Custom width (e.g. "400")
-        height:      Custom height (e.g. "300")
-        align:       Alignment: left, center, right
-        link:        Wrap in <a> tag with this href
-        caption:     Short caption displayed below image
-        description: Longer description shown in lightbox
-        zoomable:    Allow opening in lightbox (default True)
-    """
+    """![alt](url "title"){width=... align=... link=... caption=... desc=... zoomable=...}"""
     alt: str = ""
     url: str = ""
     title: str = ""
@@ -106,21 +94,22 @@ class ImageBlock(Node):
 
 @dataclass
 class GalleryBlock(Node):
-    """
-    @gallery {columns=N caption="..."} ... @end — a grid of images.
-
-    Attributes:
-        columns:  Number of columns (default 3)
-        images:   List of ImageBlock items
-        caption:  Gallery-level caption
-    """
+    """@gallery {columns=N caption="..."} ... @end — a grid of images."""
     columns: int = 3
     images: List[ImageBlock] = field(default_factory=list)
     caption: str = ""
 
 
+@dataclass
+class TableBlock(Node):
+    """| Header | Header |\n|--------|--------|\n| Cell   | Cell   |"""
+    headers: List[str] = field(default_factory=list)
+    rows: List[List[str]] = field(default_factory=list)
+    alignments: List[str] = field(default_factory=list)
+
+
 # ============================================================
-# Inline-level nodes
+# Inline-level nodes (metadata only — parsed at render time)
 # ============================================================
 
 @dataclass
@@ -159,3 +148,9 @@ class Link(Node):
     text: str = ""
     url: str = ""
     title: str = ""
+
+
+@dataclass
+class AutoLink(Node):
+    """<https://example.com>"""
+    url: str = ""

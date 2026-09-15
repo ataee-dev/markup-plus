@@ -9,6 +9,9 @@ Features:
     - Enhanced code blocks with copy/download/preview
     - Images with lightbox, zoom, and description
     - Galleries with lightbox, keyboard nav, zoom toolbar
+    - Inline links, autolinks, strikethrough
+    - Tables with alignment
+    - Task lists (checkboxes)
     - Native-like smooth animations
     - Scroll reveal animations
 """
@@ -26,6 +29,7 @@ from .ast import (
     ImageBlock,
     ListBlock,
     Paragraph,
+    TableBlock,
     Node,
 )
 
@@ -33,16 +37,74 @@ from .ast import (
 # Inline formatting
 # ============================================================
 
+# Order of processing matters:
+#   1. Autolinks FIRST (before HTML escape ruins the < > markers)
+#   2. HTML escape
+#   3. Inline code (protects content from other rules)
+#   4. Strikethrough ~~text~~
+#   5. Bold **text**
+#   6. Italic *text*
+#   7. Links [text](url "title")
+#   8. Restore autolinks
+
+RE_CODE_INLINE = re.compile(r"`([^`]+?)`")
+RE_STRIKE = re.compile(r"~~(.+?)~~")
 RE_BOLD = re.compile(r"\*\*(.+?)\*\*")
 RE_ITALIC = re.compile(r"(?<!\*)\*([^*]+?)\*(?!\*)")
-RE_CODE = re.compile(r"`([^`]+?)`")
+RE_LINK = re.compile(r'\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)')
+RE_AUTOLINK = re.compile(r"<(https?://[^\s>]+)>")
 
 
 def render_inline(text: str) -> str:
+    """Render inline formatting inside a text string."""
+    # ---- Step 1: Stash autolinks BEFORE HTML escaping ----
+    autolinks = []
+
+    def stash_autolink(m):
+        idx = len(autolinks)
+        autolinks.append(m.group(1))
+        return f"\x00AUTOLINK{idx}\x00"
+
+    text = RE_AUTOLINK.sub(stash_autolink, text)
+
+    # ---- Step 2: HTML escape ----
     text = html.escape(text, quote=False)
-    text = RE_CODE.sub(r"<code>\1</code>", text)
+
+    # ---- Step 3: Inline code (highest priority) ----
+    text = RE_CODE_INLINE.sub(r"<code>\1</code>", text)
+
+    # ---- Step 4: Strikethrough ----
+    text = RE_STRIKE.sub(r"<del>\1</del>", text)
+
+    # ---- Step 5: Bold ----
     text = RE_BOLD.sub(r"<strong>\1</strong>", text)
+
+    # ---- Step 6: Italic ----
     text = RE_ITALIC.sub(r"<em>\1</em>", text)
+
+    # ---- Step 7: Links [text](url "title") ----
+    def link_repl(m):
+        link_text = m.group(1)
+        url = m.group(2)
+        title = m.group(3)
+        url_escaped = html.escape(url, quote=True)
+        title_attr = f' title="{html.escape(title, quote=True)}"' if title else ""
+        return (
+            f'<a href="{url_escaped}"{title_attr} '
+            f'target="_blank" rel="noopener noreferrer">{link_text}</a>'
+        )
+
+    text = RE_LINK.sub(link_repl, text)
+
+    # ---- Step 8: Restore autolinks ----
+    for idx, url in enumerate(autolinks):
+        url_escaped = html.escape(url, quote=True)
+        replacement = (
+            f'<a href="{url_escaped}" '
+            f'target="_blank" rel="noopener noreferrer">{url}</a>'
+        )
+        text = text.replace(f"\x00AUTOLINK{idx}\x00", replacement)
+
     return text
 
 
@@ -99,7 +161,6 @@ def render_code_block(node: CodeBlock) -> str:
 
     previewable = lang.lower() in ("html", "css", "javascript", "js")
 
-    # RTL languages
     rtl_langs = ("ar", "he", "fa", "ur", "yi")
     is_rtl = lang.lower() in rtl_langs
 
@@ -144,14 +205,12 @@ def render_code_block(node: CodeBlock) -> str:
 
     buttons_html = "".join(buttons)
 
-    # No line numbers — clean display
     code_html = code_escaped
 
     wrap_class = " wrap" if node.wrap else ""
     previewable_class = " previewable" if previewable else ""
     rtl_class = " rtl" if is_rtl else ""
 
-    # Store preview code for HTML/CSS/JS blocks
     preview_data_attr = ""
     if previewable:
         preview_data_attr = (
@@ -305,6 +364,59 @@ def render_gallery(node: GalleryBlock) -> str:
 
 
 # ============================================================
+# Table rendering
+# ============================================================
+
+def render_table(node: TableBlock) -> str:
+    """Render a table with alignment."""
+    if not node.headers:
+        return ""
+
+    header_cells = []
+    for i, h in enumerate(node.headers):
+        align = node.alignments[i] if i < len(node.alignments) else "none"
+        style = ""
+        if align == "center":
+            style = ' style="text-align: center;"'
+        elif align == "right":
+            style = ' style="text-align: right;"'
+        elif align == "left":
+            style = ' style="text-align: left;"'
+        header_cells.append(f"<th{style}>{render_inline(h)}</th>")
+
+    header_html = (
+        "  <thead>\n    <tr>\n      "
+        + "\n      ".join(header_cells)
+        + "\n    </tr>\n  </thead>"
+    )
+
+    body_rows = []
+    for row in node.rows:
+        cells = []
+        for i, cell in enumerate(row):
+            align = node.alignments[i] if i < len(node.alignments) else "none"
+            style = ""
+            if align == "center":
+                style = ' style="text-align: center;"'
+            elif align == "right":
+                style = ' style="text-align: right;"'
+            elif align == "left":
+                style = ' style="text-align: left;"'
+            cells.append(f"<td{style}>{render_inline(cell)}</td>")
+        body_rows.append(
+            "    <tr>\n      " + "\n      ".join(cells) + "\n    </tr>"
+        )
+
+    body_html = "  <tbody>\n" + "\n".join(body_rows) + "\n  </tbody>"
+
+    return (
+        f'<div class="table-wrapper reveal">'
+        f"<table>\n{header_html}\n{body_html}\n</table>"
+        f"</div>"
+    )
+
+
+# ============================================================
 # Block rendering
 # ============================================================
 
@@ -318,10 +430,29 @@ def render_node(node: Node) -> str:
 
     if isinstance(node, ListBlock):
         tag = "ol" if node.ordered else "ul"
-        items_html = "\n".join(
-            f"  <li>{render_inline(item)}</li>" for item in node.items
-        )
-        return f'<{tag} class="reveal">\n{items_html}\n</{tag}>'
+
+        has_tasks = any(c is not None for c in node.checked)
+        if has_tasks:
+            extra_class = ' class="task-list reveal"'
+        else:
+            extra_class = ' class="reveal"'
+
+        items_html_parts = []
+        for i, item in enumerate(node.items):
+            checked = node.checked[i] if i < len(node.checked) else None
+            if checked is True:
+                items_html_parts.append(
+                    f'  <li class="task-done">{render_inline(item)}</li>'
+                )
+            elif checked is False:
+                items_html_parts.append(
+                    f'  <li class="task-todo">{render_inline(item)}</li>'
+                )
+            else:
+                items_html_parts.append(f"  <li>{render_inline(item)}</li>")
+
+        items_html = "\n".join(items_html_parts)
+        return f'<{tag}{extra_class}>\n{items_html}\n</{tag}>'
 
     if isinstance(node, BlockQuote):
         lines = node.text.split("\n")
@@ -339,6 +470,9 @@ def render_node(node: Node) -> str:
 
     if isinstance(node, GalleryBlock):
         return render_gallery(node)
+
+    if isinstance(node, TableBlock):
+        return render_table(node)
 
     return ""
 
@@ -372,10 +506,6 @@ HEAD = """<!DOCTYPE html>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
 
     <style>
-        /* ============================================================
-           Theme variables
-           ============================================================ */
-
         :root,
         [data-theme="light"] {
             --bg-page: #ffffff;
@@ -384,6 +514,8 @@ HEAD = """<!DOCTYPE html>
             --bg-code-header: #eaedf0;
             --bg-blockquote: #f8f5ff;
             --bg-preview: #fafafa;
+            --bg-table-alt: #f9f9fb;
+            --bg-table-header: #f4f4f5;
 
             --text-main: #18181b;
             --text-soft: #52525b;
@@ -391,6 +523,7 @@ HEAD = """<!DOCTYPE html>
 
             --border: #e4e4e7;
             --border-code: #d0d7de;
+            --border-table: #e4e4e7;
 
             --accent: #7c3aed;
             --accent-soft: rgba(124, 58, 237, 0.08);
@@ -414,6 +547,8 @@ HEAD = """<!DOCTYPE html>
             --bg-code-header: #131318;
             --bg-blockquote: rgba(167, 139, 250, 0.08);
             --bg-preview: #1a1a20;
+            --bg-table-alt: #131318;
+            --bg-table-header: #18181b;
 
             --text-main: #e4e4e7;
             --text-soft: #d4d4d8;
@@ -421,6 +556,7 @@ HEAD = """<!DOCTYPE html>
 
             --border: rgba(255, 255, 255, 0.1);
             --border-code: rgba(255, 255, 255, 0.06);
+            --border-table: rgba(255, 255, 255, 0.1);
 
             --accent: #a78bfa;
             --accent-soft: rgba(167, 139, 250, 0.12);
@@ -436,10 +572,6 @@ HEAD = """<!DOCTYPE html>
             --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.6);
         }
-
-        /* ============================================================
-           Reset & base
-           ============================================================ */
 
         * { box-sizing: border-box; }
 
@@ -462,10 +594,6 @@ HEAD = """<!DOCTYPE html>
                 background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
                 color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* ============================================================
-           Typography
-           ============================================================ */
 
         h1, h2, h3, h4, h5, h6 {
             color: var(--accent);
@@ -502,6 +630,12 @@ HEAD = """<!DOCTYPE html>
         strong { color: var(--text-main); font-weight: 700; }
         em { color: var(--text-soft); font-style: italic; }
 
+        del {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
         ul, ol { padding-left: 1.5em; margin: 1em 0; color: var(--text-soft); }
         li { margin: 0.4em 0; }
 
@@ -527,14 +661,14 @@ HEAD = """<!DOCTYPE html>
         a {
             color: var(--accent);
             text-decoration: none;
-            transition: color 0.2s ease;
+            border-bottom: 1px solid transparent;
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
         }
 
-        a:hover { color: var(--accent-hover); }
-
-        /* ============================================================
-           Scroll reveal animation
-           ============================================================ */
+        a:hover {
+            color: var(--accent-hover);
+            border-bottom-color: currentColor;
+        }
 
         .reveal {
             opacity: 0;
@@ -550,7 +684,6 @@ HEAD = """<!DOCTYPE html>
             transform: translateY(0);
         }
 
-        /* Stagger children inside galleries */
         .gallery-grid .reveal:nth-child(1) { transition-delay: 0.00s; }
         .gallery-grid .reveal:nth-child(2) { transition-delay: 0.06s; }
         .gallery-grid .reveal:nth-child(3) { transition-delay: 0.12s; }
@@ -561,9 +694,105 @@ HEAD = """<!DOCTYPE html>
         .gallery-grid .reveal:nth-child(8) { transition-delay: 0.42s; }
         .gallery-grid .reveal:nth-child(n+9) { transition-delay: 0.48s; }
 
-        /* ============================================================
-           Single Image
-           ============================================================ */
+        ul.task-list,
+        ol.task-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.task-list li,
+        ol.task-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6em;
+            padding-left: 0;
+        }
+
+        ul.task-list li::before,
+        ol.task-list li::before {
+            content: "";
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 0.35em;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            background: var(--bg-page);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        ul.task-list li.task-done::before,
+        ol.task-list li.task-done::before {
+            content: "✓";
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding-bottom: 1px;
+        }
+
+        ul.task-list li.task-done,
+        ol.task-list li.task-done {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .table-wrapper {
+            margin: 1.8em 0;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-table);
+            box-shadow: var(--shadow-sm);
+            background: var(--bg-page);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.94em;
+        }
+
+        thead {
+            background: var(--bg-table-header);
+        }
+
+        th {
+            padding: 0.8em 1em;
+            text-align: left;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-table);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.7em 1em;
+            color: var(--text-soft);
+            border-bottom: 1px solid var(--border-table);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--bg-table-alt);
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--accent-soft);
+        }
 
         .image-single {
             position: relative;
@@ -672,10 +901,6 @@ HEAD = """<!DOCTYPE html>
             border-radius: 8px;
             vertical-align: middle;
         }
-
-        /* ============================================================
-           Code blocks
-           ============================================================ */
 
         .code-block {
             margin: 1.5em 0;
@@ -809,7 +1034,6 @@ HEAD = """<!DOCTYPE html>
             line-height: 1.7;
         }
 
-        /* RTL code */
         .code-block.rtl pre {
             direction: rtl;
         }
@@ -849,10 +1073,6 @@ HEAD = """<!DOCTYPE html>
             from { opacity: 0; transform: translateY(-12px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ============================================================
-           Gallery
-           ============================================================ */
 
         .gallery { margin: 2.5em 0; }
 
@@ -912,10 +1132,6 @@ HEAD = """<!DOCTYPE html>
             color: var(--text-muted);
             font-style: italic;
         }
-
-        /* ============================================================
-           Lightbox
-           ============================================================ */
 
         .lightbox {
             position: fixed;
@@ -1139,10 +1355,6 @@ HEAD = """<!DOCTYPE html>
 
         .lightbox-tool:active { transform: scale(0.92); }
 
-        /* ============================================================
-           Responsive
-           ============================================================ */
-
         @media (max-width: 700px) {
             body { padding: 24px 16px 60px; }
             h1 { font-size: 1.7em; }
@@ -1168,9 +1380,10 @@ HEAD = """<!DOCTYPE html>
             .lightbox-next { right: 8px; }
             .lightbox-close { top: 12px; right: 12px; }
             .lightbox-counter { top: 16px; }
+
+            th, td { padding: 0.6em 0.7em; font-size: 0.88em; }
         }
 
-        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -1257,10 +1470,6 @@ TAIL = """
 (function() {
     'use strict';
 
-    // ============================================================
-    // Code block helpers
-    // ============================================================
-
     function getCode(block) {
         var codeEl = block.querySelector('pre code');
         return codeEl ? codeEl.textContent : '';
@@ -1332,7 +1541,6 @@ TAIL = """
         var code = block.dataset.previewCode || '';
         var lang = (block.dataset.previewLang || block.dataset.lang || 'html').toLowerCase();
 
-        // Unescape HTML entities
         var textarea = document.createElement('textarea');
         textarea.innerHTML = code;
         code = textarea.value;
@@ -1396,10 +1604,6 @@ TAIL = """
 
         return '<!DOCTYPE html><html><body><p>Preview not available.</p></body></html>';
     }
-
-    // ============================================================
-    // Lightbox
-    // ============================================================
 
     var mupLightboxImages = [];
     var mupLightboxIndex = 0;
@@ -1503,7 +1707,7 @@ TAIL = """
         var url = current.src;
         var caption = (current.caption || 'image').trim();
         var baseName = caption
-            .replace(/[^\w\u0600-\u06FF\-]+/g, '-')
+            .replace(/[^\\w\\u0600-\\u06FF\\-]+/g, '-')
             .replace(/^-+|-+$/g, '')
             .substring(0, 60) || 'image';
 
@@ -1555,7 +1759,6 @@ TAIL = """
         }, 800);
     }
 
-    // Expose to global
     window.mupCloseLightbox = mupCloseLightbox;
     window.mupNextImage = mupNextImage;
     window.mupPrevImage = mupPrevImage;
@@ -1564,10 +1767,6 @@ TAIL = """
     window.mupZoomOut = mupZoomOut;
     window.mupResetZoom = mupResetZoom;
     window.mupDownloadImage = mupDownloadImage;
-
-    // ============================================================
-    // Event delegation
-    // ============================================================
 
     document.addEventListener('click', function(e) {
         var btn = e.target.closest('.code-btn');
@@ -1642,10 +1841,6 @@ TAIL = """
         }
     });
 
-    // ============================================================
-    // Prism theme auto-switch on theme
-    // ============================================================
-
     var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     var prismLink = document.getElementById('prism-theme');
     if (prismLink) {
@@ -1653,10 +1848,6 @@ TAIL = """
             ? 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css'
             : 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css';
     }
-
-    // ============================================================
-    // Scroll reveal (IntersectionObserver)
-    // ============================================================
 
     function initScrollReveal() {
         var elements = document.querySelectorAll('.reveal');

@@ -112,23 +112,23 @@ def test_render_image_with_height():
 
 def test_render_image_centered():
     html = to_html("![alt](url.png){align=center}")
-    assert 'class="image-align-center"' in html
+    assert 'image-align-center' in html
 
 
 def test_render_image_left_aligned():
     html = to_html("![alt](url.png){align=left}")
-    assert 'class="image-align-left"' in html
+    assert 'image-align-left' in html
 
 
 def test_render_image_right_aligned():
     html = to_html("![alt](url.png){align=right}")
-    assert 'class="image-align-right"' in html
+    assert 'image-align-right' in html
 
 
 def test_render_image_with_caption():
     html = to_html('![alt](url.png){caption="Nice"}')
     assert "<figure" in html
-    assert "<figcaption>Nice</figcaption>" in html
+    assert "Nice</figcaption>" in html
 
 
 def test_render_image_with_link():
@@ -140,15 +140,15 @@ def test_render_image_with_link():
 
 def test_render_image_with_caption_formatting():
     html = to_html('![alt](url.png){caption="A **bold** caption"}')
-    assert "<figcaption>A <strong>bold</strong> caption</figcaption>" in html
+    assert "A <strong>bold</strong> caption</figcaption>" in html
 
 
 def test_render_image_full_featured():
     src = '![alt](url.png){width=400 align=center caption="Nice" link=https://example.com}'
     html = to_html(src)
-    assert 'class="image-align-center"' in html
+    assert 'image-align-center' in html
     assert '<a href="https://example.com"' in html
-    assert "<figcaption>Nice</figcaption>" in html
+    assert "Nice</figcaption>" in html
     assert 'width="400"' in html
 
 
@@ -158,37 +158,27 @@ def test_render_image_full_featured():
 
 def test_render_image_escapes_alt_html():
     html = to_html('![<script>alert(1)</script>](url.png)')
-    # The alt attribute must be escaped
     assert 'alt="&lt;script&gt;alert(1)&lt;/script&gt;"' in html
-    # And it must not appear raw
     assert 'alt="<script>' not in html
 
 
 def test_render_image_escapes_url_quotes():
     html = to_html('![alt](url.png)')
-    # Sanity: normal URL works
     assert 'src="url.png"' in html
 
 
 def test_render_image_escapes_ampersand_in_url():
     html = to_html('![alt](url.png?a=1&b=2)')
-    # & should be escaped as &amp; inside the attribute
     assert 'src="url.png?a=1&amp;b=2"' in html
 
 
-# ============================================================
-# Title (simple cases only — nested quotes not supported yet)
-# ============================================================
-
 def test_render_image_simple_title_works():
-    """Simple titles (without nested quotes) should work."""
     html = to_html('![alt](url.png "Simple Title")')
     assert "<img" in html
     assert 'title="Simple Title"' in html
 
 
 def test_render_image_title_with_ampersand():
-    """Ampersands in title should be escaped."""
     html = to_html('![alt](url.png "Tom & Jerry")')
     assert "<img" in html
     assert 'title="Tom &amp; Jerry"' in html

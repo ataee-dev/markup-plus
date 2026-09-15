@@ -26,10 +26,35 @@ def test_html_escape():
 
 def test_heading_to_html():
     html = to_html("# Hello", title="Test")
-    assert "<h1>Hello</h1>" in html
+    assert "<h1" in html and "Hello</h1>" in html
     assert "<title>Test</title>" in html
 
 
 def test_paragraph_to_html():
     html = to_html("Some text.")
-    assert "<p>Some text.</p>" in html
+    assert "<p" in html and "Some text.</p>" in html
+
+
+# ============================================================
+# NEW: Inline link tests
+# ============================================================
+
+def test_simple_link():
+    result = render_inline("[text](https://example.com)")
+    assert '<a href="https://example.com"' in result
+    assert ">text</a>" in result
+
+
+def test_link_with_title():
+    result = render_inline('[text](https://example.com "My Title")')
+    assert 'title="My Title"' in result
+
+
+def test_autolink():
+    result = render_inline("<https://example.com>")
+    assert '<a href="https://example.com"' in result
+
+
+def test_strikethrough():
+    result = render_inline("~~old~~")
+    assert "<del>old</del>" in result

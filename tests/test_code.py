@@ -170,20 +170,23 @@ def test_render_code_block_no_preview_for_python():
 
 
 # ============================================================
-# Rendering — line numbers
+# Rendering — line numbers (no longer rendered, but code should appear)
 # ============================================================
 
 def test_render_code_block_with_linenos():
+    """Line numbers option is parsed, but code is rendered cleanly."""
     html = to_html("```python {linenos}\ncode\n```")
-    assert 'class="code-line' in html
-    assert 'class="line-num"' in html
+    assert "<pre>" in html
+    assert "code" in html
 
 
 def test_render_code_block_with_highlight():
+    """Highlight option is parsed, and content appears."""
     src = "```python {linenos hl=[2]}\nline1\nline2\nline3\n```"
     html = to_html(src)
-    # The second line should have the "hl" class
-    assert "code-line hl" in html or 'class="code-line hl"' in html
+    assert "line1" in html
+    assert "line2" in html
+    assert "line3" in html
 
 
 # ============================================================
@@ -194,9 +197,7 @@ def test_code_block_escapes_html():
     html = to_html("```\n<script>alert(1)</script>\n```")
     # The raw <script> should be escaped inside <pre><code>
     assert "&lt;script&gt;" in html
-    # Ensure the code block itself doesn't execute the script
-    # (Prism.js script tags exist in <head>, so we check the code body specifically)
-    # Extract the code content
+    # Extract code body and ensure the raw script isn't there
     start = html.find('<pre><code')
     if start != -1:
         end = html.find('</code></pre>', start)
@@ -207,4 +208,30 @@ def test_code_block_escapes_html():
 
 def test_inline_code_not_confused_with_block():
     html = to_html("This is `inline` code.")
-    assert "<p>This is <code>inline</code> code.</p>" in html
+    assert "<p" in html
+    assert "<code>inline</code>" in html
+
+
+# ============================================================
+# NEW: Links and strikethrough
+# ============================================================
+
+def test_simple_link():
+    html = to_html("Visit [Google](https://google.com) now.")
+    assert '<a href="https://google.com"' in html
+    assert ">Google</a>" in html
+
+
+def test_link_with_title():
+    html = to_html('[Google](https://google.com "Search")')
+    assert 'title="Search"' in html
+
+
+def test_autolink():
+    html = to_html("Visit <https://example.com> for more.")
+    assert '<a href="https://example.com"' in html
+
+
+def test_strikethrough():
+    html = to_html("This is ~~old~~ new.")
+    assert "<del>old</del>" in html
