@@ -1,0 +1,23 @@
+# Lists Demo
+
+## Unordered List
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+
+## Ordered List
+
+1. Step one
+2. Step two
+3. Step three with *italic*
+
+## Mixed Content
+
+Some text before a list.
+
+- Apple
+- Banana
+- Cherry
+
+Some text after the list.

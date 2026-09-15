@@ -1,0 +1,32 @@
+# Quotes and Rules Demo
+
+## Blockquote
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+## Quote with formatting
+
+> Here we have **bold** and *italic* inside a quote.
+
+## Horizontal Rules
+
+First section content.
+
+---
+
+Second section content.
+
+***
+
+Third section content.
+
+## Combined
+
+Some text.
+
+> A quote in the middle.
+
+---
+
+Some more text after.

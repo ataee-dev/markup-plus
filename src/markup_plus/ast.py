@@ -2,15 +2,6 @@
 Markup+ Abstract Syntax Tree (AST)
 
 Defines node types that represent the structure of a Markup+ document.
-
-Phase 1 nodes:
-    - Document (root)
-    - Heading
-    - Paragraph
-    - Text (inline)
-    - Bold (inline)
-    - Italic (inline)
-    - InlineCode (inline)
 """
 
 from dataclasses import dataclass, field
@@ -50,8 +41,27 @@ class Paragraph(Node):
     text: str = ""
 
 
+@dataclass
+class ListBlock(Node):
+    """Ordered or unordered list."""
+    ordered: bool = False
+    items: List[str] = field(default_factory=list)
+
+
+@dataclass
+class BlockQuote(Node):
+    """> Quoted text (can span multiple lines)"""
+    text: str = ""
+
+
+@dataclass
+class HorizontalRule(Node):
+    """--- separator"""
+    pass
+
+
 # ============================================================
-# Inline-level nodes (used inside paragraphs and headings)
+# Inline-level nodes
 # ============================================================
 
 @dataclass
