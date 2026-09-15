@@ -1,0 +1,62 @@
+# Tables Demo
+
+## Simple Table
+
+| Name  | Age | City    |
+|-------|-----|---------|
+| Ali   | 30  | Tehran  |
+| Sara  | 25  | London  |
+| Reza  | 35  | Paris   |
+
+## Table with Alignment
+
+| Left      | Center | Right |
+|:----------|:------:|------:|
+| Apple     | 10     | $5    |
+| Banana    | 20     | $10   |
+| Cherry    | 15     | $7.5  |
+
+## Table with Formatting
+
+| Feature        | Status | Notes          |
+|----------------|:------:|----------------|
+| **Bold**       | ✅     | Works          |
+| *Italic*       | ✅     | Works          |
+| `Code`         | ✅     | Works          |
+| [Link](https://example.com) | ✅ | Works |
+
+## Table with Numbers
+
+| Metric    | Q1    | Q2    | Q3    |
+|:----------|------:|------:|------:|
+| Revenue   | 12000 | 15000 | 18000 |
+| Users     | 340   | 520   | 780   |
+| Growth    | +12%  | +53%  | +50%  |
+
+## Table with Long Content
+
+| Language | Description                                  | Popularity |
+|----------|----------------------------------------------|:----------:|
+| Python   | General-purpose, easy to learn               | ⭐⭐⭐⭐⭐  |
+| JavaScript | Web language, everywhere                   | ⭐⭐⭐⭐⭐  |
+| Rust     | Fast and safe systems programming            | ⭐⭐⭐⭐   |
+| Go       | Simple, fast, great for servers              | ⭐⭐⭐⭐   |
+
+## Mixed Content with Table
+
+Here's some text before.
+
+| Column A | Column B |
+|----------|----------|
+| Value 1  | Value 2  |
+| Value 3  | Value 4  |
+
+And some text after.
+
+## Table with Inline Links
+
+| Resource | Link                                  |
+|----------|---------------------------------------|
+| Docs     | [Documentation](https://docs.example.com) |
+| Source   | [GitHub](https://github.com)          |
+| Website  | <https://example.com>                 |

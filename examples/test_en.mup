@@ -1,0 +1,289 @@
+# Markup+ Complete Test
+
+Welcome to **Markup+** — a modern markup language with `more features` than Markdown.
+
+---
+
+## 1. Text Formatting
+
+This is **bold text**, this is *italic text*, and this is `inline code`.
+
+You can combine: **bold with *italic* inside**.
+
+Special characters: `< > & " '` are safely escaped.
+
+Strikethrough ~~text~~ here.
+
+---
+
+## 2. Headings (H1-H6)
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 3. Paragraphs
+
+This is the first paragraph.
+
+This is the second paragraph, separated by a blank line.
+
+And a third one.
+
+---
+
+## 4. Unordered List
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+- Fourth item with *italic*
+
+---
+
+## 5. Ordered List
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML output
+
+---
+
+## 6. List with Links
+
+- [Google](https://google.com) for search
+- [GitHub](https://github.com) for code
+- ~~[Old link](https://old.com)~~ removed
+- Autolink: <https://example.com>
+
+---
+
+## 7. Blockquote
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+> **Bold in quote** with *italic* and `code`.
+
+---
+
+## 8. Horizontal Rules
+
+Above the line.
+
+---
+
+Below the line.
+
+---
+
+## 9. Python Code Block
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("World")
+```
+
+## 10. JavaScript Code Block
+
+```javascript
+function greet(name) {
+    console.log(`Hello, ${name}!`);
+}
+greet("World");
+```
+
+## 11. Plain Code Block
+
+```
+This is a code block.
+Without any coloring.
+```
+
+## 12. HTML Code Block with Preview
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Live Preview!</h1>
+        <p>This HTML renders live.</p>
+    </div>
+</body>
+</html>
+```
+
+## 13. Code Block with Line Highlights
+
+```python {title="app.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+---
+
+## 14. Simple Image
+
+![Sample image](https://picsum.photos/600/400?random=100)
+
+---
+
+## 15. Image with Caption and Description
+
+![Beautiful view](https://picsum.photos/700/400?random=101){caption="Mountain view" desc="A beautiful view of green mountains in northern Iran, captured in spring."}
+
+---
+
+## 16. Centered Image
+
+![Centered](https://picsum.photos/500/300?random=102){align=center}
+
+---
+
+## 17. Image with Custom Width
+
+![Small](https://picsum.photos/600/400?random=103){width=300}
+
+---
+
+## 18. Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Image 1](https://picsum.photos/400/300?random=200)
+![Image 2](https://picsum.photos/400/300?random=201)
+![Image 3](https://picsum.photos/400/300?random=202)
+![Image 4](https://picsum.photos/400/300?random=203)
+![Image 5](https://picsum.photos/400/300?random=204)
+![Image 6](https://picsum.photos/400/300?random=205)
+@end
+
+---
+
+## 19. Gallery with Captions
+
+@gallery {columns=2 caption="My travel photos"}
+![Sunset](https://picsum.photos/500/350?random=300){caption="Golden Sunset" desc="Beautiful sunset by the sea."}
+![Forest](https://picsum.photos/500/350?random=301){caption="Misty Forest" desc="Early morning in northern forests."}
+@end
+
+---
+
+## 20. Simple Table
+
+| Name | Age | City |
+|------|-----|------|
+| Ali | 30 | Tehran |
+| Sara | 25 | Isfahan |
+| Reza | 35 | Shiraz |
+
+---
+
+## 21. Table with Alignment
+
+| Product | Quantity | Price |
+|:--------|:--------:|------:|
+| Apple | 10 | 5000 |
+| Banana | 20 | 10000 |
+| Cherry | 15 | 7500 |
+
+---
+
+## 22. Table with Formatting
+
+| Feature | Status | Notes |
+|---------|:------:|-------|
+| **Bold** | ✅ | Works |
+| *Italic* | ✅ | Works |
+| `Code` | ✅ | Works |
+| [Link](https://example.com) | ✅ | Works |
+
+---
+
+## 23. Mixed Content
+
+Here's a list with code:
+
+1. Step one
+2. Step two
+3. Step three
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And a **closing statement**.
+
+---
+
+## 24. Links Test
+
+- Simple link: [Google](https://google.com)
+- Link with title: [Docs](https://docs.example.com "Official Docs")
+- Autolink: <https://example.com>
+- Combined: [**Bold link**](https://example.com)
+- Strikethrough: ~~[Old link](https://old.com)~~
+
+---
+
+## 25. Summary
+
+All features work:
+
+- ✅ Headings (H1-H6)
+- ✅ Bold, italic, inline code
+- ✅ Strikethrough
+- ✅ Paragraphs
+- ✅ Unordered and ordered lists
+- ✅ Blockquotes
+- ✅ Horizontal rules
+- ✅ Code blocks with syntax highlighting
+- ✅ Copy/download/preview buttons
+- ✅ Live preview for HTML/CSS/JS
+- ✅ Single images with lightbox
+- ✅ Galleries with lightbox
+- ✅ Image zoom
+- ✅ Image descriptions
+- ✅ Tables with alignment
+- ✅ Light and dark themes
+- ✅ Smooth animations
+- ✅ Scroll animations
+
+**Enjoy Markup+!** 🚀

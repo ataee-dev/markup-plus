@@ -5,6 +5,7 @@ Converts tokens into an Abstract Syntax Tree (AST).
 
 Phase 1:  Headings, Paragraphs
 Phase 2:  Lists, Blockquotes, HR, Code blocks, Images, Galleries
+Phase 3:  Tables
 """
 
 import re
@@ -20,6 +21,7 @@ from .ast import (
     ImageBlock,
     ListBlock,
     Paragraph,
+    TableBlock,
 )
 from .lexer import Lexer, Token
 
@@ -40,6 +42,11 @@ RE_IMAGE = re.compile(
 )
 RE_GALLERY_START = re.compile(r"^@gallery(?:\s*\{([^}]*)\})?\s*$")
 RE_GALLERY_END = re.compile(r"^@end\s*$")
+
+# Table: a line starting with | (after stripping)
+RE_TABLE_LINE = re.compile(r"^\s*\|.*\|\s*$")
+# Table separator row: |---|:--:|---:|
+RE_TABLE_SEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
 
 
 class Parser:
@@ -82,6 +89,11 @@ class Parser:
             m = RE_GALLERY_START.match(line.strip())
             if m:
                 doc.children.append(self._parse_gallery(m.group(1), token.line))
+                continue
+
+            # Table: | ... |
+            if self._is_table_start():
+                doc.children.append(self._parse_table())
                 continue
 
             # Image: ![alt](url) — must come before paragraph
@@ -132,24 +144,127 @@ class Parser:
         return doc
 
     # --------------------------------------------------------
+    # Table parser
+    # --------------------------------------------------------
+
+    def _is_table_start(self) -> bool:
+        """
+        Check if current line starts a table:
+          | Header | Header |
+          |--------|--------|
+        """
+        if self._is_at_end():
+            return False
+
+        line1 = self._peek().value
+        if not RE_TABLE_LINE.match(line1):
+            return False
+
+        # Check the next line is a separator
+        if self.pos + 1 >= len(self.tokens):
+            return False
+
+        line2 = self.tokens[self.pos + 1].value
+        if not RE_TABLE_SEP.match(line2):
+            return False
+
+        # Make sure it has | and at least one -
+        if "-" not in line2:
+            return False
+
+        return True
+
+    def _parse_table(self) -> TableBlock:
+        """Parse a Markdown-style table."""
+        start_line = self._peek().line
+
+        # ---- Parse header row ----
+        header_line = self._peek().value
+        headers = self._split_table_row(header_line)
+        self._advance()
+
+        # ---- Parse alignment row ----
+        sep_line = self._peek().value
+        alignments = self._parse_alignments(sep_line)
+        self._advance()
+
+        # Normalize: alignments count should match headers count
+        while len(alignments) < len(headers):
+            alignments.append("none")
+        alignments = alignments[:len(headers)]
+
+        # ---- Parse body rows ----
+        rows: List[List[str]] = []
+        while not self._is_at_end():
+            line = self._peek().value
+            if not RE_TABLE_LINE.match(line):
+                break
+            # Skip separator rows (shouldn't happen but be safe)
+            if RE_TABLE_SEP.match(line):
+                self._advance()
+                continue
+            cells = self._split_table_row(line)
+            # Normalize row to header count
+            while len(cells) < len(headers):
+                cells.append("")
+            cells = cells[:len(headers)]
+            rows.append(cells)
+            self._advance()
+
+        return TableBlock(
+            headers=headers,
+            rows=rows,
+            alignments=alignments,
+            line=start_line,
+        )
+
+    def _split_table_row(self, line: str) -> List[str]:
+        """
+        Split '| a | b | c |' into ['a', 'b', 'c'].
+        Handles optional leading/trailing pipes.
+        """
+        line = line.strip()
+        if line.startswith("|"):
+            line = line[1:]
+        if line.endswith("|"):
+            line = line[:-1]
+        return [cell.strip() for cell in line.split("|")]
+
+    def _parse_alignments(self, line: str) -> List[str]:
+        """
+        Parse '|:---|:--:|---:|' into ['left', 'center', 'right'].
+        """
+        cells = self._split_table_row(line)
+        alignments = []
+        for cell in cells:
+            cell = cell.strip()
+            left = cell.startswith(":")
+            right = cell.endswith(":")
+            if left and right:
+                alignments.append("center")
+            elif right:
+                alignments.append("right")
+            elif left:
+                alignments.append("left")
+            else:
+                alignments.append("none")
+        return alignments
+
+    # --------------------------------------------------------
     # Gallery parser
     # --------------------------------------------------------
 
     def _parse_gallery(self, options_str: str, start_line: int) -> GalleryBlock:
-        """Parse @gallery {options} ... @end block."""
-        self._advance()  # consume @gallery line
+        self._advance()
 
         options = self._parse_gallery_options(options_str or "")
 
-        # columns can be int or string
         try:
             columns = int(options.get("columns", 3))
         except (ValueError, TypeError):
             columns = 3
 
-        # Clamp between 1 and 6
         columns = max(1, min(columns, 6))
-
         caption = options.get("caption", "")
 
         images: List[ImageBlock] = []
@@ -171,7 +286,6 @@ class Parser:
                 self._advance()
                 continue
 
-            # Unknown line inside gallery — skip
             self._advance()
 
         return GalleryBlock(
@@ -182,13 +296,10 @@ class Parser:
         )
 
     def _parse_gallery_options(self, options_str: str) -> dict:
-        """Parse 'columns=3 caption="My photos"' into a dict."""
         if not options_str:
             return {}
-
         options = {}
         pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|(\S+)))?')
-
         for match in pattern.finditer(options_str):
             key = match.group(1)
             value = match.group(2) or match.group(3)
@@ -196,7 +307,6 @@ class Parser:
                 options[key] = value
             else:
                 options[key] = True
-
         return options
 
     # --------------------------------------------------------
@@ -211,7 +321,6 @@ class Parser:
 
         options = self._parse_image_options(options_str)
 
-        # Parse zoomable flag (default True)
         zoomable = options.get("zoomable", True)
         if isinstance(zoomable, str):
             zoomable = zoomable.lower() != "false"
@@ -231,13 +340,10 @@ class Parser:
         )
 
     def _parse_image_options(self, options_str: str) -> dict:
-        """Parse 'width=400 align=center caption="..."' into a dict."""
         if not options_str:
             return {}
-
         options = {}
         pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|(\S+)))?')
-
         for match in pattern.finditer(options_str):
             key = match.group(1)
             value = match.group(2) or match.group(3)
@@ -245,7 +351,6 @@ class Parser:
                 options[key] = value
             else:
                 options[key] = True
-
         return options
 
     # --------------------------------------------------------
@@ -255,7 +360,6 @@ class Parser:
     def _parse_code_block(
         self, language: str, options_str: str, start_line: int
     ) -> CodeBlock:
-        """Parse ```lang {options} ... ``` fenced block."""
         self._advance()
         code_lines: List[str] = []
 
@@ -286,10 +390,8 @@ class Parser:
     def _parse_code_options(self, options_str: str) -> dict:
         if not options_str:
             return {}
-
         options = {}
         pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|\[([^\]]*)\]|(\w+)))?')
-
         for match in pattern.finditer(options_str):
             key = match.group(1)
             str_val = match.group(2)
@@ -311,7 +413,6 @@ class Parser:
                     options[key] = word_val
             else:
                 options[key] = True
-
         return options
 
     # --------------------------------------------------------
