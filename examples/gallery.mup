@@ -1,0 +1,43 @@
+# Gallery Demo
+
+## Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Mountain](https://picsum.photos/400/300?random=1)
+![Beach](https://picsum.photos/400/300?random=2)
+![Forest](https://picsum.photos/400/300?random=3)
+![City](https://picsum.photos/400/300?random=4)
+![Desert](https://picsum.photos/400/300?random=5)
+![Lake](https://picsum.photos/400/300?random=6)
+@end
+
+## With Captions and Descriptions
+
+@gallery {columns=2}
+![Aurora](https://picsum.photos/500/350?random=7){caption="Northern Lights" desc="A stunning aurora borealis over the snowy forest in Norway."}
+![Sunset](https://picsum.photos/500/350?random=8){caption="Golden Sunset" desc="The sun setting over the calm Pacific ocean."}
+@end
+
+## Photo Grid (4 columns)
+
+@gallery {columns=4}
+![1](https://picsum.photos/300/300?random=10)
+![2](https://picsum.photos/300/300?random=11)
+![3](https://picsum.photos/300/300?random=12)
+![4](https://picsum.photos/300/300?random=13)
+@end
+
+## Single Image with Description
+
+![Aurora](https://picsum.photos/700/400?random=20){caption="Aurora Borealis" desc="The aurora borealis, also known as the northern lights, is a natural light display in Earth's sky, predominantly seen in high-latitude regions around the Arctic and Antarctic."}
+
+## Instructions
+
+Click any image to open the lightbox.
+
+**Keyboard shortcuts:**
+- `←` / `→` — Previous / Next
+- `+` / `-` — Zoom in / out
+- `0` — Reset zoom
+- `ESC` — Close
+- Click image in lightbox — Toggle 2x zoom

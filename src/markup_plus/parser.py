@@ -4,7 +4,7 @@ Markup+ Parser
 Converts tokens into an Abstract Syntax Tree (AST).
 
 Phase 1:  Headings, Paragraphs
-Phase 2:  Lists, Blockquotes, HR, Code blocks, Images
+Phase 2:  Lists, Blockquotes, HR, Code blocks, Images, Galleries
 """
 
 import re
@@ -14,6 +14,7 @@ from .ast import (
     BlockQuote,
     CodeBlock,
     Document,
+    GalleryBlock,
     Heading,
     HorizontalRule,
     ImageBlock,
@@ -23,18 +24,22 @@ from .ast import (
 from .lexer import Lexer, Token
 
 
+# ============================================================
 # Regex patterns
+# ============================================================
+
 RE_HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 RE_UL_ITEM = re.compile(r"^\s*[-*+]\s+(.+?)\s*$")
 RE_OL_ITEM = re.compile(r"^\s*\d+\.\s+(.+?)\s*$")
 RE_HR = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
 RE_BLOCKQUOTE = re.compile(r"^\s*>\s?(.*)$")
 RE_CODE_FENCE = re.compile(r"^\s*```\s*(\w*)\s*(?:\{(.+?)\})?\s*$")
-# Image: ![alt](url "title"){options}
 RE_IMAGE = re.compile(
     r'^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)'
     r'(?:\{([^}]*)\})?\s*$'
 )
+RE_GALLERY_START = re.compile(r"^@gallery(?:\s*\{([^}]*)\})?\s*$")
+RE_GALLERY_END = re.compile(r"^@end\s*$")
 
 
 class Parser:
@@ -43,6 +48,10 @@ class Parser:
     def __init__(self, tokens: List[Token]):
         self.tokens = tokens
         self.pos = 0
+
+    # --------------------------------------------------------
+    # Main parse loop
+    # --------------------------------------------------------
 
     def parse(self) -> Document:
         doc = Document()
@@ -67,6 +76,12 @@ class Parser:
                 doc.children.append(
                     self._parse_code_block(m.group(1), m.group(2), token.line)
                 )
+                continue
+
+            # Gallery: @gallery {options} ... @end
+            m = RE_GALLERY_START.match(line.strip())
+            if m:
+                doc.children.append(self._parse_gallery(m.group(1), token.line))
                 continue
 
             # Image: ![alt](url) — must come before paragraph
@@ -117,31 +132,57 @@ class Parser:
         return doc
 
     # --------------------------------------------------------
-    # Image parser
+    # Gallery parser
     # --------------------------------------------------------
 
-    def _parse_image(self, match: re.Match, line_num: int) -> ImageBlock:
-        alt = match.group(1)
-        url = match.group(2)
-        title = match.group(3) or ""
-        options_str = match.group(4) or ""
+    def _parse_gallery(self, options_str: str, start_line: int) -> GalleryBlock:
+        """Parse @gallery {options} ... @end block."""
+        self._advance()  # consume @gallery line
 
-        options = self._parse_image_options(options_str)
+        options = self._parse_gallery_options(options_str or "")
 
-        return ImageBlock(
-            alt=alt,
-            url=url,
-            title=title,
-            width=options.get("width", ""),
-            height=options.get("height", ""),
-            align=options.get("align", ""),
-            link=options.get("link", ""),
-            caption=options.get("caption", ""),
-            line=line_num,
+        # columns can be int or string
+        try:
+            columns = int(options.get("columns", 3))
+        except (ValueError, TypeError):
+            columns = 3
+
+        # Clamp between 1 and 6
+        columns = max(1, min(columns, 6))
+
+        caption = options.get("caption", "")
+
+        images: List[ImageBlock] = []
+
+        while not self._is_at_end():
+            line = self._peek().value.strip()
+
+            if RE_GALLERY_END.match(line):
+                self._advance()
+                break
+
+            if line == "":
+                self._advance()
+                continue
+
+            m = RE_IMAGE.match(line)
+            if m:
+                images.append(self._parse_image(m, self._peek().line))
+                self._advance()
+                continue
+
+            # Unknown line inside gallery — skip
+            self._advance()
+
+        return GalleryBlock(
+            columns=columns,
+            images=images,
+            caption=caption,
+            line=start_line,
         )
 
-    def _parse_image_options(self, options_str: str) -> dict:
-        """Parse 'width=400 align=center' into a dict."""
+    def _parse_gallery_options(self, options_str: str) -> dict:
+        """Parse 'columns=3 caption="My photos"' into a dict."""
         if not options_str:
             return {}
 
@@ -159,7 +200,56 @@ class Parser:
         return options
 
     # --------------------------------------------------------
-    # Block parsers
+    # Image parser
+    # --------------------------------------------------------
+
+    def _parse_image(self, match: re.Match, line_num: int) -> ImageBlock:
+        alt = match.group(1)
+        url = match.group(2)
+        title = match.group(3) or ""
+        options_str = match.group(4) or ""
+
+        options = self._parse_image_options(options_str)
+
+        # Parse zoomable flag (default True)
+        zoomable = options.get("zoomable", True)
+        if isinstance(zoomable, str):
+            zoomable = zoomable.lower() != "false"
+
+        return ImageBlock(
+            alt=alt,
+            url=url,
+            title=title,
+            width=options.get("width", ""),
+            height=options.get("height", ""),
+            align=options.get("align", ""),
+            link=options.get("link", ""),
+            caption=options.get("caption", ""),
+            description=options.get("desc", ""),
+            zoomable=zoomable,
+            line=line_num,
+        )
+
+    def _parse_image_options(self, options_str: str) -> dict:
+        """Parse 'width=400 align=center caption="..."' into a dict."""
+        if not options_str:
+            return {}
+
+        options = {}
+        pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|(\S+)))?')
+
+        for match in pattern.finditer(options_str):
+            key = match.group(1)
+            value = match.group(2) or match.group(3)
+            if value:
+                options[key] = value
+            else:
+                options[key] = True
+
+        return options
+
+    # --------------------------------------------------------
+    # Code block parser
     # --------------------------------------------------------
 
     def _parse_code_block(
@@ -223,6 +313,10 @@ class Parser:
                 options[key] = True
 
         return options
+
+    # --------------------------------------------------------
+    # Blockquote / List parsers
+    # --------------------------------------------------------
 
     def _parse_blockquote(self) -> BlockQuote:
         start_line = self._peek().line

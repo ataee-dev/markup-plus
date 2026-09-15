@@ -2,12 +2,6 @@
 Markup+ CLI
 
 Command-line entry point. Provides the `mup` command.
-
-Usage:
-    mup <file.mup>            Convert file.mup to file.html
-    mup build <file.mup>      Same as above (explicit)
-    mup --version             Show version
-    mup --help                Show help
 """
 
 import sys
@@ -20,50 +14,61 @@ from .renderer import to_html
 HELP_TEXT = """Markup+ CLI
 
 Usage:
-    mup <file.mup>            Convert file.mup to file.html
-    mup build <file.mup>      Same as above (explicit)
-    mup --version             Show version
-    mup --help                Show this help
+    mup <file.mup> [options]        Convert file.mup to file.html
+    mup build <file.mup> [options]  Same as above (explicit)
+    mup --version                   Show version
+    mup --help                      Show this help
+
+Options:
+    --light, -l    Use light theme (default)
+    --dark, -d     Use dark theme
 
 Examples:
     mup examples/hello.mup
-    mup build docs/index.mup
+    mup examples/gallery.mup --dark
+    mup build docs/index.mup --light
 """
 
 
 def main() -> int:
-    """Main CLI entry point. Returns exit code."""
     args = sys.argv[1:]
 
-    # No arguments
     if not args:
         print(HELP_TEXT)
         return 0
 
-    # --version
     if args[0] in ("--version", "-v"):
         print(f"Markup+ v{__version__}")
         return 0
 
-    # --help
     if args[0] in ("--help", "-h"):
         print(HELP_TEXT)
         return 0
 
-    # mup build <file>
-    if args[0] == "build":
-        if len(args) < 2:
+    theme = "light"
+    filtered_args = []
+    for arg in args:
+        if arg in ("--dark", "-d"):
+            theme = "dark"
+        elif arg in ("--light", "-l"):
+            theme = "light"
+        else:
+            filtered_args.append(arg)
+
+    if filtered_args and filtered_args[0] == "build":
+        if len(filtered_args) < 2:
             print("Error: 'build' requires a file argument")
-            print("Usage: mup build <file.mup>")
             return 1
-        return build_file(args[1])
+        return build_file(filtered_args[1], theme)
 
-    # mup <file>
-    return build_file(args[0])
+    if filtered_args:
+        return build_file(filtered_args[0], theme)
+
+    print(HELP_TEXT)
+    return 0
 
 
-def build_file(path_str: str) -> int:
-    """Convert a .mup file to .html."""
+def build_file(path_str: str, theme: str = "light") -> int:
     input_file = Path(path_str)
 
     if not input_file.exists():
@@ -73,17 +78,14 @@ def build_file(path_str: str) -> int:
     if input_file.suffix != ".mup":
         print(f"Warning: File does not have .mup extension: {input_file}")
 
-    # Read
     try:
         text = input_file.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         print(f"Error: File is not valid UTF-8: {input_file}")
         return 1
 
-    # Convert
-    html = to_html(text, title=input_file.stem)
+    html = to_html(text, title=input_file.stem, theme=theme)
 
-    # Write
     output_file = input_file.with_suffix(".html")
     try:
         output_file.write_text(html, encoding="utf-8")
@@ -91,7 +93,8 @@ def build_file(path_str: str) -> int:
         print(f"Error: Could not write output: {e}")
         return 1
 
-    print(f"OK: {input_file} -> {output_file}")
+    theme_label = "dark" if theme == "dark" else "light"
+    print(f"OK ({theme_label}): {input_file} -> {output_file}")
     return 0
 
 

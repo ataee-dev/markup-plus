@@ -77,15 +77,46 @@ class CodeBlock(Node):
 
 @dataclass
 class ImageBlock(Node):
-    """![alt](url "title"){width=... align=... link=...}"""
+    """
+    ![alt](url "title"){width=... align=... link=... caption=... desc=... zoomable=...}
+
+    Attributes:
+        alt:         Alt text
+        url:         Image URL
+        title:       HTML title attribute
+        width:       Custom width (e.g. "400")
+        height:      Custom height (e.g. "300")
+        align:       Alignment: left, center, right
+        link:        Wrap in <a> tag with this href
+        caption:     Short caption displayed below image
+        description: Longer description shown in lightbox
+        zoomable:    Allow opening in lightbox (default True)
+    """
     alt: str = ""
     url: str = ""
     title: str = ""
     width: str = ""
     height: str = ""
-    align: str = ""           # left, center, right
-    link: str = ""            # wrap in <a>
-    caption: str = ""         # below the image
+    align: str = ""
+    link: str = ""
+    caption: str = ""
+    description: str = ""
+    zoomable: bool = True
+
+
+@dataclass
+class GalleryBlock(Node):
+    """
+    @gallery {columns=N caption="..."} ... @end — a grid of images.
+
+    Attributes:
+        columns:  Number of columns (default 3)
+        images:   List of ImageBlock items
+        caption:  Gallery-level caption
+    """
+    columns: int = 3
+    images: List[ImageBlock] = field(default_factory=list)
+    caption: str = ""
 
 
 # ============================================================
@@ -114,3 +145,17 @@ class Italic(Node):
 class InlineCode(Node):
     """`code`"""
     content: str = ""
+
+
+@dataclass
+class Strikethrough(Node):
+    """~~strikethrough~~"""
+    content: str = ""
+
+
+@dataclass
+class Link(Node):
+    """[text](url "title") — inline link"""
+    text: str = ""
+    url: str = ""
+    title: str = ""

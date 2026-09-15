@@ -1,0 +1,278 @@
+# Markup+ Showcase
+
+Welcome to the **complete feature demo** of `Markup+` — a modern markup language with more features than Markdown.
+
+---
+
+## 1. Text Formatting
+
+This is **bold**, this is *italic*, and this is `inline code`.
+
+You can combine them: **bold with *italic* inside**.
+
+Special characters: `< > & " '` are escaped safely.
+
+---
+
+## 2. Headings (H1-H6)
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 3. Lists
+
+### Unordered
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+- Fourth item with *italic*
+
+### Ordered
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML
+
+---
+
+## 4. Blockquotes
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+> **Bold quote** with *italic* and `code`.
+
+---
+
+## 5. Code Blocks
+
+### Python
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("Markup+")
+```
+
+### JavaScript
+
+```javascript
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+
+greet("Markup+");
+```
+
+### Bash
+
+```bash
+pip install markup-plus
+mup examples/showcase.mup
+```
+
+### Code with Line Numbers
+
+```python {title="app.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+### HTML with Live Preview
+
+```html {title="preview.html"}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Live Preview!</h1>
+        <p>This HTML is rendered live inside Markup+.</p>
+    </div>
+</body>
+</html>
+```
+
+### JavaScript with Live Preview
+
+```javascript {title="demo.js"}
+const user = { name: "Markup+", version: 0.2 };
+console.log("Hello,", user.name);
+console.log("Version:", user.version);
+console.log("2 + 2 =", 2 + 2);
+console.log("Array:", [1, 2, 3].map(x => x * 2));
+```
+
+### Code Without Buttons
+
+```text {copy=false download=false}
+This block has no buttons.
+Just plain text.
+```
+
+---
+
+## 6. Single Images
+
+### Simple Image
+
+![Sample](https://picsum.photos/600/400?random=1)
+
+### With Caption and Description
+
+![Northern Lights](https://picsum.photos/700/400?random=2){caption="Aurora Borealis" desc="The aurora borealis, also known as the northern lights, is a natural light display in Earth's sky, predominantly seen in high-latitude regions around the Arctic and Antarctic."}
+
+### Centered Image
+
+![Centered](https://picsum.photos/500/300?random=3){align=center}
+
+### With Custom Width
+
+![Small](https://picsum.photos/600/400?random=4){width=300}
+
+### Non-zoomable Image
+
+![No zoom](https://picsum.photos/400/250?random=5){zoomable=false caption="Not zoomable"}
+
+---
+
+## 7. Image Galleries
+
+### Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Mountain](https://picsum.photos/400/300?random=10)
+![Beach](https://picsum.photos/400/300?random=11)
+![Forest](https://picsum.photos/400/300?random=12)
+![City](https://picsum.photos/400/300?random=13)
+![Desert](https://picsum.photos/400/300?random=14)
+![Lake](https://picsum.photos/400/300?random=15)
+@end
+
+### Gallery with Captions
+
+@gallery {columns=2 caption="My travel photos"}
+![Sunset](https://picsum.photos/500/350?random=20){caption="Golden Sunset" desc="The sun setting over the calm Pacific ocean."}
+![Forest](https://picsum.photos/500/350?random=21){caption="Misty Forest" desc="A quiet morning in the deep woods."}
+@end
+
+### Photo Grid (4 columns)
+
+@gallery {columns=4}
+![1](https://picsum.photos/300/300?random=30)
+![2](https://picsum.photos/300/300?random=31)
+![3](https://picsum.photos/300/300?random=32)
+![4](https://picsum.photos/300/300?random=33)
+![5](https://picsum.photos/300/300?random=34)
+![6](https://picsum.photos/300/300?random=35)
+![7](https://picsum.photos/300/300?random=36)
+![8](https://picsum.photos/300/300?random=37)
+@end
+
+---
+
+## 8. Mixed Content
+
+Here's a list with code:
+
+1. First step
+2. Second step
+3. Third step
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And a **closing statement**.
+
+---
+
+## 9. Keyboard Shortcuts
+
+When you open an image in the lightbox:
+
+| Key | Action |
+|-----|--------|
+| `←` / `→` | Previous / Next image |
+| `+` / `-` | Zoom in / out |
+| `0` | Reset zoom |
+| `ESC` | Close lightbox |
+| Click image | Toggle 2x zoom |
+
+---
+
+## 10. Theme Test
+
+This document works in both **light** and **dark** themes.
+
+Try both:
+
+```bash
+mup examples/showcase.mup
+mup examples/showcase.mup --dark
+```
+
+---
+
+## 🎉 Summary
+
+Everything works:
+
+- ✅ Headings (H1-H6)
+- ✅ Bold, italic, inline code
+- ✅ Paragraphs
+- ✅ Unordered and ordered lists
+- ✅ Blockquotes
+- ✅ Horizontal rules
+- ✅ Code blocks with syntax highlighting
+- ✅ Code copy/download/preview buttons
+- ✅ Live preview for HTML/CSS/JS
+- ✅ Single images with lightbox
+- ✅ Image galleries with lightbox
+- ✅ Image zoom in lightbox
+- ✅ Image descriptions
+- ✅ Light and dark themes
+- ✅ Native-like smooth animations
+
+**Enjoy Markup+!** 🚀
