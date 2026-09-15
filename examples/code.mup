@@ -1,0 +1,111 @@
+# Code Blocks Full Test
+
+## 1. Python (basic)
+
+```python
+print("Hello, World!")
+x = 42
+```
+
+## 2. Python with title
+
+```python {title="app.py"}
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Markup+"))
+```
+
+## 3. HTML with Preview
+
+```html {title="page.html"}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Hello, Markup+!</h1>
+        <p>This is a live preview.</p>
+    </div>
+</body>
+</html>
+```
+
+## 4. CSS with Preview
+
+```css {title="style.css"}
+h1 {
+    color: #7c3aed;
+    font-size: 32px;
+}
+button {
+    background: #7c3aed;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+button:hover {
+    background: #5b21b6;
+}
+```
+
+## 5. JavaScript with Preview
+
+```javascript {title="app.js"}
+const name = "Markup+";
+console.log("Hello, " + name);
+console.log("2 + 2 =", 2 + 2);
+console.log("Done!");
+```
+
+## 6. Bash (no preview)
+
+```bash
+pip install markup-plus
+mup examples/code.mup
+```
+
+## 7. With Line Numbers and Highlight
+
+```python {title="advanced.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+## 8. No Buttons
+
+```text {copy=false download=false}
+This block has no buttons.
+Just plain text.
+```
+
+## 9. JSON
+
+```json {title="config.json"}
+{
+    "name": "markup-plus",
+    "version": "0.2.0",
+    "features": ["code", "math", "charts"]
+}
+```

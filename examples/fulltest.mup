@@ -1,0 +1,160 @@
+
+# Markup+ Full Feature Test
+
+This document tests **all features** of Markup+ v0.1.0.
+
+---
+
+## 1. Headings
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 2. Text Formatting
+
+This is **bold text** and this is *italic text*.
+
+You can combine **bold and *italic*** together.
+
+This is `inline code` inside a paragraph.
+
+---
+
+## 3. Paragraphs
+
+This is the first paragraph.
+
+This is the second paragraph, separated by a blank line.
+
+And a third one.
+
+---
+
+## 4. Unordered Lists
+
+- First item
+- Second item with **bold**
+- Third item with *italic*
+- Fourth item with `code`
+
+---
+
+## 5. Ordered Lists
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML
+
+---
+
+## 6. Blockquotes
+
+> This is a simple blockquote.
+> It spans multiple lines.
+
+> A quote with **bold** and *italic* formatting.
+
+---
+
+## 7. Horizontal Rules
+
+Above the line.
+
+---
+
+Below the line.
+
+---
+
+## 8. Code Blocks
+
+### Python
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("World")
+```
+
+### JavaScript
+
+```javascript
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+
+greet("World");
+```
+
+### Bash
+
+```bash
+pip install markup-plus
+mup examples/fulltest.mup
+```
+
+### No Language
+
+```
+Just plain text code block.
+No highlighting.
+```
+
+---
+
+## 9. Mixed Content
+
+Here's a list with code blocks after it:
+
+1. First step
+2. Second step
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And finally a **bold closing statement**.
+
+---
+
+## 10. Edge Cases
+
+Text with multiple `code spans` in one line.
+
+Text with multiple **bold words**.
+
+Special characters: < > & " '
+
+Numbers: 1 2 3 42 1000
+
+---
+
+## Summary
+
+All features work:
+
+- Headings (H1-H6)
+- Bold, Italic, Inline code
+- Paragraphs
+- Unordered lists
+- Ordered lists
+- Blockquotes
+- Horizontal rules
+- Code blocks (with/without language)

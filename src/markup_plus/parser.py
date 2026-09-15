@@ -4,7 +4,7 @@ Markup+ Parser
 Converts tokens into an Abstract Syntax Tree (AST).
 
 Phase 1:  Headings, Paragraphs
-Phase 2:  Lists, Blockquotes, Horizontal rules
+Phase 2:  Lists, Blockquotes, HR, Code blocks
 """
 
 import re
@@ -12,6 +12,7 @@ from typing import List
 
 from .ast import (
     BlockQuote,
+    CodeBlock,
     Document,
     Heading,
     HorizontalRule,
@@ -27,6 +28,7 @@ RE_UL_ITEM = re.compile(r"^\s*[-*+]\s+(.+?)\s*$")
 RE_OL_ITEM = re.compile(r"^\s*\d+\.\s+(.+?)\s*$")
 RE_HR = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
 RE_BLOCKQUOTE = re.compile(r"^\s*>\s?(.*)$")
+RE_CODE_FENCE = re.compile(r"^\s*```\s*(\w*)\s*(?:\{(.+?)\})?\s*$")
 
 
 class Parser:
@@ -53,7 +55,15 @@ class Parser:
                 self._advance()
                 continue
 
-            # Horizontal rule (must be before UL, since --- is also a valid UL marker)
+            # Code fence: ```lang {options}
+            m = RE_CODE_FENCE.match(line)
+            if m:
+                doc.children.append(
+                    self._parse_code_block(m.group(1), m.group(2), token.line)
+                )
+                continue
+
+            # Horizontal rule
             if RE_HR.match(line):
                 doc.children.append(HorizontalRule(line=token.line))
                 self._advance()
@@ -97,8 +107,70 @@ class Parser:
     # Block parsers
     # --------------------------------------------------------
 
+    def _parse_code_block(
+        self, language: str, options_str: str, start_line: int
+    ) -> CodeBlock:
+        """Parse ```lang {options} ... ``` fenced block."""
+        self._advance()  # consume opening fence
+        code_lines: List[str] = []
+
+        while not self._is_at_end():
+            line = self._peek().value
+            if RE_CODE_FENCE.match(line):
+                self._advance()  # consume closing fence
+                break
+            code_lines.append(line)
+            self._advance()
+
+        options = self._parse_code_options(options_str or "")
+
+        return CodeBlock(
+            language=language,
+            code="\n".join(code_lines),
+            title=options.get("title", ""),
+            copy=options.get("copy", True),
+            download=options.get("download", True),
+            run=options.get("run", False),
+            share=options.get("share", False),
+            linenos=options.get("linenos", False),
+            highlight=options.get("hl", []),
+            wrap=options.get("wrap", False),
+            line=start_line,
+        )
+
+    def _parse_code_options(self, options_str: str) -> dict:
+        """Parse 'title="app.py" copy linenos hl=[2,4]' into a dict."""
+        if not options_str:
+            return {}
+
+        options = {}
+        pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|\[([^\]]*)\]|(\w+)))?')
+
+        for match in pattern.finditer(options_str):
+            key = match.group(1)
+            str_val = match.group(2)
+            list_val = match.group(3)
+            word_val = match.group(4)
+
+            if str_val is not None:
+                options[key] = str_val
+            elif list_val is not None:
+                options[key] = [
+                    int(x.strip()) for x in list_val.split(",") if x.strip()
+                ]
+            elif word_val is not None:
+                if word_val == "true":
+                    options[key] = True
+                elif word_val == "false":
+                    options[key] = False
+                else:
+                    options[key] = word_val
+            else:
+                options[key] = True
+
+        return options
+
     def _parse_blockquote(self) -> BlockQuote:
-        """Parse consecutive > lines."""
         start_line = self._peek().line
         lines: List[str] = []
 

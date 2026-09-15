@@ -60,6 +60,21 @@ class HorizontalRule(Node):
     pass
 
 
+@dataclass
+class CodeBlock(Node):
+    """Fenced code block with advanced options."""
+    language: str = ""
+    code: str = ""
+    title: str = ""
+    copy: bool = True
+    download: bool = True
+    run: bool = False
+    share: bool = False
+    linenos: bool = False
+    highlight: List[int] = field(default_factory=list)
+    wrap: bool = False
+
+
 # ============================================================
 # Inline-level nodes
 # ============================================================
