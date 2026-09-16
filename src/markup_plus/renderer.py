@@ -5,6 +5,7 @@ Converts an AST Document into HTML output.
 
 Features:
     - Light + Dark themes (CLI: --dark / --light)
+    - RTL auto-detection (Persian, Arabic, Hebrew)
     - Headings, paragraphs, lists, blockquotes, HR
     - Enhanced code blocks with copy/download/preview
     - Images with lightbox, zoom, and description
@@ -18,6 +19,7 @@ Features:
 
 import html
 import re
+import unicodedata
 
 from .ast import (
     BlockQuote,
@@ -32,6 +34,43 @@ from .ast import (
     TableBlock,
     Node,
 )
+
+
+# ============================================================
+# RTL Detection
+# ============================================================
+
+def is_rtl_text(text: str) -> bool:
+    """
+    Detect if text is predominantly RTL (Arabic, Hebrew, Persian, Urdu).
+
+    Returns True if >= 30% of alphabetic characters belong to RTL scripts.
+    """
+    if not text:
+        return False
+
+    rtl_count = 0
+    ltr_count = 0
+
+    for char in text:
+        if not char.isalpha():
+            continue
+
+        try:
+            bidi = unicodedata.bidirectional(char)
+            if bidi in ("R", "AL", "AN"):
+                rtl_count += 1
+            elif bidi == "L":
+                ltr_count += 1
+        except (TypeError, ValueError):
+            continue
+
+    total = rtl_count + ltr_count
+    if total == 0:
+        return False
+
+    return (rtl_count / total) >= 0.3
+
 
 # ============================================================
 # Inline formatting
@@ -487,7 +526,7 @@ def render_ast(doc: Document) -> str:
 # ============================================================
 
 HEAD = """<!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="__THEME__">
+<html lang="__LANG__" dir="__DIR__" data-theme="__THEME__">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1394,9 +1433,83 @@ HEAD = """<!DOCTYPE html>
                 transform: none !important;
             }
         }
+
+        /* ============================================================
+           RTL support
+           ============================================================ */
+
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+            font-family: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body.rtl ul,
+        body.rtl ol {
+            padding-left: 0;
+            padding-right: 1.5em;
+        }
+
+        body.rtl ul.task-list,
+        body.rtl ol.task-list {
+            padding-right: 0;
+        }
+
+        body.rtl blockquote {
+            border-left: none;
+            border-right: 4px solid var(--accent);
+            border-radius: 10px 0 0 10px;
+        }
+
+        body.rtl th,
+        body.rtl td {
+            text-align: right;
+        }
+
+        body.rtl h1,
+        body.rtl h2,
+        body.rtl h3,
+        body.rtl h4,
+        body.rtl h5,
+        body.rtl h6,
+        body.rtl p {
+            text-align: right;
+        }
+
+        /* Code blocks stay LTR (code is always LTR) */
+        body.rtl .code-block,
+        body.rtl pre,
+        body.rtl code {
+            direction: ltr;
+            text-align: left;
+        }
+
+        body.rtl .code-header,
+        body.rtl .code-header-left,
+        body.rtl .code-buttons {
+            direction: ltr;
+        }
+
+        /* Keep RTL code blocks RTL */
+        body.rtl .code-block.rtl,
+        body.rtl .code-block.rtl pre,
+        body.rtl .code-block.rtl code {
+            direction: rtl;
+            text-align: right;
+        }
+
+        body.rtl .image-caption,
+        body.rtl .image-description,
+        body.rtl .gallery-caption {
+            text-align: center;
+        }
+
+        body.rtl .lightbox {
+            direction: ltr;
+        }
     </style>
 </head>
-<body>
+<body class="__BODY_CLASS__">
 """
 
 TAIL = """
@@ -1886,14 +1999,20 @@ TAIL = """
 """
 
 
-def to_html(text: str, title: str = "Markup+ Document", theme: str = "light") -> str:
+def to_html(
+    text: str,
+    title: str = "Markup+ Document",
+    theme: str = "light",
+    direction: str = None,
+) -> str:
     """
     Convert Markup+ source text to a complete HTML page.
 
     Args:
-        text:   Markup+ source text.
-        title:  HTML page title.
-        theme:  "light" (default) or "dark".
+        text:       Markup+ source text.
+        title:      HTML page title.
+        theme:      "light" (default) or "dark".
+        direction:  "ltr", "rtl", or None (auto-detect from content).
     """
     from .parser import parse_text
 
@@ -1902,7 +2021,19 @@ def to_html(text: str, title: str = "Markup+ Document", theme: str = "light") ->
 
     theme = theme if theme in ("light", "dark") else "light"
 
+    # Direction: use provided, else auto-detect
+    if direction in ("ltr", "rtl"):
+        final_dir = direction
+    else:
+        combined = title + " " + text
+        final_dir = "rtl" if is_rtl_text(combined) else "ltr"
+
+    lang_code = "fa" if final_dir == "rtl" else "en"
+
     head = HEAD.replace("__TITLE__", html.escape(title))
     head = head.replace("__THEME__", theme)
+    head = head.replace("__DIR__", final_dir)
+    head = head.replace("__LANG__", lang_code)
+    head = head.replace("__BODY_CLASS__", final_dir)
 
     return head + body + TAIL

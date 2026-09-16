@@ -22,11 +22,14 @@ Usage:
 Options:
     --light, -l    Use light theme (default)
     --dark, -d     Use dark theme
+    --rtl          Force right-to-left layout (Persian, Arabic, Hebrew)
+    --ltr          Force left-to-right layout
+                   (default: auto-detect from content)
 
 Examples:
     mup examples/hello.mup
     mup examples/gallery.mup --dark
-    mup build docs/index.mup --light
+    mup examples/test_fa.mup --rtl
 """
 
 
@@ -46,12 +49,18 @@ def main() -> int:
         return 0
 
     theme = "light"
+    direction = None
     filtered_args = []
+
     for arg in args:
         if arg in ("--dark", "-d"):
             theme = "dark"
         elif arg in ("--light", "-l"):
             theme = "light"
+        elif arg == "--rtl":
+            direction = "rtl"
+        elif arg == "--ltr":
+            direction = "ltr"
         else:
             filtered_args.append(arg)
 
@@ -59,16 +68,16 @@ def main() -> int:
         if len(filtered_args) < 2:
             print("Error: 'build' requires a file argument")
             return 1
-        return build_file(filtered_args[1], theme)
+        return build_file(filtered_args[1], theme, direction)
 
     if filtered_args:
-        return build_file(filtered_args[0], theme)
+        return build_file(filtered_args[0], theme, direction)
 
     print(HELP_TEXT)
     return 0
 
 
-def build_file(path_str: str, theme: str = "light") -> int:
+def build_file(path_str: str, theme: str = "light", direction: str = None) -> int:
     input_file = Path(path_str)
 
     if not input_file.exists():
@@ -84,7 +93,12 @@ def build_file(path_str: str, theme: str = "light") -> int:
         print(f"Error: File is not valid UTF-8: {input_file}")
         return 1
 
-    html = to_html(text, title=input_file.stem, theme=theme)
+    html = to_html(
+        text,
+        title=input_file.stem,
+        theme=theme,
+        direction=direction,
+    )
 
     output_file = input_file.with_suffix(".html")
     try:
@@ -94,7 +108,8 @@ def build_file(path_str: str, theme: str = "light") -> int:
         return 1
 
     theme_label = "dark" if theme == "dark" else "light"
-    print(f"OK ({theme_label}): {input_file} -> {output_file}")
+    dir_label = direction or "auto"
+    print(f"OK ({theme_label}, {dir_label}): {input_file} -> {output_file}")
     return 0
 
 
