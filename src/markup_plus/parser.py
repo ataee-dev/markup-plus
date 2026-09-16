@@ -6,23 +6,27 @@ Converts tokens into an Abstract Syntax Tree (AST).
 Phase 1:  Headings, Paragraphs
 Phase 2:  Lists, Blockquotes, HR, Code blocks, Images, Galleries
 Phase 3:  Links, Tables, Task Lists, Front Matter, TOC, Footnotes
+Phase 4:  Variables, Logic (if/elif/else), Loops (each), Comments
 """
 
 import re
-from typing import List
+from typing import List, Any
 
 from .ast import (
     BlockQuote,
     CodeBlock,
     Document,
+    EachBlock,
     GalleryBlock,
     Heading,
     HorizontalRule,
+    IfBlock,
     ImageBlock,
     ListBlock,
     Paragraph,
     TableBlock,
     TOCBlock,
+    VariableDef,
 )
 from .lexer import Lexer, Token
 
@@ -43,13 +47,22 @@ RE_IMAGE = re.compile(
     r'(?:\{([^}]*)\})?\s*$'
 )
 RE_GALLERY_START = re.compile(r"^@gallery(?:\s*\{([^}]*)\})?\s*$")
-RE_GALLERY_END = re.compile(r"^@end\s*$")
 RE_TABLE_LINE = re.compile(r"^\s*\|.*\|\s*$")
 RE_TABLE_SEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
 RE_FRONT_MATTER_START = re.compile(r"^---\s*$")
 RE_FRONT_MATTER_KEY = re.compile(r"^([A-Za-z_][\w-]*)\s*:\s*(.+?)\s*$")
 RE_TOC = re.compile(r"^@toc(?:\s*\{([^}]*)\})?\s*$")
 RE_FOOTNOTE_DEF = re.compile(r"^\[\^([^\]]+)\]:\s*(.+?)\s*$")
+
+# Phase 4: Logic directives
+RE_LET = re.compile(r"^@let\s+([A-Za-z_][\w]*)\s*=\s*(.+?)\s*$")
+RE_IF = re.compile(r"^@if\s+(.+?)\s*$")
+RE_ELIF = re.compile(r"^@elif\s+(.+?)\s*$")
+RE_ELSE = re.compile(r"^@else\s*$")
+RE_ENDIF = re.compile(r"^@endif\s*$")
+RE_EACH = re.compile(r"^@each\s+(?:(\w+)\s*,\s*)?(\w+)\s+in\s+(.+?)\s*$")
+RE_END = re.compile(r"^@end\s*$")
+RE_COMMENT = re.compile(r"^@#(.*)$")
 
 
 class Parser:
@@ -58,135 +71,263 @@ class Parser:
     def __init__(self, tokens: List[Token]):
         self.tokens = tokens
         self.pos = 0
+        self._variables: dict = {}  # Collect variables as we parse
 
     # --------------------------------------------------------
-    # Main parse loop
+    # Main entry
     # --------------------------------------------------------
 
     def parse(self) -> Document:
         doc = Document()
 
-        # 1. Parse front matter (must be first)
+        # 1. Parse front matter
         self._parse_front_matter(doc)
 
-        # 2. First pass: collect footnote definitions
+        # 2. Collect footnotes
         self._collect_footnotes(doc)
 
-        # 3. Reset position and parse main content
-        self.pos = doc._content_start if hasattr(doc, "_content_start") else 0
-        self._parse_content(doc)
+        # 3. Parse main content
+        self.pos = getattr(doc, "_content_start", 0)
+        doc.children = self._parse_blocks(stop_at=set())
 
-        # 4. Assign slugs to headings (for TOC)
+        # 4. Save collected variables to document
+        doc.variables = dict(self._variables)
+
+        # 5. Assign heading slugs
         self._assign_heading_slugs(doc)
 
         return doc
 
-    def _parse_content(self, doc: Document) -> None:
-        """Parse main content into blocks."""
+    # --------------------------------------------------------
+    # Block parsing (recursive)
+    # --------------------------------------------------------
+
+    def _parse_blocks(self, stop_at: set) -> List:
+        """
+        Parse blocks until one of the stop_at keywords is found.
+        Returns the list of parsed children.
+        """
+        children = []
+
         while not self._is_at_end():
             token = self._peek()
-
-            if token.type == "EOF":
-                self._advance()
-                continue
-
             line = token.value
+            stripped = line.strip()
 
-            # Skip blank lines
-            if line.strip() == "":
+            # Check stop keywords
+            if stop_at:
+                if "@elif" in stop_at and RE_ELIF.match(stripped):
+                    return children
+                if "@else" in stop_at and RE_ELSE.match(stripped):
+                    return children
+                if "@endif" in stop_at and RE_ENDIF.match(stripped):
+                    return children
+                if "@end" in stop_at and RE_END.match(stripped):
+                    return children
+
+            # EOF
+            if token.type == "EOF":
+                return children
+
+            # Blank line
+            if stripped == "":
                 self._advance()
                 continue
 
-            # Footnote definition (skip — already collected)
-            if RE_FOOTNOTE_DEF.match(line.strip()):
+            # Comment
+            if RE_COMMENT.match(stripped):
                 self._advance()
                 continue
 
-            # Code fence: ```lang {options}
+            # Footnote def (skip — already collected)
+            if RE_FOOTNOTE_DEF.match(stripped):
+                self._advance()
+                continue
+
+            # @let — variable definition
+            m = RE_LET.match(stripped)
+            if m:
+                var_name = m.group(1)
+                raw_value = m.group(2)
+                value = self._parse_value(raw_value)
+                # Store in parser's variable dict
+                self._variables[var_name] = value
+                children.append(VariableDef(
+                    name=var_name,
+                    value=value,
+                    raw_value=raw_value,
+                    line=token.line,
+                ))
+                self._advance()
+                continue
+
+            # @if
+            m = RE_IF.match(stripped)
+            if m:
+                children.append(self._parse_if(m.group(1), token.line))
+                continue
+
+            # @each
+            m = RE_EACH.match(stripped)
+            if m:
+                children.append(self._parse_each(
+                    m.group(1), m.group(2), m.group(3), token.line
+                ))
+                continue
+
+            # Code fence
             m = RE_CODE_FENCE.match(line)
             if m:
-                doc.children.append(
+                children.append(
                     self._parse_code_block(m.group(1), m.group(2), token.line)
                 )
                 continue
 
-            # Gallery: @gallery {options} ... @end
-            m = RE_GALLERY_START.match(line.strip())
+            # Gallery
+            m = RE_GALLERY_START.match(stripped)
             if m:
-                doc.children.append(self._parse_gallery(m.group(1), token.line))
+                children.append(self._parse_gallery(m.group(1), token.line))
                 continue
 
-            # TOC: @toc {title="..."}
-            m = RE_TOC.match(line.strip())
+            # TOC
+            m = RE_TOC.match(stripped)
             if m:
-                options_str = m.group(1) or ""
-                options = self._parse_gallery_options(options_str)
-                toc_title = options.get("title", "")
-                doc.children.append(TOCBlock(title=toc_title, line=token.line))
+                options = self._parse_inline_options(m.group(1) or "")
+                children.append(TOCBlock(
+                    title=options.get("title", ""),
+                    line=token.line,
+                ))
                 self._advance()
                 continue
 
             # Table
             if self._is_table_start():
-                doc.children.append(self._parse_table())
+                children.append(self._parse_table())
                 continue
 
             # Image
-            m = RE_IMAGE.match(line.strip())
+            m = RE_IMAGE.match(stripped)
             if m:
-                doc.children.append(self._parse_image(m, token.line))
+                children.append(self._parse_image(m, token.line))
                 self._advance()
                 continue
 
-            # Horizontal rule
+            # HR
             if RE_HR.match(line):
-                doc.children.append(HorizontalRule(line=token.line))
+                children.append(HorizontalRule(line=token.line))
                 self._advance()
                 continue
 
             # Heading
             m = RE_HEADING.match(line)
             if m:
-                doc.children.append(
-                    Heading(
-                        level=len(m.group(1)),
-                        text=m.group(2),
-                        line=token.line,
-                    )
-                )
+                children.append(Heading(
+                    level=len(m.group(1)),
+                    text=m.group(2),
+                    line=token.line,
+                ))
                 self._advance()
                 continue
 
             # Blockquote
             if RE_BLOCKQUOTE.match(line):
-                doc.children.append(self._parse_blockquote())
+                children.append(self._parse_blockquote())
                 continue
 
             # Task list
             if RE_TASK_ITEM.match(line):
-                doc.children.append(self._parse_task_list())
+                children.append(self._parse_task_list())
                 continue
 
-            # Unordered list
+            # UL
             if RE_UL_ITEM.match(line):
-                doc.children.append(self._parse_ul())
+                children.append(self._parse_ul())
                 continue
 
-            # Ordered list
+            # OL
             if RE_OL_ITEM.match(line):
-                doc.children.append(self._parse_ol())
+                children.append(self._parse_ol())
                 continue
 
             # Paragraph
-            doc.children.append(Paragraph(text=line, line=token.line))
+            children.append(Paragraph(text=line, line=token.line))
             self._advance()
+
+        return children
+
+    # --------------------------------------------------------
+    # @if parser
+    # --------------------------------------------------------
+
+    def _parse_if(self, first_condition: str, start_line: int) -> IfBlock:
+        """Parse @if ... @elif ... @else ... @endif"""
+        block = IfBlock(branches=[], line=start_line)
+        self._advance()  # consume @if
+
+        # Parse first branch
+        first_children = self._parse_blocks(stop_at={"@elif", "@else", "@endif"})
+        block.branches.append((first_condition, first_children))
+
+        # Parse @elif branches
+        while not self._is_at_end():
+            stripped = self._peek().value.strip()
+
+            m = RE_ELIF.match(stripped)
+            if m:
+                self._advance()
+                children = self._parse_blocks(stop_at={"@elif", "@else", "@endif"})
+                block.branches.append((m.group(1), children))
+                continue
+
+            if RE_ELSE.match(stripped):
+                self._advance()
+                children = self._parse_blocks(stop_at={"@endif"})
+                block.branches.append((None, children))
+                if not self._is_at_end() and RE_ENDIF.match(self._peek().value.strip()):
+                    self._advance()
+                break
+
+            if RE_ENDIF.match(stripped):
+                self._advance()
+                break
+
+            break
+
+        return block
+
+    # --------------------------------------------------------
+    # @each parser
+    # --------------------------------------------------------
+
+    def _parse_each(
+        self,
+        index_name: str,
+        item_name: str,
+        iterable_expr: str,
+        start_line: int,
+    ) -> EachBlock:
+        """Parse @each item in items ... @end"""
+        self._advance()  # consume @each
+
+        children = self._parse_blocks(stop_at={"@end"})
+
+        # Consume @end
+        if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
+            self._advance()
+
+        return EachBlock(
+            index_name=index_name or "",
+            item_name=item_name,
+            iterable_expr=iterable_expr,
+            children=children,
+            line=start_line,
+        )
 
     # --------------------------------------------------------
     # Front matter
     # --------------------------------------------------------
 
     def _parse_front_matter(self, doc: Document) -> None:
-        """Parse YAML-like front matter at the top of the document."""
         if self._is_at_end():
             doc._content_start = 0
             return
@@ -197,7 +338,7 @@ class Parser:
             return
 
         saved_pos = self.pos
-        self._advance()  # consume opening ---
+        self._advance()
 
         meta = {}
         found_closing = False
@@ -242,69 +383,143 @@ class Parser:
     # --------------------------------------------------------
 
     def _collect_footnotes(self, doc: Document) -> None:
-        """Collect all footnote definitions from the document."""
         for token in self.tokens:
-            line = token.value.strip()
-            m = RE_FOOTNOTE_DEF.match(line)
+            m = RE_FOOTNOTE_DEF.match(token.value.strip())
             if m:
-                key = m.group(1)
-                text = m.group(2)
-                doc.footnotes[key] = text
+                doc.footnotes[m.group(1)] = m.group(2)
 
     # --------------------------------------------------------
-    # Heading slugs (for TOC)
+    # Value parsing (@let)
+    # --------------------------------------------------------
+
+    def _parse_value(self, raw: str) -> Any:
+        """Parse raw value into Python type."""
+        raw = raw.strip()
+
+        # List literal: [1, 2, 3] or ["a", "b"]
+        if raw.startswith("[") and raw.endswith("]"):
+            inner = raw[1:-1].strip()
+            if not inner:
+                return []
+            items = self._split_top_level(inner, ",")
+            return [self._parse_value(item) for item in items]
+
+        # Quoted string
+        if (raw.startswith('"') and raw.endswith('"')) or \
+           (raw.startswith("'") and raw.endswith("'")):
+            return raw[1:-1]
+
+        # Boolean
+        if raw.lower() == "true":
+            return True
+        if raw.lower() == "false":
+            return False
+
+        # None
+        if raw.lower() in ("null", "none"):
+            return None
+
+        # Int
+        try:
+            return int(raw)
+        except ValueError:
+            pass
+
+        # Float
+        try:
+            return float(raw)
+        except ValueError:
+            pass
+
+        # Fallback: string
+        return raw
+
+    def _split_top_level(self, s: str, sep: str) -> List[str]:
+        """Split by sep, ignoring separators inside quotes/brackets."""
+        result = []
+        current = []
+        depth = 0
+        in_quote = None
+
+        for ch in s:
+            if in_quote:
+                if ch == in_quote:
+                    in_quote = None
+                current.append(ch)
+            elif ch in ('"', "'"):
+                in_quote = ch
+                current.append(ch)
+            elif ch in "[{(":
+                depth += 1
+                current.append(ch)
+            elif ch in "]})":
+                depth -= 1
+                current.append(ch)
+            elif ch == sep and depth == 0:
+                result.append("".join(current).strip())
+                current = []
+            else:
+                current.append(ch)
+
+        if current:
+            result.append("".join(current).strip())
+
+        return result
+
+    # --------------------------------------------------------
+    # Heading slugs
     # --------------------------------------------------------
 
     def _assign_heading_slugs(self, doc: Document) -> None:
-        """Generate slugs for all headings (used by TOC)."""
         seen = {}
-        for child in doc.children:
-            if isinstance(child, Heading):
-                slug = self._slugify(child.text)
-                if slug in seen:
-                    seen[slug] += 1
-                    slug = f"{slug}-{seen[slug]}"
-                else:
-                    seen[slug] = 0
-                child.slug = slug
+
+        def visit(children):
+            for child in children:
+                if isinstance(child, Heading):
+                    slug = self._slugify(child.text)
+                    if slug in seen:
+                        seen[slug] += 1
+                        slug = f"{slug}-{seen[slug]}"
+                    else:
+                        seen[slug] = 0
+                    child.slug = slug
+                elif isinstance(child, IfBlock):
+                    for _, branch_children in child.branches:
+                        visit(branch_children)
+                elif isinstance(child, EachBlock):
+                    visit(child.children)
+
+        visit(doc.children)
 
     @staticmethod
     def _slugify(text: str) -> str:
-        """Create a URL-friendly slug from text."""
         text = text.lower().strip()
-        # Keep alphanumerics, Persian/Arabic letters, and dashes
         text = re.sub(r"[^\w\u0600-\u06FF\u0750-\u077F\s-]", "", text)
         text = re.sub(r"[\s_]+", "-", text)
         text = re.sub(r"-+", "-", text)
         return text.strip("-") or "section"
 
     # --------------------------------------------------------
-    # Table parser
+    # Table
     # --------------------------------------------------------
 
     def _is_table_start(self) -> bool:
         if self._is_at_end():
             return False
-
         line1 = self._peek().value
         if not RE_TABLE_LINE.match(line1):
             return False
-
         if self.pos + 1 >= len(self.tokens):
             return False
-
         line2 = self.tokens[self.pos + 1].value
         if not RE_TABLE_SEP.match(line2):
             return False
-
         if "-" not in line2:
             return False
-
         return True
 
     def _parse_table(self) -> TableBlock:
         start_line = self._peek().line
-
         header_line = self._peek().value
         headers = self._split_table_row(header_line)
         self._advance()
@@ -317,7 +532,7 @@ class Parser:
             alignments.append("none")
         alignments = alignments[:len(headers)]
 
-        rows: List[List[str]] = []
+        rows = []
         while not self._is_at_end():
             line = self._peek().value
             if not RE_TABLE_LINE.match(line):
@@ -365,13 +580,12 @@ class Parser:
         return alignments
 
     # --------------------------------------------------------
-    # Gallery parser
+    # Gallery
     # --------------------------------------------------------
 
     def _parse_gallery(self, options_str: str, start_line: int) -> GalleryBlock:
         self._advance()
-
-        options = self._parse_gallery_options(options_str or "")
+        options = self._parse_inline_options(options_str or "")
 
         try:
             columns = int(options.get("columns", 3))
@@ -381,25 +595,20 @@ class Parser:
         columns = max(1, min(columns, 6))
         caption = options.get("caption", "")
 
-        images: List[ImageBlock] = []
-
+        images = []
         while not self._is_at_end():
             line = self._peek().value.strip()
-
-            if RE_GALLERY_END.match(line):
+            if RE_END.match(line):
                 self._advance()
                 break
-
             if line == "":
                 self._advance()
                 continue
-
             m = RE_IMAGE.match(line)
             if m:
                 images.append(self._parse_image(m, self._peek().line))
                 self._advance()
                 continue
-
             self._advance()
 
         return GalleryBlock(
@@ -409,7 +618,7 @@ class Parser:
             line=start_line,
         )
 
-    def _parse_gallery_options(self, options_str: str) -> dict:
+    def _parse_inline_options(self, options_str: str) -> dict:
         if not options_str:
             return {}
         options = {}
@@ -417,14 +626,11 @@ class Parser:
         for match in pattern.finditer(options_str):
             key = match.group(1)
             value = match.group(2) or match.group(3)
-            if value:
-                options[key] = value
-            else:
-                options[key] = True
+            options[key] = value if value else True
         return options
 
     # --------------------------------------------------------
-    # Image parser
+    # Image
     # --------------------------------------------------------
 
     def _parse_image(self, match: re.Match, line_num: int) -> ImageBlock:
@@ -432,7 +638,6 @@ class Parser:
         url = match.group(2)
         title = match.group(3) or ""
         options_str = match.group(4) or ""
-
         options = self._parse_image_options(options_str)
 
         zoomable = options.get("zoomable", True)
@@ -461,22 +666,16 @@ class Parser:
         for match in pattern.finditer(options_str):
             key = match.group(1)
             value = match.group(2) or match.group(3)
-            if value:
-                options[key] = value
-            else:
-                options[key] = True
+            options[key] = value if value else True
         return options
 
     # --------------------------------------------------------
-    # Code block parser
+    # Code block
     # --------------------------------------------------------
 
-    def _parse_code_block(
-        self, language: str, options_str: str, start_line: int
-    ) -> CodeBlock:
+    def _parse_code_block(self, language: str, options_str: str, start_line: int) -> CodeBlock:
         self._advance()
-        code_lines: List[str] = []
-
+        code_lines = []
         while not self._is_at_end():
             line = self._peek().value
             if RE_CODE_FENCE.match(line):
@@ -486,7 +685,6 @@ class Parser:
             self._advance()
 
         options = self._parse_code_options(options_str or "")
-
         return CodeBlock(
             language=language,
             code="\n".join(code_lines),
@@ -511,13 +709,10 @@ class Parser:
             str_val = match.group(2)
             list_val = match.group(3)
             word_val = match.group(4)
-
             if str_val is not None:
                 options[key] = str_val
             elif list_val is not None:
-                options[key] = [
-                    int(x.strip()) for x in list_val.split(",") if x.strip()
-                ]
+                options[key] = [int(x.strip()) for x in list_val.split(",") if x.strip()]
             elif word_val is not None:
                 if word_val == "true":
                     options[key] = True
@@ -530,13 +725,12 @@ class Parser:
         return options
 
     # --------------------------------------------------------
-    # Blockquote / List / TaskList parsers
+    # Blockquote / List
     # --------------------------------------------------------
 
     def _parse_blockquote(self) -> BlockQuote:
         start_line = self._peek().line
-        lines: List[str] = []
-
+        lines = []
         while not self._is_at_end():
             line = self._peek().value
             m = RE_BLOCKQUOTE.match(line)
@@ -544,36 +738,24 @@ class Parser:
                 break
             lines.append(m.group(1))
             self._advance()
-
         return BlockQuote(text="\n".join(lines), line=start_line)
 
     def _parse_task_list(self) -> ListBlock:
         start_line = self._peek().line
-        items: List[str] = []
-        checked: List[bool] = []
-
+        items, checked = [], []
         while not self._is_at_end():
             line = self._peek().value
             m = RE_TASK_ITEM.match(line)
             if not m:
                 break
-            checkbox = m.group(1)
-            text = m.group(2)
-            items.append(text)
-            checked.append(checkbox.lower() == "x")
+            items.append(m.group(2))
+            checked.append(m.group(1).lower() == "x")
             self._advance()
-
-        return ListBlock(
-            ordered=False,
-            items=items,
-            checked=checked,
-            line=start_line,
-        )
+        return ListBlock(ordered=False, items=items, checked=checked, line=start_line)
 
     def _parse_ul(self) -> ListBlock:
         start_line = self._peek().line
-        items: List[str] = []
-
+        items = []
         while not self._is_at_end():
             line = self._peek().value
             m = RE_UL_ITEM.match(line)
@@ -581,13 +763,11 @@ class Parser:
                 break
             items.append(m.group(1))
             self._advance()
-
         return ListBlock(ordered=False, items=items, line=start_line)
 
     def _parse_ol(self) -> ListBlock:
         start_line = self._peek().line
-        items: List[str] = []
-
+        items = []
         while not self._is_at_end():
             line = self._peek().value
             m = RE_OL_ITEM.match(line)
@@ -595,7 +775,6 @@ class Parser:
                 break
             items.append(m.group(1))
             self._advance()
-
         return ListBlock(ordered=True, items=items, line=start_line)
 
     # --------------------------------------------------------

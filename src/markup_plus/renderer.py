@@ -13,9 +13,10 @@ Features:
     - Inline links, autolinks, strikethrough
     - Tables with alignment
     - Task lists (checkboxes)
-    - Front matter + {variable} substitution
+    - Front matter
     - Auto Table of Contents (@toc)
     - Footnotes [^1]
+    - Phase 4: Variables (@let), If/Elif/Else, Each loops, Filters, Comments
     - Native-like smooth animations
     - Scroll reveal animations
 """
@@ -23,19 +24,24 @@ Features:
 import html
 import re
 import unicodedata
+import operator as _op
+from typing import Any, List
 
 from .ast import (
     BlockQuote,
     CodeBlock,
     Document,
+    EachBlock,
     GalleryBlock,
     Heading,
     HorizontalRule,
+    IfBlock,
     ImageBlock,
     ListBlock,
     Paragraph,
     TableBlock,
     TOCBlock,
+    VariableDef,
     Node,
 )
 
@@ -45,11 +51,7 @@ from .ast import (
 # ============================================================
 
 def is_rtl_text(text: str) -> bool:
-    """
-    Detect if text is predominantly RTL (Arabic, Hebrew, Persian, Urdu).
-
-    Returns True if >= 30% of alphabetic characters belong to RTL scripts.
-    """
+    """Detect if text is predominantly RTL (Arabic, Hebrew, Persian, Urdu)."""
     if not text:
         return False
 
@@ -59,7 +61,6 @@ def is_rtl_text(text: str) -> bool:
     for char in text:
         if not char.isalpha():
             continue
-
         try:
             bidi = unicodedata.bidirectional(char)
             if bidi in ("R", "AL", "AN"):
@@ -72,24 +73,12 @@ def is_rtl_text(text: str) -> bool:
     total = rtl_count + ltr_count
     if total == 0:
         return False
-
     return (rtl_count / total) >= 0.3
 
 
 # ============================================================
 # Inline formatting
 # ============================================================
-
-# Order of processing matters:
-#   1. Autolinks FIRST (before HTML escape ruins the < > markers)
-#   2. HTML escape
-#   3. Inline code (protects content from other rules)
-#   4. Strikethrough ~~text~~
-#   5. Bold **text**
-#   6. Italic *text*
-#   7. Footnote references [^1]
-#   8. Links [text](url "title")
-#   9. Restore autolinks
 
 RE_CODE_INLINE = re.compile(r"`([^`]+?)`")
 RE_STRIKE = re.compile(r"~~(.+?)~~")
@@ -102,7 +91,7 @@ RE_FOOTNOTE_REF = re.compile(r"\[\^([^\]]+)\]")
 
 def render_inline(text: str) -> str:
     """Render inline formatting inside a text string."""
-    # ---- Step 1: Stash autolinks BEFORE HTML escaping ----
+    # Stash autolinks
     autolinks = []
 
     def stash_autolink(m):
@@ -112,22 +101,19 @@ def render_inline(text: str) -> str:
 
     text = RE_AUTOLINK.sub(stash_autolink, text)
 
-    # ---- Step 2: HTML escape ----
+    # HTML escape
     text = html.escape(text, quote=False)
 
-    # ---- Step 3: Inline code (highest priority) ----
+    # Inline code
     text = RE_CODE_INLINE.sub(r"<code>\1</code>", text)
-
-    # ---- Step 4: Strikethrough ----
+    # Strikethrough
     text = RE_STRIKE.sub(r"<del>\1</del>", text)
-
-    # ---- Step 5: Bold ----
+    # Bold
     text = RE_BOLD.sub(r"<strong>\1</strong>", text)
-
-    # ---- Step 6: Italic ----
+    # Italic
     text = RE_ITALIC.sub(r"<em>\1</em>", text)
 
-    # ---- Step 7: Footnote references [^1] ----
+    # Footnote references
     def footnote_repl(m):
         key = m.group(1)
         return (
@@ -140,7 +126,7 @@ def render_inline(text: str) -> str:
 
     text = RE_FOOTNOTE_REF.sub(footnote_repl, text)
 
-    # ---- Step 8: Links [text](url "title") ----
+    # Links
     def link_repl(m):
         link_text = m.group(1)
         url = m.group(2)
@@ -154,7 +140,7 @@ def render_inline(text: str) -> str:
 
     text = RE_LINK.sub(link_repl, text)
 
-    # ---- Step 9: Restore autolinks ----
+    # Restore autolinks
     for idx, url in enumerate(autolinks):
         url_escaped = html.escape(url, quote=True)
         replacement = (
@@ -218,7 +204,6 @@ def render_code_block(node: CodeBlock) -> str:
     code_escaped = html.escape(node.code, quote=False)
 
     previewable = lang.lower() in ("html", "css", "javascript", "js")
-
     rtl_langs = ("ar", "he", "fa", "ur", "yi")
     is_rtl = lang.lower() in rtl_langs
 
@@ -263,8 +248,6 @@ def render_code_block(node: CodeBlock) -> str:
 
     buttons_html = "".join(buttons)
 
-    code_html = code_escaped
-
     wrap_class = " wrap" if node.wrap else ""
     previewable_class = " previewable" if previewable else ""
     rtl_class = " rtl" if is_rtl else ""
@@ -284,7 +267,7 @@ def render_code_block(node: CodeBlock) -> str:
         f'<div class="code-buttons">{buttons_html}</div>'
         f"</div>"
         f'<div class="code-body">'
-        f'<pre><code class="language-{lang}">{code_html}</code></pre>'
+        f'<pre><code class="language-{lang}">{code_escaped}</code></pre>'
         f"</div>"
         f'<div class="code-preview" hidden></div>'
         f"</div>"
@@ -304,7 +287,6 @@ def render_image(node: ImageBlock) -> str:
 
     if node.title:
         attrs.append(f'title="{html.escape(node.title, quote=True)}"')
-
     if node.width:
         attrs.append(f'width="{html.escape(node.width, quote=True)}"')
     if node.height:
@@ -372,8 +354,8 @@ def render_gallery(node: GalleryBlock) -> str:
         return ""
 
     gallery_id = f"gallery-{id(node) % 1000000}"
-
     items = []
+
     for i, img in enumerate(node.images):
         img_attrs = [
             f'src="{html.escape(img.url, quote=True)}"',
@@ -383,7 +365,6 @@ def render_gallery(node: GalleryBlock) -> str:
             img_attrs.append(f'title="{html.escape(img.title, quote=True)}"')
 
         img_tag = f'<img {" ".join(img_attrs)} loading="lazy">'
-
         caption = img.caption or img.alt
         description = img.description
 
@@ -425,8 +406,11 @@ def render_gallery(node: GalleryBlock) -> str:
 # Table rendering
 # ============================================================
 
-def render_table(node: TableBlock) -> str:
-    """Render a table with alignment."""
+def render_table(node: TableBlock, context: dict = None) -> str:
+    """Render a table with alignment + variable substitution."""
+    if context is None:
+        context = {}
+
     if not node.headers:
         return ""
 
@@ -440,7 +424,8 @@ def render_table(node: TableBlock) -> str:
             style = ' style="text-align: right;"'
         elif align == "left":
             style = ' style="text-align: left;"'
-        header_cells.append(f"<th{style}>{render_inline(h)}</th>")
+        text = substitute_variables(h, context)
+        header_cells.append(f"<th{style}>{render_inline(text)}</th>")
 
     header_html = (
         "  <thead>\n    <tr>\n      "
@@ -460,7 +445,8 @@ def render_table(node: TableBlock) -> str:
                 style = ' style="text-align: right;"'
             elif align == "left":
                 style = ' style="text-align: left;"'
-            cells.append(f"<td{style}>{render_inline(cell)}</td>")
+            text = substitute_variables(cell, context)
+            cells.append(f"<td{style}>{render_inline(text)}</td>")
         body_rows.append(
             "    <tr>\n      " + "\n      ".join(cells) + "\n    </tr>"
         )
@@ -481,16 +467,23 @@ def render_table(node: TableBlock) -> str:
 def render_toc(node: TOCBlock, doc: Document) -> str:
     """Render a table of contents from all headings in the document."""
     headings = []
-    for child in doc.children:
-        if isinstance(child, Heading):
-            headings.append(child)
+
+    def collect(children):
+        for child in children:
+            if isinstance(child, Heading):
+                headings.append(child)
+            elif isinstance(child, IfBlock):
+                for _, branch_children in child.branches:
+                    collect(branch_children)
+            elif isinstance(child, EachBlock):
+                collect(child.children)
+
+    collect(doc.children)
 
     if not headings:
         return ""
 
-    # Get custom title, default to English
     title = getattr(node, "title", "") or "Table of Contents"
-
     min_level = min(h.level for h in headings)
     items = []
 
@@ -546,54 +539,290 @@ def render_footnotes(doc: Document) -> str:
 
 
 # ============================================================
-# Block rendering
+# Expression evaluator (Phase 4)
 # ============================================================
 
-def render_node(node: Node, doc: Document = None) -> str:
+_OPERATORS = [
+    ("==", _op.eq),
+    ("!=", _op.ne),
+    (">=", _op.ge),
+    ("<=", _op.le),
+    (">", _op.gt),
+    ("<", _op.lt),
+]
+
+
+def _parse_literal(token: str, variables: dict) -> Any:
+    """Parse a single literal or variable name."""
+    token = token.strip()
+    if token == "":
+        return ""
+
+    if (token.startswith('"') and token.endswith('"')) or \
+       (token.startswith("'") and token.endswith("'")):
+        return token[1:-1]
+
+    if token.lower() == "true":
+        return True
+    if token.lower() == "false":
+        return False
+    if token.lower() in ("none", "null"):
+        return None
+
+    try:
+        return int(token)
+    except ValueError:
+        pass
+    try:
+        return float(token)
+    except ValueError:
+        pass
+
+    if token in variables:
+        return variables[token]
+
+    return token
+
+
+def _tokenize_expr(expr: str) -> list:
+    """Tokenize an expression into parts."""
+    tokens = []
+    current = []
+    in_quote = None
+    i = 0
+
+    while i < len(expr):
+        ch = expr[i]
+
+        if in_quote:
+            current.append(ch)
+            if ch == in_quote:
+                in_quote = None
+            i += 1
+            continue
+
+        if ch in ('"', "'"):
+            in_quote = ch
+            current.append(ch)
+            i += 1
+            continue
+
+        if i + 1 < len(expr):
+            two = expr[i:i+2]
+            if two in ("==", "!=", ">=", "<="):
+                if current:
+                    tokens.append("".join(current).strip())
+                    current = []
+                tokens.append(two)
+                i += 2
+                continue
+
+        if ch in "><":
+            if current:
+                tokens.append("".join(current).strip())
+                current = []
+            tokens.append(ch)
+            i += 1
+            continue
+
+        if ch.isspace():
+            if current:
+                tokens.append("".join(current).strip())
+                current = []
+            i += 1
+            continue
+
+        current.append(ch)
+        i += 1
+
+    if current:
+        tokens.append("".join(current).strip())
+
+    return [t for t in tokens if t != ""]
+
+
+def evaluate_condition(expr: str, variables: dict) -> bool:
+    """Evaluate a condition expression like `x == 5` or `name != "Ali"`."""
+    expr = expr.strip()
+    if not expr:
+        return False
+
+    parts = _tokenize_expr(expr)
+
+    if len(parts) == 1:
+        value = _parse_literal(parts[0], variables)
+        return bool(value)
+
+    if len(parts) == 3:
+        left_tok, op_str, right_tok = parts
+        left = _parse_literal(left_tok, variables)
+        right = _parse_literal(right_tok, variables)
+
+        for op_name, op_fn in _OPERATORS:
+            if op_str == op_name:
+                try:
+                    return bool(op_fn(left, right))
+                except (TypeError, ValueError):
+                    return False
+        return False
+
+    return bool(_parse_literal(expr, variables))
+
+
+def evaluate_iterable(expr: str, variables: dict) -> list:
+    """Evaluate the iterable expression in @each."""
+    expr = expr.strip()
+
+    if expr in variables:
+        value = variables[expr]
+        if isinstance(value, (list, tuple)):
+            return list(value)
+        return [value]
+
+    if expr.startswith("[") and expr.endswith("]"):
+        inner = expr[1:-1].strip()
+        if not inner:
+            return []
+        items = []
+        current = []
+        in_quote = None
+        depth = 0
+
+        for ch in inner:
+            if in_quote:
+                current.append(ch)
+                if ch == in_quote:
+                    in_quote = None
+                continue
+            if ch in ('"', "'"):
+                in_quote = ch
+                current.append(ch)
+                continue
+            if ch == "[":
+                depth += 1
+            elif ch == "]":
+                depth -= 1
+            elif ch == "," and depth == 0:
+                items.append("".join(current).strip())
+                current = []
+                continue
+            current.append(ch)
+
+        if current:
+            items.append("".join(current).strip())
+
+        return [_parse_literal(item, variables) for item in items]
+
+    return []
+
+
+def apply_filters(value: Any, filters: List[str]) -> Any:
+    """Apply filters like `upper`, `lower`, `length`, `reverse`."""
+    for f in filters:
+        f = f.strip().lower()
+        if f == "upper":
+            value = str(value).upper()
+        elif f == "lower":
+            value = str(value).lower()
+        elif f == "length":
+            try:
+                value = len(value)
+            except TypeError:
+                value = 0
+        elif f == "reverse":
+            if isinstance(value, (list, tuple)):
+                value = list(reversed(value))
+            else:
+                value = str(value)[::-1]
+        elif f == "capitalize":
+            value = str(value).capitalize()
+        elif f == "title":
+            value = str(value).title()
+    return value
+
+
+RE_VAR_WITH_FILTERS = re.compile(
+    r"\{([A-Za-z_][\w]*)((?:\s*\|\s*\w+)*)\}"
+)
+
+
+def substitute_variables(text: str, variables: dict) -> str:
+    """Replace {var} and {var | filter | filter} placeholders."""
+    if not text or not isinstance(text, str):
+        return text
+
+    def repl(m):
+        name = m.group(1)
+        filters_str = m.group(2) or ""
+        filters = [f.strip() for f in filters_str.split("|") if f.strip()]
+
+        if name in variables:
+            value = variables[name]
+        else:
+            if not filters:
+                return m.group(0)
+            value = ""
+
+        if filters:
+            value = apply_filters(value, filters)
+
+        if value is None:
+            return ""
+        return str(value)
+
+    return RE_VAR_WITH_FILTERS.sub(repl, text)
+
+
+# ============================================================
+# Block rendering (with context)
+# ============================================================
+
+def render_node(node: Node, doc: Document = None, context: dict = None) -> str:
+    """Render a single node with optional context (for @each/@if)."""
+    if context is None:
+        context = {}
+
     if isinstance(node, Heading):
         level = max(1, min(node.level, 6))
         slug = getattr(node, "slug", "") or ""
         id_attr = f' id="{html.escape(slug)}"' if slug else ""
+        text = substitute_variables(node.text, context)
         return (
             f'<h{level}{id_attr} class="reveal">'
-            f'{render_inline(node.text)}'
+            f'{render_inline(text)}'
             f'</h{level}>'
         )
 
     if isinstance(node, Paragraph):
-        return f'<p class="reveal">{render_inline(node.text)}</p>'
+        text = substitute_variables(node.text, context)
+        return f'<p class="reveal">{render_inline(text)}</p>'
 
     if isinstance(node, ListBlock):
         tag = "ol" if node.ordered else "ul"
-
-        # Only treat as task list if 'checked' contains at least one
-        # non-None entry (True or False)
         has_tasks = any(c is not None for c in node.checked) if node.checked else False
-
-        if has_tasks:
-            extra_class = ' class="task-list reveal"'
-        else:
-            extra_class = ' class="reveal"'
+        extra_class = ' class="task-list reveal"' if has_tasks else ' class="reveal"'
 
         items_html_parts = []
         for i, item in enumerate(node.items):
             checked = node.checked[i] if i < len(node.checked) else None
+            text = substitute_variables(item, context)
             if checked is True:
                 items_html_parts.append(
-                    f'  <li class="task-done">{render_inline(item)}</li>'
+                    f'  <li class="task-done">{render_inline(text)}</li>'
                 )
             elif checked is False:
                 items_html_parts.append(
-                    f'  <li class="task-todo">{render_inline(item)}</li>'
+                    f'  <li class="task-todo">{render_inline(text)}</li>'
                 )
             else:
-                items_html_parts.append(f"  <li>{render_inline(item)}</li>")
+                items_html_parts.append(f"  <li>{render_inline(text)}</li>")
 
         items_html = "\n".join(items_html_parts)
         return f'<{tag}{extra_class}>\n{items_html}\n</{tag}>'
 
     if isinstance(node, BlockQuote):
-        lines = node.text.split("\n")
+        text = substitute_variables(node.text, context)
+        lines = text.split("\n")
         inner = "\n".join(f"<p>{render_inline(line)}</p>" for line in lines)
         return f'<blockquote class="reveal">\n{inner}\n</blockquote>'
 
@@ -610,48 +839,78 @@ def render_node(node: Node, doc: Document = None) -> str:
         return render_gallery(node)
 
     if isinstance(node, TableBlock):
-        return render_table(node)
+        return render_table(node, context)
 
     if isinstance(node, TOCBlock) and doc is not None:
         return render_toc(node, doc)
 
+    if isinstance(node, VariableDef):
+        return ""
+
+    if isinstance(node, IfBlock):
+        return render_if_block(node, doc, context)
+
+    if isinstance(node, EachBlock):
+        return render_each_block(node, doc, context)
+
     return ""
+
+
+def render_if_block(node: IfBlock, doc: Document, context: dict) -> str:
+    """Render @if block by evaluating conditions."""
+    for condition, children in node.branches:
+        if condition is None:
+            return _render_children(children, doc, context)
+        if evaluate_condition(condition, context):
+            return _render_children(children, doc, context)
+    return ""
+
+
+def render_each_block(node: EachBlock, doc: Document, context: dict) -> str:
+    """Render @each block by iterating over the iterable."""
+    items = evaluate_iterable(node.iterable_expr, context)
+
+    parts = []
+    for i, item in enumerate(items):
+        child_ctx = dict(context)
+        child_ctx[node.item_name] = item
+        if node.index_name:
+            child_ctx[node.index_name] = i
+        parts.append(_render_children(node.children, doc, child_ctx))
+
+    return "\n".join(parts)
+
+
+def _render_children(children: list, doc: Document, context: dict) -> str:
+    """Render a list of children with a given context."""
+    parts = []
+    for child in children:
+        rendered = render_node(child, doc, context)
+        if rendered:
+            parts.append(rendered)
+    return "\n".join(parts)
 
 
 def render_ast(doc: Document) -> str:
     """Render the document AST to HTML body."""
+    # Build root context: meta + variables
+    context = dict(doc.meta) if doc.meta else {}
+    context.update(doc.variables)
+
     parts = []
     for child in doc.children:
-        rendered = render_node(child, doc)
+        rendered = render_node(child, doc, context)
         if rendered:
             parts.append(rendered)
 
     body = "\n".join(parts)
 
-    # Append footnotes at the end
+    # Append footnotes
     footnotes_html = render_footnotes(doc)
     if footnotes_html:
         body += "\n" + footnotes_html
 
     return body
-
-
-# ============================================================
-# Metadata substitution
-# ============================================================
-
-def substitute_meta(text: str, meta: dict) -> str:
-    """Replace {key} placeholders with meta values."""
-    if not meta:
-        return text
-
-    def repl(m):
-        key = m.group(1).strip()
-        if key in meta:
-            return str(meta[key])
-        return m.group(0)
-
-    return re.sub(r"\{([a-zA-Z_][\w-]*)\}", repl, text)
 
 
 # ============================================================
@@ -746,9 +1005,7 @@ HEAD = """<!DOCTYPE html>
         }
 
         * { box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
-
         html, body { margin: 0; padding: 0; }
 
         body {
@@ -931,9 +1188,7 @@ HEAD = """<!DOCTYPE html>
             font-size: 0.94em;
         }
 
-        thead {
-            background: var(--bg-table-header);
-        }
+        thead { background: var(--bg-table-header); }
 
         th {
             padding: 0.8em 1em;
@@ -950,21 +1205,10 @@ HEAD = """<!DOCTYPE html>
             border-bottom: 1px solid var(--border-table);
         }
 
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:nth-child(even) {
-            background: var(--bg-table-alt);
-        }
-
-        tbody tr {
-            transition: background 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background: var(--accent-soft);
-        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:nth-child(even) { background: var(--bg-table-alt); }
+        tbody tr { transition: background 0.2s ease; }
+        tbody tr:hover { background: var(--accent-soft); }
 
         .image-single {
             position: relative;
@@ -1006,9 +1250,7 @@ HEAD = """<!DOCTYPE html>
             pointer-events: none;
         }
 
-        .image-single:hover .image-single-overlay {
-            opacity: 1;
-        }
+        .image-single:hover .image-single-overlay { opacity: 1; }
 
         .image-single-static { display: inline-block; max-width: 100%; }
         .image-single-static img {
@@ -1018,23 +1260,9 @@ HEAD = """<!DOCTYPE html>
             border-radius: 12px;
         }
 
-        .image-align-center {
-            display: flex;
-            justify-content: center;
-            margin: 1.5em 0;
-        }
-
-        .image-align-left {
-            display: flex;
-            justify-content: flex-start;
-            margin: 1.5em 0;
-        }
-
-        .image-align-right {
-            display: flex;
-            justify-content: flex-end;
-            margin: 1.5em 0;
-        }
+        .image-align-center { display: flex; justify-content: center; margin: 1.5em 0; }
+        .image-align-left { display: flex; justify-content: flex-start; margin: 1.5em 0; }
+        .image-align-right { display: flex; justify-content: flex-end; margin: 1.5em 0; }
 
         .image-figure {
             margin: 1.5em 0;
@@ -1044,9 +1272,7 @@ HEAD = """<!DOCTYPE html>
         }
 
         .image-figure .image-single,
-        .image-figure .image-single-static {
-            display: inline-block;
-        }
+        .image-figure .image-single-static { display: inline-block; }
 
         .image-caption {
             margin-top: 0.8em;
@@ -1149,11 +1375,7 @@ HEAD = """<!DOCTYPE html>
             font-family: inherit;
             font-weight: 500;
             color: var(--code-text);
-            transition:
-                background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
         }
 
@@ -1206,10 +1428,7 @@ HEAD = """<!DOCTYPE html>
             line-height: 1.7;
         }
 
-        .code-block.rtl pre {
-            direction: rtl;
-        }
-
+        .code-block.rtl pre { direction: rtl; }
         .code-block.rtl pre code {
             direction: rtl;
             text-align: right;
@@ -1320,10 +1539,7 @@ HEAD = """<!DOCTYPE html>
             overflow: hidden;
         }
 
-        .lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
+        .lightbox.active { display: flex; opacity: 1; }
 
         .lightbox-stage {
             position: absolute;
@@ -1347,12 +1563,7 @@ HEAD = """<!DOCTYPE html>
         }
 
         .lightbox.active .lightbox-image-wrapper { transform: scale(1); }
-
-        .lightbox-image-wrapper.zoomed {
-            max-width: none;
-            max-height: none;
-            transform: scale(1);
-        }
+        .lightbox-image-wrapper.zoomed { max-width: none; max-height: none; transform: scale(1); }
 
         #mup-lightbox-img {
             max-width: 100%;
@@ -1386,17 +1597,11 @@ HEAD = """<!DOCTYPE html>
             pointer-events: none;
             opacity: 0;
             transform: translateY(24px);
-            transition:
-                opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10001;
         }
 
-        .lightbox.active .lightbox-info {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.15s;
-        }
+        .lightbox.active .lightbox-info { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
 
         .lightbox-caption {
             color: #ffffff;
@@ -1446,10 +1651,8 @@ HEAD = """<!DOCTYPE html>
 
         .lightbox-close { top: 24px; right: 24px; }
         .lightbox-close:hover { transform: scale(1.12) rotate(90deg); }
-
         .lightbox-prev { left: 24px; top: 50%; transform: translateY(-50%); }
         .lightbox-prev:hover { transform: translateY(-50%) scale(1.12) translateX(-4px); }
-
         .lightbox-next { right: 24px; top: 50%; transform: translateY(-50%); }
         .lightbox-next:hover { transform: translateY(-50%) scale(1.12) translateX(4px); }
 
@@ -1469,16 +1672,10 @@ HEAD = """<!DOCTYPE html>
             border: 1px solid rgba(255, 255, 255, 0.12);
             z-index: 10002;
             opacity: 0;
-            transition:
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .lightbox.active .lightbox-counter {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            transition-delay: 0.1s;
-        }
+        .lightbox.active .lightbox-counter { opacity: 1; transform: translateX(-50%) translateY(0); transition-delay: 0.1s; }
 
         .lightbox-toolbar {
             position: absolute;
@@ -1495,16 +1692,10 @@ HEAD = """<!DOCTYPE html>
             border: 1px solid rgba(255, 255, 255, 0.12);
             z-index: 10003;
             opacity: 0;
-            transition:
-                opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .lightbox.active .lightbox-toolbar {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            transition-delay: 0.2s;
-        }
+        .lightbox.active .lightbox-toolbar { opacity: 1; transform: translateX(-50%) translateY(0); transition-delay: 0.2s; }
 
         .lightbox-tool {
             background: transparent;
@@ -1520,11 +1711,7 @@ HEAD = """<!DOCTYPE html>
             transition: all 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
         }
 
-        .lightbox-tool:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
+        .lightbox-tool:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
         .lightbox-tool:active { transform: scale(0.92); }
 
         /* ============================================================
@@ -1548,17 +1735,9 @@ HEAD = """<!DOCTYPE html>
             border-bottom: 1px solid var(--border);
         }
 
-        .toc-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
 
-        .toc-item {
-            margin: 0.35em 0;
-            padding-left: 0;
-            line-height: 1.5;
-        }
+        .toc-item { margin: 0.35em 0; padding-left: 0; line-height: 1.5; }
 
         .toc-item a {
             color: var(--text-soft);
@@ -1567,35 +1746,21 @@ HEAD = """<!DOCTYPE html>
             transition: color 0.2s ease, border-bottom-color 0.2s ease;
         }
 
-        .toc-item a:hover {
-            color: var(--accent);
-            border-bottom-color: currentColor;
-        }
+        .toc-item a:hover { color: var(--accent); border-bottom-color: currentColor; }
 
-        .toc-level-1 {
-            font-weight: 600;
-            margin-top: 0.6em;
-        }
-
+        .toc-level-1 { font-weight: 600; margin-top: 0.6em; }
         .toc-level-1 a { color: var(--text-main); }
-
         .toc-level-2 a { font-size: 0.95em; }
         .toc-level-3 a { font-size: 0.9em; }
         .toc-level-4 a,
         .toc-level-5 a,
-        .toc-level-6 a {
-            font-size: 0.85em;
-            color: var(--text-muted);
-        }
+        .toc-level-6 a { font-size: 0.85em; color: var(--text-muted); }
 
         /* ============================================================
            Footnotes
            ============================================================ */
 
-        .footnotes {
-            margin-top: 4em;
-            padding-top: 1em;
-        }
+        .footnotes { margin-top: 4em; padding-top: 1em; }
 
         .footnotes-sep {
             margin-bottom: 1.5em;
@@ -1608,16 +1773,9 @@ HEAD = """<!DOCTYPE html>
             font-size: 0.92em;
         }
 
-        .footnote-item {
-            margin: 0.8em 0;
-            line-height: 1.6;
-        }
+        .footnote-item { margin: 0.8em 0; line-height: 1.6; }
 
-        .footnote-number {
-            color: var(--accent);
-            font-weight: 600;
-            margin-right: 0.3em;
-        }
+        .footnote-number { color: var(--accent); font-weight: 600; margin-right: 0.3em; }
 
         .footnote-back {
             color: var(--accent);
@@ -1627,10 +1785,7 @@ HEAD = """<!DOCTYPE html>
             transition: opacity 0.2s ease;
         }
 
-        .footnote-back:hover {
-            opacity: 1;
-            border-bottom: none;
-        }
+        .footnote-back:hover { opacity: 1; border-bottom: none; }
 
         .footnote-ref {
             font-size: 0.75em;
@@ -1646,37 +1801,22 @@ HEAD = """<!DOCTYPE html>
             transition: background 0.2s ease;
         }
 
-        .footnote-ref a:hover {
-            background: var(--accent-soft);
-            border-bottom: none;
-        }
+        .footnote-ref a:hover { background: var(--accent-soft); border-bottom: none; }
 
         @media (max-width: 700px) {
             body { padding: 24px 16px 60px; }
             h1 { font-size: 1.7em; }
-
             .code-header { padding: 0.5em 0.7em; font-size: 0.75em; }
             .code-btn-label { display: none; }
             .code-btn { padding: 0.35em 0.5em; }
-
-            .gallery-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                gap: 10px;
-            }
-
+            .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px; }
             .lightbox-stage { padding: 70px 16px 110px; }
             .lightbox-info { padding: 20px 20px 80px; }
-            .lightbox-close,
-            .lightbox-prev,
-            .lightbox-next {
-                width: 40px;
-                height: 40px;
-            }
+            .lightbox-close, .lightbox-prev, .lightbox-next { width: 40px; height: 40px; }
             .lightbox-prev { left: 8px; }
             .lightbox-next { right: 8px; }
             .lightbox-close { top: 12px; right: 12px; }
             .lightbox-counter { top: 16px; }
-
             th, td { padding: 0.6em 0.7em; font-size: 0.88em; }
         }
 
@@ -1685,10 +1825,7 @@ HEAD = """<!DOCTYPE html>
                 animation-duration: 0.01ms !important;
                 transition-duration: 0.01ms !important;
             }
-            .reveal {
-                opacity: 1 !important;
-                transform: none !important;
-            }
+            .reveal { opacity: 1 !important; transform: none !important; }
         }
 
         /* ============================================================
@@ -1701,16 +1838,8 @@ HEAD = """<!DOCTYPE html>
             font-family: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
         }
 
-        body.rtl ul,
-        body.rtl ol {
-            padding-left: 0;
-            padding-right: 1.5em;
-        }
-
-        body.rtl ul.task-list,
-        body.rtl ol.task-list {
-            padding-right: 0;
-        }
+        body.rtl ul, body.rtl ol { padding-left: 0; padding-right: 1.5em; }
+        body.rtl ul.task-list, body.rtl ol.task-list { padding-right: 0; }
 
         body.rtl blockquote {
             border-left: none;
@@ -1718,72 +1847,35 @@ HEAD = """<!DOCTYPE html>
             border-radius: 10px 0 0 10px;
         }
 
-        body.rtl th,
-        body.rtl td {
-            text-align: right;
-        }
+        body.rtl th, body.rtl td { text-align: right; }
 
-        body.rtl h1,
-        body.rtl h2,
-        body.rtl h3,
-        body.rtl h4,
-        body.rtl h5,
-        body.rtl h6,
-        body.rtl p {
-            text-align: right;
-        }
+        body.rtl h1, body.rtl h2, body.rtl h3,
+        body.rtl h4, body.rtl h5, body.rtl h6,
+        body.rtl p { text-align: right; }
 
         body.rtl .code-block,
         body.rtl pre,
-        body.rtl code {
-            direction: ltr;
-            text-align: left;
-        }
+        body.rtl code { direction: ltr; text-align: left; }
 
         body.rtl .code-header,
         body.rtl .code-header-left,
-        body.rtl .code-buttons {
-            direction: ltr;
-        }
+        body.rtl .code-buttons { direction: ltr; }
 
         body.rtl .code-block.rtl,
         body.rtl .code-block.rtl pre,
-        body.rtl .code-block.rtl code {
-            direction: rtl;
-            text-align: right;
-        }
+        body.rtl .code-block.rtl code { direction: rtl; text-align: right; }
 
         body.rtl .image-caption,
         body.rtl .image-description,
-        body.rtl .gallery-caption {
-            text-align: center;
-        }
+        body.rtl .gallery-caption { text-align: center; }
 
-        body.rtl .lightbox {
-            direction: ltr;
-        }
+        body.rtl .lightbox { direction: ltr; }
 
-        body.rtl .footnotes-list {
-            padding-left: 0;
-            padding-right: 1.5em;
-        }
-
-        body.rtl .footnote-back {
-            margin-left: 0;
-            margin-right: 0.4em;
-        }
-
-        body.rtl .toc-item {
-            text-align: right;
-        }
-
-        body.rtl .toc-item[style*="padding-left"] {
-            padding-left: 0 !important;
-        }
-
-        body.rtl .toc-item {
-            padding-right: 0;
-        }
+        body.rtl .footnotes-list { padding-left: 0; padding-right: 1.5em; }
+        body.rtl .footnote-back { margin-left: 0; margin-right: 0.4em; }
+        body.rtl .toc-item { text-align: right; }
+        body.rtl .toc-item[style*="padding-left"] { padding-left: 0 !important; }
+        body.rtl .toc-item { padding-right: 0; }
     </style>
 </head>
 <body class="__BODY_CLASS__">
@@ -2276,6 +2368,10 @@ TAIL = """
 """
 
 
+# ============================================================
+# Public API
+# ============================================================
+
 def to_html(
     text: str,
     title: str = "Markup+ Document",
@@ -2295,30 +2391,14 @@ def to_html(
 
     doc = parse_text(text)
 
-    # Merge metadata: front matter overrides defaults
     meta = dict(doc.meta) if doc.meta else {}
-
-    # If front matter has a title, use it
     if meta.get("title"):
         title = meta["title"]
-
-    # Substitute {key} placeholders throughout the document
-    if meta:
-        for child in doc.children:
-            if isinstance(child, Paragraph):
-                child.text = substitute_meta(child.text, meta)
-            elif isinstance(child, Heading):
-                child.text = substitute_meta(child.text, meta)
-            elif isinstance(child, ListBlock):
-                child.items = [substitute_meta(i, meta) for i in child.items]
-            elif isinstance(child, BlockQuote):
-                child.text = substitute_meta(child.text, meta)
 
     body = render_ast(doc)
 
     theme = theme if theme in ("light", "dark") else "light"
 
-    # Direction: use provided, else auto-detect
     if direction in ("ltr", "rtl"):
         final_dir = direction
     else:
