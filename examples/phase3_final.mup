@@ -1,0 +1,108 @@
+---
+title: آزمون کامل فاز ۳
+author: Ataee
+version: 0.4.0
+date: 2025-01-15
+---
+
+# {title}
+
+نویسنده: **{author}** | نسخه: `{version}` | تاریخ: {date}
+
+@toc {title="فهرست مطالب"}
+
+
+---
+
+## ۱. مقدمه
+
+این سند **آزمون کامل فاز ۳** است[^intro].
+
+## ۲. چک‌لیست قابلیت‌ها
+
+- [x] Phase 1: Core
+- [x] Phase 2: Blocks
+- [x] Phase 2.5: Rich Features
+- [x] Phase 3.1: Links
+- [x] Phase 3.2: Tables
+- [x] Phase 3.3: RTL Detection
+- [x] Phase 3.4: Task Lists + Front Matter
+- [x] Phase 3.5: TOC + Footnotes
+
+## ۳. جدول با تراز
+
+| قابلیت | نسخه | وضعیت |
+|--------|:----:|:-----:|
+| لینک | 0.3.1 | ✅ |
+| جدول | 0.3.2 | ✅ |
+| RTL | 0.3.3 | ✅ |
+| Task Lists | 0.3.4 | ✅ |
+| TOC | 0.3.5 | ✅ |
+
+## ۴. کد نمونه
+
+```python {title="example.py"}
+def hello(name):
+    print(f"Hello, {name}!")
+    return True
+
+hello("Markup+")
+```
+
+```javascript {title="app.js"}
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+greet("World");
+```
+
+## ۵. لینک‌ها و نقل‌قول
+
+Visit [GitHub](https://github.com) for source code[^github].
+
+> این یک نقل‌قول زیباست.
+> می‌تواند چند خطی باشد.
+
+لینک خودکار: <https://markup-plus.dev>
+
+## ۶. تصویر و گالری
+
+![تصویر نمونه](https://picsum.photos/600/400?random=999){caption="تصویر تست" desc="یک تصویر نمونه برای تست"}
+
+@gallery {columns=3}
+![۱](https://picsum.photos/400/300?random=1000)
+![۲](https://picsum.photos/400/300?random=1001)
+![۳](https://picsum.photos/400/300?random=1002)
+@end
+
+## ۷. لیست‌های ساده
+
+### نامرتب
+
+- مورد اول
+- مورد دوم
+- مورد سوم
+
+### مرتب
+
+1. اول
+2. دوم
+3. سوم
+
+### چک‌لیست
+
+- [x] کار انجام شده
+- [ ] کار در انتظار
+- [x] کار تمام شده
+
+## ۸. نتیجه‌گیری
+
+Markup+ حالا یک زبان نشانه‌گذاری کامل است[^conclusion]!
+
+**همه‌ی قابلیت‌ها کار می‌کنند!** 🎉
+
+---
+
+[^intro]: این پانویس برای تست است.
+[^github]: سورس کد روی GitHub قرار دارد.
+[^conclusion]: تبریک! فاز ۳ کامل شد.

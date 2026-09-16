@@ -13,6 +13,9 @@ Features:
     - Inline links, autolinks, strikethrough
     - Tables with alignment
     - Task lists (checkboxes)
+    - Front matter + {variable} substitution
+    - Auto Table of Contents (@toc)
+    - Footnotes [^1]
     - Native-like smooth animations
     - Scroll reveal animations
 """
@@ -32,6 +35,7 @@ from .ast import (
     ListBlock,
     Paragraph,
     TableBlock,
+    TOCBlock,
     Node,
 )
 
@@ -83,8 +87,9 @@ def is_rtl_text(text: str) -> bool:
 #   4. Strikethrough ~~text~~
 #   5. Bold **text**
 #   6. Italic *text*
-#   7. Links [text](url "title")
-#   8. Restore autolinks
+#   7. Footnote references [^1]
+#   8. Links [text](url "title")
+#   9. Restore autolinks
 
 RE_CODE_INLINE = re.compile(r"`([^`]+?)`")
 RE_STRIKE = re.compile(r"~~(.+?)~~")
@@ -92,6 +97,7 @@ RE_BOLD = re.compile(r"\*\*(.+?)\*\*")
 RE_ITALIC = re.compile(r"(?<!\*)\*([^*]+?)\*(?!\*)")
 RE_LINK = re.compile(r'\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)')
 RE_AUTOLINK = re.compile(r"<(https?://[^\s>]+)>")
+RE_FOOTNOTE_REF = re.compile(r"\[\^([^\]]+)\]")
 
 
 def render_inline(text: str) -> str:
@@ -121,7 +127,20 @@ def render_inline(text: str) -> str:
     # ---- Step 6: Italic ----
     text = RE_ITALIC.sub(r"<em>\1</em>", text)
 
-    # ---- Step 7: Links [text](url "title") ----
+    # ---- Step 7: Footnote references [^1] ----
+    def footnote_repl(m):
+        key = m.group(1)
+        return (
+            f'<sup class="footnote-ref">'
+            f'<a href="#fn-{html.escape(key)}" '
+            f'id="fnref-{html.escape(key)}">'
+            f'[{html.escape(key)}]'
+            f"</a></sup>"
+        )
+
+    text = RE_FOOTNOTE_REF.sub(footnote_repl, text)
+
+    # ---- Step 8: Links [text](url "title") ----
     def link_repl(m):
         link_text = m.group(1)
         url = m.group(2)
@@ -135,7 +154,7 @@ def render_inline(text: str) -> str:
 
     text = RE_LINK.sub(link_repl, text)
 
-    # ---- Step 8: Restore autolinks ----
+    # ---- Step 9: Restore autolinks ----
     for idx, url in enumerate(autolinks):
         url_escaped = html.escape(url, quote=True)
         replacement = (
@@ -456,13 +475,90 @@ def render_table(node: TableBlock) -> str:
 
 
 # ============================================================
+# TOC rendering
+# ============================================================
+
+def render_toc(node: TOCBlock, doc: Document) -> str:
+    """Render a table of contents from all headings in the document."""
+    headings = []
+    for child in doc.children:
+        if isinstance(child, Heading):
+            headings.append(child)
+
+    if not headings:
+        return ""
+
+    # Get custom title, default to English
+    title = getattr(node, "title", "") or "Table of Contents"
+
+    min_level = min(h.level for h in headings)
+    items = []
+
+    for h in headings:
+        indent = h.level - min_level
+        slug = h.slug or ""
+        items.append(
+            f'<li class="toc-item toc-level-{h.level}" '
+            f'style="padding-left: {indent * 1.2}em;">'
+            f'<a href="#{html.escape(slug)}">{render_inline(h.text)}</a>'
+            f"</li>"
+        )
+
+    return (
+        f'<nav class="toc reveal" aria-label="Table of Contents">'
+        f'<div class="toc-title">{html.escape(title)}</div>'
+        f'<ul class="toc-list">'
+        f'{"".join(items)}'
+        f"</ul>"
+        f"</nav>"
+    )
+
+
+# ============================================================
+# Footnotes rendering
+# ============================================================
+
+def render_footnotes(doc: Document) -> str:
+    """Render the footnotes section at the bottom if any exist."""
+    if not doc.footnotes:
+        return ""
+
+    items = []
+    for key in sorted(doc.footnotes.keys()):
+        text = doc.footnotes[key]
+        items.append(
+            f'<li class="footnote-item" id="fn-{html.escape(key)}">'
+            f'<span class="footnote-number">[{html.escape(key)}]</span> '
+            f'<span class="footnote-text">{render_inline(text)}</span> '
+            f'<a href="#fnref-{html.escape(key)}" class="footnote-back" '
+            f'aria-label="Back to reference">↩</a>'
+            f"</li>"
+        )
+
+    return (
+        f'<section class="footnotes reveal" aria-label="Footnotes">'
+        f'<hr class="footnotes-sep">'
+        f'<ol class="footnotes-list">'
+        f'{"".join(items)}'
+        f"</ol>"
+        f"</section>"
+    )
+
+
+# ============================================================
 # Block rendering
 # ============================================================
 
-def render_node(node: Node) -> str:
+def render_node(node: Node, doc: Document = None) -> str:
     if isinstance(node, Heading):
         level = max(1, min(node.level, 6))
-        return f'<h{level} class="reveal">{render_inline(node.text)}</h{level}>'
+        slug = getattr(node, "slug", "") or ""
+        id_attr = f' id="{html.escape(slug)}"' if slug else ""
+        return (
+            f'<h{level}{id_attr} class="reveal">'
+            f'{render_inline(node.text)}'
+            f'</h{level}>'
+        )
 
     if isinstance(node, Paragraph):
         return f'<p class="reveal">{render_inline(node.text)}</p>'
@@ -470,7 +566,10 @@ def render_node(node: Node) -> str:
     if isinstance(node, ListBlock):
         tag = "ol" if node.ordered else "ul"
 
-        has_tasks = any(c is not None for c in node.checked)
+        # Only treat as task list if 'checked' contains at least one
+        # non-None entry (True or False)
+        has_tasks = any(c is not None for c in node.checked) if node.checked else False
+
         if has_tasks:
             extra_class = ' class="task-list reveal"'
         else:
@@ -513,12 +612,46 @@ def render_node(node: Node) -> str:
     if isinstance(node, TableBlock):
         return render_table(node)
 
+    if isinstance(node, TOCBlock) and doc is not None:
+        return render_toc(node, doc)
+
     return ""
 
 
 def render_ast(doc: Document) -> str:
-    parts = [render_node(child) for child in doc.children]
-    return "\n".join(p for p in parts if p)
+    """Render the document AST to HTML body."""
+    parts = []
+    for child in doc.children:
+        rendered = render_node(child, doc)
+        if rendered:
+            parts.append(rendered)
+
+    body = "\n".join(parts)
+
+    # Append footnotes at the end
+    footnotes_html = render_footnotes(doc)
+    if footnotes_html:
+        body += "\n" + footnotes_html
+
+    return body
+
+
+# ============================================================
+# Metadata substitution
+# ============================================================
+
+def substitute_meta(text: str, meta: dict) -> str:
+    """Replace {key} placeholders with meta values."""
+    if not meta:
+        return text
+
+    def repl(m):
+        key = m.group(1).strip()
+        if key in meta:
+            return str(meta[key])
+        return m.group(0)
+
+    return re.sub(r"\{([a-zA-Z_][\w-]*)\}", repl, text)
 
 
 # ============================================================
@@ -1394,6 +1527,130 @@ HEAD = """<!DOCTYPE html>
 
         .lightbox-tool:active { transform: scale(0.92); }
 
+        /* ============================================================
+           Table of Contents
+           ============================================================ */
+
+        .toc {
+            margin: 2em 0;
+            padding: 1.2em 1.5em;
+            background: var(--bg-soft);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .toc-title {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.05em;
+            margin-bottom: 0.8em;
+            padding-bottom: 0.6em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-item {
+            margin: 0.35em 0;
+            padding-left: 0;
+            line-height: 1.5;
+        }
+
+        .toc-item a {
+            color: var(--text-soft);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
+        }
+
+        .toc-item a:hover {
+            color: var(--accent);
+            border-bottom-color: currentColor;
+        }
+
+        .toc-level-1 {
+            font-weight: 600;
+            margin-top: 0.6em;
+        }
+
+        .toc-level-1 a { color: var(--text-main); }
+
+        .toc-level-2 a { font-size: 0.95em; }
+        .toc-level-3 a { font-size: 0.9em; }
+        .toc-level-4 a,
+        .toc-level-5 a,
+        .toc-level-6 a {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           Footnotes
+           ============================================================ */
+
+        .footnotes {
+            margin-top: 4em;
+            padding-top: 1em;
+        }
+
+        .footnotes-sep {
+            margin-bottom: 1.5em;
+            border-top: 2px solid var(--accent-soft) !important;
+        }
+
+        .footnotes-list {
+            padding-left: 1.5em;
+            color: var(--text-soft);
+            font-size: 0.92em;
+        }
+
+        .footnote-item {
+            margin: 0.8em 0;
+            line-height: 1.6;
+        }
+
+        .footnote-number {
+            color: var(--accent);
+            font-weight: 600;
+            margin-right: 0.3em;
+        }
+
+        .footnote-back {
+            color: var(--accent);
+            text-decoration: none;
+            margin-left: 0.4em;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .footnote-back:hover {
+            opacity: 1;
+            border-bottom: none;
+        }
+
+        .footnote-ref {
+            font-size: 0.75em;
+            line-height: 1;
+            vertical-align: super;
+        }
+
+        .footnote-ref a {
+            color: var(--accent);
+            text-decoration: none;
+            padding: 1px 3px;
+            border-radius: 3px;
+            transition: background 0.2s ease;
+        }
+
+        .footnote-ref a:hover {
+            background: var(--accent-soft);
+            border-bottom: none;
+        }
+
         @media (max-width: 700px) {
             body { padding: 24px 16px 60px; }
             h1 { font-size: 1.7em; }
@@ -1476,7 +1733,6 @@ HEAD = """<!DOCTYPE html>
             text-align: right;
         }
 
-        /* Code blocks stay LTR (code is always LTR) */
         body.rtl .code-block,
         body.rtl pre,
         body.rtl code {
@@ -1490,7 +1746,6 @@ HEAD = """<!DOCTYPE html>
             direction: ltr;
         }
 
-        /* Keep RTL code blocks RTL */
         body.rtl .code-block.rtl,
         body.rtl .code-block.rtl pre,
         body.rtl .code-block.rtl code {
@@ -1506,6 +1761,28 @@ HEAD = """<!DOCTYPE html>
 
         body.rtl .lightbox {
             direction: ltr;
+        }
+
+        body.rtl .footnotes-list {
+            padding-left: 0;
+            padding-right: 1.5em;
+        }
+
+        body.rtl .footnote-back {
+            margin-left: 0;
+            margin-right: 0.4em;
+        }
+
+        body.rtl .toc-item {
+            text-align: right;
+        }
+
+        body.rtl .toc-item[style*="padding-left"] {
+            padding-left: 0 !important;
+        }
+
+        body.rtl .toc-item {
+            padding-right: 0;
         }
     </style>
 </head>
@@ -2017,6 +2294,26 @@ def to_html(
     from .parser import parse_text
 
     doc = parse_text(text)
+
+    # Merge metadata: front matter overrides defaults
+    meta = dict(doc.meta) if doc.meta else {}
+
+    # If front matter has a title, use it
+    if meta.get("title"):
+        title = meta["title"]
+
+    # Substitute {key} placeholders throughout the document
+    if meta:
+        for child in doc.children:
+            if isinstance(child, Paragraph):
+                child.text = substitute_meta(child.text, meta)
+            elif isinstance(child, Heading):
+                child.text = substitute_meta(child.text, meta)
+            elif isinstance(child, ListBlock):
+                child.items = [substitute_meta(i, meta) for i in child.items]
+            elif isinstance(child, BlockQuote):
+                child.text = substitute_meta(child.text, meta)
+
     body = render_ast(doc)
 
     theme = theme if theme in ("light", "dark") else "light"

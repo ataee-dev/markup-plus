@@ -5,7 +5,7 @@ Defines node types that represent the structure of a Markup+ document.
 """
 
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Dict, Optional
 
 
 # ============================================================
@@ -24,9 +24,10 @@ class Node:
 
 @dataclass
 class Document(Node):
-    """Root node — contains all blocks."""
+    """Root node — contains all blocks + metadata."""
     children: List[Node] = field(default_factory=list)
-    meta: dict = field(default_factory=dict)  # Front matter (for future)
+    meta: Dict[str, str] = field(default_factory=dict)
+    footnotes: Dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -34,6 +35,7 @@ class Heading(Node):
     """# Heading 1, ## Heading 2, ### Heading 3"""
     level: int = 1
     text: str = ""
+    slug: str = ""  # For TOC anchors
 
 
 @dataclass
@@ -79,7 +81,7 @@ class CodeBlock(Node):
 
 @dataclass
 class ImageBlock(Node):
-    """![alt](url "title"){width=... align=... link=... caption=... desc=... zoomable=...}"""
+    """![alt](url "title"){width=... align=... link=... caption=... desc=...}"""
     alt: str = ""
     url: str = ""
     title: str = ""
@@ -106,6 +108,17 @@ class TableBlock(Node):
     headers: List[str] = field(default_factory=list)
     rows: List[List[str]] = field(default_factory=list)
     alignments: List[str] = field(default_factory=list)
+
+@dataclass
+class TOCBlock(Node):
+    """@toc {title="..."} — auto-generated table of contents."""
+    title: str = "Table of Contents"
+
+
+@dataclass
+class FootnoteRef(Node):
+    """[^1] — inline footnote reference."""
+    key: str = ""
 
 
 # ============================================================

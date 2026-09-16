@@ -5,7 +5,7 @@ Converts tokens into an Abstract Syntax Tree (AST).
 
 Phase 1:  Headings, Paragraphs
 Phase 2:  Lists, Blockquotes, HR, Code blocks, Images, Galleries
-Phase 3:  Tables
+Phase 3:  Links, Tables, Task Lists, Front Matter, TOC, Footnotes
 """
 
 import re
@@ -22,6 +22,7 @@ from .ast import (
     ListBlock,
     Paragraph,
     TableBlock,
+    TOCBlock,
 )
 from .lexer import Lexer, Token
 
@@ -32,6 +33,7 @@ from .lexer import Lexer, Token
 
 RE_HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 RE_UL_ITEM = re.compile(r"^\s*[-*+]\s+(.+?)\s*$")
+RE_TASK_ITEM = re.compile(r"^\s*[-*+]\s+\[([ xX])\]\s+(.+?)\s*$")
 RE_OL_ITEM = re.compile(r"^\s*\d+\.\s+(.+?)\s*$")
 RE_HR = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
 RE_BLOCKQUOTE = re.compile(r"^\s*>\s?(.*)$")
@@ -42,11 +44,12 @@ RE_IMAGE = re.compile(
 )
 RE_GALLERY_START = re.compile(r"^@gallery(?:\s*\{([^}]*)\})?\s*$")
 RE_GALLERY_END = re.compile(r"^@end\s*$")
-
-# Table: a line starting with | (after stripping)
 RE_TABLE_LINE = re.compile(r"^\s*\|.*\|\s*$")
-# Table separator row: |---|:--:|---:|
 RE_TABLE_SEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
+RE_FRONT_MATTER_START = re.compile(r"^---\s*$")
+RE_FRONT_MATTER_KEY = re.compile(r"^([A-Za-z_][\w-]*)\s*:\s*(.+?)\s*$")
+RE_TOC = re.compile(r"^@toc(?:\s*\{([^}]*)\})?\s*$")
+RE_FOOTNOTE_DEF = re.compile(r"^\[\^([^\]]+)\]:\s*(.+?)\s*$")
 
 
 class Parser:
@@ -63,6 +66,23 @@ class Parser:
     def parse(self) -> Document:
         doc = Document()
 
+        # 1. Parse front matter (must be first)
+        self._parse_front_matter(doc)
+
+        # 2. First pass: collect footnote definitions
+        self._collect_footnotes(doc)
+
+        # 3. Reset position and parse main content
+        self.pos = doc._content_start if hasattr(doc, "_content_start") else 0
+        self._parse_content(doc)
+
+        # 4. Assign slugs to headings (for TOC)
+        self._assign_heading_slugs(doc)
+
+        return doc
+
+    def _parse_content(self, doc: Document) -> None:
+        """Parse main content into blocks."""
         while not self._is_at_end():
             token = self._peek()
 
@@ -74,6 +94,11 @@ class Parser:
 
             # Skip blank lines
             if line.strip() == "":
+                self._advance()
+                continue
+
+            # Footnote definition (skip — already collected)
+            if RE_FOOTNOTE_DEF.match(line.strip()):
                 self._advance()
                 continue
 
@@ -91,12 +116,22 @@ class Parser:
                 doc.children.append(self._parse_gallery(m.group(1), token.line))
                 continue
 
-            # Table: | ... |
+            # TOC: @toc {title="..."}
+            m = RE_TOC.match(line.strip())
+            if m:
+                options_str = m.group(1) or ""
+                options = self._parse_gallery_options(options_str)
+                toc_title = options.get("title", "")
+                doc.children.append(TOCBlock(title=toc_title, line=token.line))
+                self._advance()
+                continue
+
+            # Table
             if self._is_table_start():
                 doc.children.append(self._parse_table())
                 continue
 
-            # Image: ![alt](url) — must come before paragraph
+            # Image
             m = RE_IMAGE.match(line.strip())
             if m:
                 doc.children.append(self._parse_image(m, token.line))
@@ -127,6 +162,11 @@ class Parser:
                 doc.children.append(self._parse_blockquote())
                 continue
 
+            # Task list
+            if RE_TASK_ITEM.match(line):
+                doc.children.append(self._parse_task_list())
+                continue
+
             # Unordered list
             if RE_UL_ITEM.match(line):
                 doc.children.append(self._parse_ul())
@@ -141,18 +181,108 @@ class Parser:
             doc.children.append(Paragraph(text=line, line=token.line))
             self._advance()
 
-        return doc
+    # --------------------------------------------------------
+    # Front matter
+    # --------------------------------------------------------
+
+    def _parse_front_matter(self, doc: Document) -> None:
+        """Parse YAML-like front matter at the top of the document."""
+        if self._is_at_end():
+            doc._content_start = 0
+            return
+
+        first = self._peek().value
+        if not RE_FRONT_MATTER_START.match(first):
+            doc._content_start = 0
+            return
+
+        saved_pos = self.pos
+        self._advance()  # consume opening ---
+
+        meta = {}
+        found_closing = False
+
+        while not self._is_at_end():
+            line = self._peek().value
+
+            if RE_FRONT_MATTER_START.match(line):
+                self._advance()
+                found_closing = True
+                break
+
+            if line.strip() == "":
+                self._advance()
+                continue
+
+            m = RE_FRONT_MATTER_KEY.match(line)
+            if m:
+                key = m.group(1)
+                value = m.group(2).strip()
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1]
+                elif value.startswith("'") and value.endswith("'"):
+                    value = value[1:-1]
+                meta[key] = value
+                self._advance()
+            else:
+                self.pos = saved_pos
+                doc._content_start = 0
+                return
+
+        if not found_closing:
+            self.pos = saved_pos
+            doc._content_start = 0
+            return
+
+        doc.meta = meta
+        doc._content_start = self.pos
+
+    # --------------------------------------------------------
+    # Footnotes
+    # --------------------------------------------------------
+
+    def _collect_footnotes(self, doc: Document) -> None:
+        """Collect all footnote definitions from the document."""
+        for token in self.tokens:
+            line = token.value.strip()
+            m = RE_FOOTNOTE_DEF.match(line)
+            if m:
+                key = m.group(1)
+                text = m.group(2)
+                doc.footnotes[key] = text
+
+    # --------------------------------------------------------
+    # Heading slugs (for TOC)
+    # --------------------------------------------------------
+
+    def _assign_heading_slugs(self, doc: Document) -> None:
+        """Generate slugs for all headings (used by TOC)."""
+        seen = {}
+        for child in doc.children:
+            if isinstance(child, Heading):
+                slug = self._slugify(child.text)
+                if slug in seen:
+                    seen[slug] += 1
+                    slug = f"{slug}-{seen[slug]}"
+                else:
+                    seen[slug] = 0
+                child.slug = slug
+
+    @staticmethod
+    def _slugify(text: str) -> str:
+        """Create a URL-friendly slug from text."""
+        text = text.lower().strip()
+        # Keep alphanumerics, Persian/Arabic letters, and dashes
+        text = re.sub(r"[^\w\u0600-\u06FF\u0750-\u077F\s-]", "", text)
+        text = re.sub(r"[\s_]+", "-", text)
+        text = re.sub(r"-+", "-", text)
+        return text.strip("-") or "section"
 
     # --------------------------------------------------------
     # Table parser
     # --------------------------------------------------------
 
     def _is_table_start(self) -> bool:
-        """
-        Check if current line starts a table:
-          | Header | Header |
-          |--------|--------|
-        """
         if self._is_at_end():
             return False
 
@@ -160,7 +290,6 @@ class Parser:
         if not RE_TABLE_LINE.match(line1):
             return False
 
-        # Check the next line is a separator
         if self.pos + 1 >= len(self.tokens):
             return False
 
@@ -168,43 +297,35 @@ class Parser:
         if not RE_TABLE_SEP.match(line2):
             return False
 
-        # Make sure it has | and at least one -
         if "-" not in line2:
             return False
 
         return True
 
     def _parse_table(self) -> TableBlock:
-        """Parse a Markdown-style table."""
         start_line = self._peek().line
 
-        # ---- Parse header row ----
         header_line = self._peek().value
         headers = self._split_table_row(header_line)
         self._advance()
 
-        # ---- Parse alignment row ----
         sep_line = self._peek().value
         alignments = self._parse_alignments(sep_line)
         self._advance()
 
-        # Normalize: alignments count should match headers count
         while len(alignments) < len(headers):
             alignments.append("none")
         alignments = alignments[:len(headers)]
 
-        # ---- Parse body rows ----
         rows: List[List[str]] = []
         while not self._is_at_end():
             line = self._peek().value
             if not RE_TABLE_LINE.match(line):
                 break
-            # Skip separator rows (shouldn't happen but be safe)
             if RE_TABLE_SEP.match(line):
                 self._advance()
                 continue
             cells = self._split_table_row(line)
-            # Normalize row to header count
             while len(cells) < len(headers):
                 cells.append("")
             cells = cells[:len(headers)]
@@ -219,10 +340,6 @@ class Parser:
         )
 
     def _split_table_row(self, line: str) -> List[str]:
-        """
-        Split '| a | b | c |' into ['a', 'b', 'c'].
-        Handles optional leading/trailing pipes.
-        """
         line = line.strip()
         if line.startswith("|"):
             line = line[1:]
@@ -231,9 +348,6 @@ class Parser:
         return [cell.strip() for cell in line.split("|")]
 
     def _parse_alignments(self, line: str) -> List[str]:
-        """
-        Parse '|:---|:--:|---:|' into ['left', 'center', 'right'].
-        """
         cells = self._split_table_row(line)
         alignments = []
         for cell in cells:
@@ -416,7 +530,7 @@ class Parser:
         return options
 
     # --------------------------------------------------------
-    # Blockquote / List parsers
+    # Blockquote / List / TaskList parsers
     # --------------------------------------------------------
 
     def _parse_blockquote(self) -> BlockQuote:
@@ -432,6 +546,29 @@ class Parser:
             self._advance()
 
         return BlockQuote(text="\n".join(lines), line=start_line)
+
+    def _parse_task_list(self) -> ListBlock:
+        start_line = self._peek().line
+        items: List[str] = []
+        checked: List[bool] = []
+
+        while not self._is_at_end():
+            line = self._peek().value
+            m = RE_TASK_ITEM.match(line)
+            if not m:
+                break
+            checkbox = m.group(1)
+            text = m.group(2)
+            items.append(text)
+            checked.append(checkbox.lower() == "x")
+            self._advance()
+
+        return ListBlock(
+            ordered=False,
+            items=items,
+            checked=checked,
+            line=start_line,
+        )
 
     def _parse_ul(self) -> ListBlock:
         start_line = self._peek().line

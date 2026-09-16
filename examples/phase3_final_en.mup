@@ -1,0 +1,100 @@
+---
+title: Phase 3 Complete Test
+author: Ataee
+version: 0.4.0
+date: 2025-01-15
+---
+
+# {title}
+
+Author: **{author}** | Version: `{version}` | Date: {date}
+
+@toc
+
+---
+
+## 1. Introduction
+
+This is the **complete Phase 3 test**[^intro].
+
+## 2. Feature Checklist
+
+- [x] Phase 1: Core
+- [x] Phase 2: Blocks
+- [x] Phase 2.5: Rich Features
+- [x] Phase 3.1: Links
+- [x] Phase 3.2: Tables
+- [x] Phase 3.3: RTL Detection
+- [x] Phase 3.4: Task Lists + Front Matter
+- [x] Phase 3.5: TOC + Footnotes
+
+## 3. Table with Alignment
+
+| Feature | Version | Status |
+|---------|:-------:|:------:|
+| Links | 0.3.1 | ✅ |
+| Tables | 0.3.2 | ✅ |
+| RTL | 0.3.3 | ✅ |
+| Task Lists | 0.3.4 | ✅ |
+| TOC | 0.3.5 | ✅ |
+
+## 4. Code Example
+
+```python {title="example.py"}
+def hello(name):
+    print(f"Hello, {name}!")
+    return True
+
+hello("Markup+")
+```
+
+## 5. Links and Quotes
+
+Visit [GitHub](https://github.com) for source code[^github].
+
+> This is a beautiful quote.
+> It can span multiple lines.
+
+Autolink: <https://markup-plus.dev>
+
+## 6. Image and Gallery
+
+![Sample image](https://picsum.photos/600/400?random=999){caption="Test Image" desc="A sample image for testing"}
+
+@gallery {columns=3}
+![1](https://picsum.photos/400/300?random=1000)
+![2](https://picsum.photos/400/300?random=1001)
+![3](https://picsum.photos/400/300?random=1002)
+@end
+
+## 7. Lists
+
+### Unordered
+
+- First item
+- Second item
+- Third item
+
+### Ordered
+
+1. First
+2. Second
+3. Third
+
+### Checklist
+
+- [x] Completed task
+- [ ] Pending task
+- [x] Finished task
+
+## 8. Conclusion
+
+Markup+ is now a complete markup language[^conclusion]!
+
+**All features work!** 🎉
+
+---
+
+[^intro]: This footnote is for testing.
+[^github]: Source code is on GitHub.
+[^conclusion]: Congratulations! Phase 3 is complete.
