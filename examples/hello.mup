@@ -1,13 +1,243 @@
-# Hello World 👋
+---
+title: Hello Markup+
+author: Ataee
+date: 2025-01-15
+---
 
-Welcome to **Markup+**!
+# {title}
 
-This is a modern markup language with **more features** than Markdown.
+> A modern markup language with more features than Markdown
 
-## Features
+**Author:** {author} | **Date:** {date}
 
-This is `inline code` in a paragraph.
+@toc
 
-### Third Level
+---
 
-Regular text with **bold** and *italic* together.
+## 👋 Welcome
+
+Welcome to **Markup+**! This is your first document.
+
+@note
+This is a **note** box. Use it for helpful information.
+@end
+
+## ✨ Features
+
+Markup+ is more than Markdown. It includes:
+
+- **Variables** — `@let name = "Ali"`
+- **Filters** — `{name|upper}`
+- **Conditionals** — `@if` / `@elif` / `@else`
+- **Loops** — `@each item in items`
+- **Components** — reusable blocks
+- **Charts** — bar, line, pie, doughnut
+- **Math** — via KaTeX
+- **Tabs** & **Accordions**
+- **Alerts** — note, warning, tip, danger, success
+- **Auto RTL** — Persian, Arabic, Hebrew
+
+## 📝 Basic Syntax
+
+### Headings
+
+```mup
+# Heading 1
+## Heading 2
+### Heading 3
+```
+
+### Text
+
+```mup
+**Bold** and *italic* and ~~strikethrough~~ and `inline code`
+```
+
+### Lists
+
+- Item one
+- Item two
+- Item three
+
+1. First step
+2. Second step
+3. Third step
+
+### Task List
+
+- [x] Install Markup+
+- [x] Write your first document
+- [ ] Share it with the world
+
+### Code Block
+
+```python {title="hello.py"}
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Markup+"))
+```
+
+### Table
+
+| Feature | Markdown | Markup+ |
+|---------|:--------:|:-------:|
+| Variables | ❌ | ✅ |
+| Logic | ❌ | ✅ |
+| Charts | ❌ | ✅ |
+| Math | ❌ | ✅ |
+| RTL | ❌ | ✅ |
+
+## 🎨 Rich Content
+
+### Charts
+
+@chart(type="bar" title="Popularity Over Time")
+data: [10, 25, 45, 80, 150]
+labels: ["2021", "2022", "2023", "2024", "2025"]
+@end
+
+### Math
+
+The famous formula:
+
+$$ E = mc^2 $$
+
+And inline math like $a^2 + b^2 = c^2$ works too.
+
+### Tabs
+
+@tabs
+@tab "Python"
+```python
+print("Hello from Python")
+```
+@end
+
+@tab "JavaScript"
+```javascript
+console.log("Hello from JS");
+```
+@end
+
+@tab "Bash"
+```bash
+echo "Hello from Bash"
+```
+@end
+@end
+
+### Accordion
+
+@collapse
+@item "What is Markup+?"
+Markup+ is a modern markup language that extends Markdown.
+
+It includes variables, logic, components, and much more.
+@end
+
+@item "Is it free?"
+Yes! Markup+ is released under the MIT license.
+@end
+
+@item "Where can I learn more?"
+- [User Guide](../../GUIDE.md)
+- [Developer Guide](../../DEVELOPER.md)
+@end
+@end
+
+## ⚠️ Alerts
+
+@warning
+This is a **warning** — something might go wrong.
+@end
+
+@tip
+This is a **tip** — a helpful hint.
+@end
+
+@danger
+This is **danger** — critical info.
+@end
+
+@success
+This is **success** — operation completed!
+@end
+
+## 💬 Quote
+
+@quote(author="Donald Knuth")
+Premature optimization is the root of all evil.
+@end
+
+## 📅 Timeline
+
+@timeline
+2020: Markup+ project started
+2022: First public release
+2024: Reached 10,000 users
+2025: v0.6.0 with rich features
+@end
+
+## 🧩 Components
+
+@def Card(title, body)
+> **{title}**
+>
+> {body}
+@end
+
+@Card(title="Getting Started", body="Read the GUIDE.md for full documentation.")
+@Card(title="Need Help?", body="Open an issue on GitHub.")
+@Card(title="Contribute", body="Check CONTRIBUTING.md for guidelines.")
+
+## 🎯 Variables & Filters
+
+@let project = "Markup+"
+@let version = "0.6.0"
+
+- Project: **{project}**
+- Version: `{version}`
+- Uppercase: **{project|upper}**
+- Reversed: **{project|reverse}**
+
+@if version == "0.6.0"
+@success
+You're using the latest version!
+@end
+@else
+@warning
+A newer version is available. Please upgrade.
+@end
+@endif
+
+## 🚀 Loop
+
+@let languages = ["Python", "JavaScript", "Bash", "Markup+"]
+
+Languages supported in examples:
+
+@each lang in languages
+- **{lang}**
+@end
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/ataee-dev/markup-plus)
+- [User Guide](../../GUIDE.md)
+- [Developer Guide](../../DEVELOPER.md)
+- [Roadmap](../../ROADMAP.md)
+
+---
+
+## 🎉 Conclusion
+
+**Markup+** is a superset of Markdown — everything you know works, plus:
+
+@success
+You now know the basics of Markup+. Happy writing!
+@end
+
+---
+
+*Made with 💜 using Markup+ v0.6.0*

@@ -131,21 +131,13 @@ class TOCBlock(Node):
 
 @dataclass
 class IfBlock(Node):
-    """
-    @if condition1 ... @elif condition2 ... @else ... @endif
-    
-    branches: List of (condition_str_or_None, children_list)
-    None condition = else branch
-    """
+    """@if ... @elif ... @else ... @endif"""
     branches: List = field(default_factory=list)
 
 
 @dataclass
 class EachBlock(Node):
-    """
-    @each item in items ... @end
-    @each index, item in items ... @end
-    """
+    """@each item in items ... @end"""
     item_name: str = ""
     index_name: str = ""
     iterable_expr: str = ""
@@ -153,9 +145,78 @@ class EachBlock(Node):
 
 
 @dataclass
-class IncludeBlock(Node):
-    """@include "path/to/file.mup" — reserved for future"""
+class ImportBlock(Node):
+    """@import "path/to/file.mup" — reserved"""
     path: str = ""
+
+
+# ============================================================
+# Rich features (Phase 5)
+# ============================================================
+
+@dataclass
+class ComponentDef(Node):
+    """@def Name(param1, param2) ... @end"""
+    name: str = ""
+    params: List[str] = field(default_factory=list)
+    children: List[Node] = field(default_factory=list)
+
+
+@dataclass
+class ComponentCall(Node):
+    """@Name(param1="value", param2="value")"""
+    name: str = ""
+    args: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class ChartBlock(Node):
+    """@chart(type="bar") data: [...] labels: [...] @end"""
+    chart_type: str = "bar"
+    data: List = field(default_factory=list)
+    labels: List[str] = field(default_factory=list)
+    title: str = ""
+    color: str = ""
+
+
+@dataclass
+class MathBlock(Node):
+    """$$ E = mc^2 $$"""
+    latex: str = ""
+    display: bool = True
+
+
+@dataclass
+class TabsBlock(Node):
+    """@tabs @tab "Title" ... @end @end"""
+    tabs: List = field(default_factory=list)
+
+
+@dataclass
+class CollapseBlock(Node):
+    """@collapse @item "Title" ... @end @end"""
+    items: List = field(default_factory=list)
+
+
+@dataclass
+class AlertBlock(Node):
+    """@note / @warning / @tip / @danger / @success ... @end"""
+    alert_type: str = "note"
+    children: List[Node] = field(default_factory=list)
+
+
+@dataclass
+class QuoteBlock(Node):
+    """@quote(author="...", source="...") Text... @end"""
+    author: str = ""
+    source: str = ""
+    text: str = ""
+
+
+@dataclass
+class TimelineBlock(Node):
+    """@timeline date: text @end"""
+    events: List = field(default_factory=list)
 
 
 # ============================================================

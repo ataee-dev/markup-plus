@@ -7,14 +7,20 @@ Phase 1:  Headings, Paragraphs
 Phase 2:  Lists, Blockquotes, HR, Code blocks, Images, Galleries
 Phase 3:  Links, Tables, Task Lists, Front Matter, TOC, Footnotes
 Phase 4:  Variables, Logic (if/elif/else), Loops (each), Comments
+Phase 5:  Components, Charts, Math, Tabs, Collapse, Alerts, Quotes, Timeline
 """
 
 import re
 from typing import List, Any
 
 from .ast import (
+    AlertBlock,
     BlockQuote,
+    ChartBlock,
     CodeBlock,
+    CollapseBlock,
+    ComponentCall,
+    ComponentDef,
     Document,
     EachBlock,
     GalleryBlock,
@@ -22,9 +28,14 @@ from .ast import (
     HorizontalRule,
     IfBlock,
     ImageBlock,
+    ImportBlock,
     ListBlock,
+    MathBlock,
     Paragraph,
+    QuoteBlock,
     TableBlock,
+    TabsBlock,
+    TimelineBlock,
     TOCBlock,
     VariableDef,
 )
@@ -64,6 +75,29 @@ RE_EACH = re.compile(r"^@each\s+(?:(\w+)\s*,\s*)?(\w+)\s+in\s+(.+?)\s*$")
 RE_END = re.compile(r"^@end\s*$")
 RE_COMMENT = re.compile(r"^@#(.*)$")
 
+# Phase 5: Rich features
+# Accept both `(...)` and `{...}` for options
+RE_COMPONENT_DEF = re.compile(r"^@def\s+(\w+)\s*(?:[\(\{]([^\)\}]*)[\)\}])?\s*$")
+RE_COMPONENT_CALL = re.compile(r"^@([A-Z]\w+)\s*[\(\{]([^\)\}]*)[\)\}]\s*$")
+RE_CHART = re.compile(r"^@chart\s*(?:[\(\{]([^\)\}]*)[\)\}])?\s*$")
+RE_MATH_BLOCK = re.compile(r"^\$\$\s*(.+?)\s*\$\$\s*$")
+RE_TABS = re.compile(r"^@tabs\s*$")
+RE_TAB = re.compile(r'^@tab\s+"([^"]+)"\s*$')
+RE_COLLAPSE = re.compile(r"^@collapse\s*$")
+RE_ITEM = re.compile(r'^@item\s+"([^"]+)"\s*$')
+RE_ALERT = re.compile(r"^@(note|warning|tip|danger|success)\s*$")
+
+# @quote has 3 forms:
+#   1. @quote(author="...", source="...")   - parenthesized
+#   2. @quote{author="...", source="..."}   - braced
+#   3. @quote                                - plain
+RE_QUOTE_PAREN = re.compile(r"^@quote\s*\((.*)\)\s*$")
+RE_QUOTE_BRACE = re.compile(r"^@quote\s*\{(.*)\}\s*$")
+RE_QUOTE_PLAIN = re.compile(r"^@quote\s*$")
+
+RE_TIMELINE = re.compile(r"^@timeline\s*$")
+RE_TIMELINE_EVENT = re.compile(r"^(\d{4}(?:-\d{2})?(?:-\d{2})?)\s*:\s*(.+?)\s*$")
+RE_IMPORT = re.compile(r'^@import\s+"([^"]+)"\s*$')
 
 class Parser:
     """Parse a list of tokens into a Document AST."""
@@ -71,7 +105,7 @@ class Parser:
     def __init__(self, tokens: List[Token]):
         self.tokens = tokens
         self.pos = 0
-        self._variables: dict = {}  # Collect variables as we parse
+        self._variables: dict = {}
 
     # --------------------------------------------------------
     # Main entry
@@ -90,7 +124,7 @@ class Parser:
         self.pos = getattr(doc, "_content_start", 0)
         doc.children = self._parse_blocks(stop_at=set())
 
-        # 4. Save collected variables to document
+        # 4. Save collected variables
         doc.variables = dict(self._variables)
 
         # 5. Assign heading slugs
@@ -103,10 +137,7 @@ class Parser:
     # --------------------------------------------------------
 
     def _parse_blocks(self, stop_at: set) -> List:
-        """
-        Parse blocks until one of the stop_at keywords is found.
-        Returns the list of parsed children.
-        """
+        """Parse blocks until one of the stop_at keywords is found."""
         children = []
 
         while not self._is_at_end():
@@ -139,7 +170,7 @@ class Parser:
                 self._advance()
                 continue
 
-            # Footnote def (skip — already collected)
+            # Footnote def (skip)
             if RE_FOOTNOTE_DEF.match(stripped):
                 self._advance()
                 continue
@@ -150,7 +181,6 @@ class Parser:
                 var_name = m.group(1)
                 raw_value = m.group(2)
                 value = self._parse_value(raw_value)
-                # Store in parser's variable dict
                 self._variables[var_name] = value
                 children.append(VariableDef(
                     name=var_name,
@@ -158,6 +188,21 @@ class Parser:
                     raw_value=raw_value,
                     line=token.line,
                 ))
+                self._advance()
+                continue
+
+            # @def (component definition)
+            m = RE_COMPONENT_DEF.match(stripped)
+            if m:
+                children.append(self._parse_component_def(
+                    m.group(1), m.group(2) or "", token.line
+                ))
+                continue
+
+            # @import
+            m = RE_IMPORT.match(stripped)
+            if m:
+                children.append(ImportBlock(path=m.group(1), line=token.line))
                 self._advance()
                 continue
 
@@ -173,6 +218,56 @@ class Parser:
                 children.append(self._parse_each(
                     m.group(1), m.group(2), m.group(3), token.line
                 ))
+                continue
+
+            # @chart
+            m = RE_CHART.match(stripped)
+            if m:
+                children.append(self._parse_chart(m.group(1), token.line))
+                continue
+
+            # Math block $$ ... $$
+            m = RE_MATH_BLOCK.match(stripped)
+            if m:
+                children.append(MathBlock(
+                    latex=m.group(1), display=True, line=token.line
+                ))
+                self._advance()
+                continue
+
+            # @tabs
+            if RE_TABS.match(stripped):
+                children.append(self._parse_tabs(token.line))
+                continue
+
+            # @collapse
+            if RE_COLLAPSE.match(stripped):
+                children.append(self._parse_collapse(token.line))
+                continue
+
+            # @note / @warning / @tip / @danger / @success
+            m = RE_ALERT.match(stripped)
+            if m:
+                children.append(self._parse_alert(m.group(1), token.line))
+                continue
+
+            # @quote — three forms: (), {}, or plain
+            m_paren = RE_QUOTE_PAREN.match(stripped)
+            m_brace = RE_QUOTE_BRACE.match(stripped)
+            
+            if m_paren or m_brace or RE_QUOTE_PLAIN.match(stripped):
+                options_str = ""
+                if m_paren:
+                    options_str = m_paren.group(1)
+                elif m_brace:
+                    options_str = m_brace.group(1)
+                
+                children.append(self._parse_quote(options_str, token.line))
+                continue
+
+            # @timeline
+            if RE_TIMELINE.match(stripped):
+                children.append(self._parse_timeline(token.line))
                 continue
 
             # Code fence
@@ -249,11 +344,193 @@ class Parser:
                 children.append(self._parse_ol())
                 continue
 
+            # @ComponentCall(...) — after all lowercase @ directives
+            m = RE_COMPONENT_CALL.match(stripped)
+            if m:
+                children.append(self._parse_component_call(
+                    m.group(1), m.group(2), token.line
+                ))
+                self._advance()
+                continue
+
             # Paragraph
             children.append(Paragraph(text=line, line=token.line))
             self._advance()
 
         return children
+
+    # --------------------------------------------------------
+    # Phase 5: Rich feature parsers
+    # --------------------------------------------------------
+
+    def _parse_component_def(self, name: str, params_str: str, start_line: int) -> ComponentDef:
+        """Parse @def Name(param1, param2) ... @end"""
+        self._advance()
+        params = []
+        if params_str.strip():
+            params = [p.strip() for p in params_str.split(",") if p.strip()]
+
+        children = self._parse_blocks(stop_at={"@end"})
+        if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
+            self._advance()
+
+        return ComponentDef(name=name, params=params, children=children, line=start_line)
+
+    def _parse_component_call(self, name: str, args_str: str, start_line: int) -> ComponentCall:
+        """Parse @Name(key=value, ...)"""
+        args = {}
+        if args_str.strip():
+            pattern = re.compile(r'(\w+)\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^,\s]+))')
+            for m in pattern.finditer(args_str):
+                key = m.group(1)
+                value = m.group(2) or m.group(3) or m.group(4) or ""
+                args[key] = value
+        return ComponentCall(name=name, args=args, line=start_line)
+
+    def _parse_chart(self, options_str: str, start_line: int) -> ChartBlock:
+        """Parse @chart(...) or @chart{...} with data/labels."""
+        self._advance()
+        options = self._parse_inline_options(options_str or "")
+        chart_type = options.get("type", "bar")
+        title = options.get("title", "")
+        color = options.get("color", "")
+
+        data = []
+        labels = []
+
+        while not self._is_at_end():
+            line = self._peek().value.strip()
+            if RE_END.match(line):
+                self._advance()
+                break
+
+            m = re.match(r"^data\s*:\s*\[(.+?)\]\s*$", line)
+            if m:
+                data_str = m.group(1)
+                data = [
+                    self._parse_value(v.strip())
+                    for v in self._split_top_level(data_str, ",")
+                    if v.strip()
+                ]
+                self._advance()
+                continue
+
+            m = re.match(r"^labels\s*:\s*\[(.+?)\]\s*$", line)
+            if m:
+                labels_str = m.group(1)
+                labels = [
+                    str(self._parse_value(v.strip()))
+                    for v in self._split_top_level(labels_str, ",")
+                    if v.strip()
+                ]
+                self._advance()
+                continue
+
+            self._advance()
+
+        return ChartBlock(
+            chart_type=chart_type,
+            data=data,
+            labels=labels,
+            title=title,
+            color=color,
+            line=start_line,
+        )
+
+    def _parse_tabs(self, start_line: int) -> TabsBlock:
+        """Parse @tabs @tab "Title" ... @end @end"""
+        self._advance()
+        tabs = []
+        while not self._is_at_end():
+            line = self._peek().value.strip()
+            if RE_END.match(line):
+                self._advance()
+                break
+
+            m = RE_TAB.match(line)
+            if m:
+                title = m.group(1)
+                self._advance()
+                children = self._parse_blocks(stop_at={"@end"})
+                if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
+                    self._advance()
+                tabs.append((title, children))
+                continue
+
+            self._advance()
+
+        return TabsBlock(tabs=tabs, line=start_line)
+
+    def _parse_collapse(self, start_line: int) -> CollapseBlock:
+        """Parse @collapse @item "Title" ... @end @end"""
+        self._advance()
+        items = []
+        while not self._is_at_end():
+            line = self._peek().value.strip()
+            if RE_END.match(line):
+                self._advance()
+                break
+
+            m = RE_ITEM.match(line)
+            if m:
+                title = m.group(1)
+                self._advance()
+                children = self._parse_blocks(stop_at={"@end"})
+                if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
+                    self._advance()
+                items.append((title, children))
+                continue
+
+            self._advance()
+
+        return CollapseBlock(items=items, line=start_line)
+
+    def _parse_alert(self, alert_type: str, start_line: int) -> AlertBlock:
+        """Parse @note / @warning / @tip / @danger / @success ... @end"""
+        self._advance()
+        children = self._parse_blocks(stop_at={"@end"})
+        if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
+            self._advance()
+        return AlertBlock(alert_type=alert_type, children=children, line=start_line)
+
+    def _parse_quote(self, options_str: str, start_line: int) -> QuoteBlock:
+        """Parse @quote(author="...", source="...") Text... @end"""
+        self._advance()
+        options = self._parse_inline_options(options_str)
+        author = options.get("author", "")
+        source = options.get("source", "")
+
+        text_lines = []
+        while not self._is_at_end():
+            line = self._peek().value
+            if RE_END.match(line.strip()):
+                self._advance()
+                break
+            text_lines.append(line)
+            self._advance()
+
+        text = "\n".join(text_lines).strip()
+        return QuoteBlock(author=author, source=source, text=text, line=start_line)
+
+    def _parse_timeline(self, start_line: int) -> TimelineBlock:
+        """Parse @timeline date: text @end"""
+        self._advance()
+        events = []
+        while not self._is_at_end():
+            line = self._peek().value.strip()
+            if RE_END.match(line):
+                self._advance()
+                break
+
+            m = RE_TIMELINE_EVENT.match(line)
+            if m:
+                events.append((m.group(1), m.group(2)))
+                self._advance()
+                continue
+
+            self._advance()
+
+        return TimelineBlock(events=events, line=start_line)
 
     # --------------------------------------------------------
     # @if parser
@@ -262,13 +539,11 @@ class Parser:
     def _parse_if(self, first_condition: str, start_line: int) -> IfBlock:
         """Parse @if ... @elif ... @else ... @endif"""
         block = IfBlock(branches=[], line=start_line)
-        self._advance()  # consume @if
+        self._advance()
 
-        # Parse first branch
         first_children = self._parse_blocks(stop_at={"@elif", "@else", "@endif"})
         block.branches.append((first_condition, first_children))
 
-        # Parse @elif branches
         while not self._is_at_end():
             stripped = self._peek().value.strip()
 
@@ -307,11 +582,8 @@ class Parser:
         start_line: int,
     ) -> EachBlock:
         """Parse @each item in items ... @end"""
-        self._advance()  # consume @each
-
+        self._advance()
         children = self._parse_blocks(stop_at={"@end"})
-
-        # Consume @end
         if not self._is_at_end() and RE_END.match(self._peek().value.strip()):
             self._advance()
 
@@ -389,14 +661,13 @@ class Parser:
                 doc.footnotes[m.group(1)] = m.group(2)
 
     # --------------------------------------------------------
-    # Value parsing (@let)
+    # Value parsing
     # --------------------------------------------------------
 
     def _parse_value(self, raw: str) -> Any:
         """Parse raw value into Python type."""
         raw = raw.strip()
 
-        # List literal: [1, 2, 3] or ["a", "b"]
         if raw.startswith("[") and raw.endswith("]"):
             inner = raw[1:-1].strip()
             if not inner:
@@ -404,34 +675,28 @@ class Parser:
             items = self._split_top_level(inner, ",")
             return [self._parse_value(item) for item in items]
 
-        # Quoted string
         if (raw.startswith('"') and raw.endswith('"')) or \
            (raw.startswith("'") and raw.endswith("'")):
             return raw[1:-1]
 
-        # Boolean
         if raw.lower() == "true":
             return True
         if raw.lower() == "false":
             return False
 
-        # None
         if raw.lower() in ("null", "none"):
             return None
 
-        # Int
         try:
             return int(raw)
         except ValueError:
             pass
 
-        # Float
         try:
             return float(raw)
         except ValueError:
             pass
 
-        # Fallback: string
         return raw
 
     def _split_top_level(self, s: str, sep: str) -> List[str]:
@@ -619,14 +884,16 @@ class Parser:
         )
 
     def _parse_inline_options(self, options_str: str) -> dict:
+        """Parse 'key="value" key2=value2' or 'key=value'."""
         if not options_str:
             return {}
         options = {}
-        pattern = re.compile(r'(\w+)(?:=(?:"([^"]*)"|(\S+)))?')
+        # Match: key="value" OR key='value' OR key=value OR key
+        pattern = re.compile(r'(\w+)(?:\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s,]+)))?')
         for match in pattern.finditer(options_str):
             key = match.group(1)
-            value = match.group(2) or match.group(3)
-            options[key] = value if value else True
+            value = match.group(2) or match.group(3) or match.group(4)
+            options[key] = value if value is not None else True
         return options
 
     # --------------------------------------------------------

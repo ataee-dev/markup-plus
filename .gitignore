@@ -1,15 +1,24 @@
 # Python
 __pycache__/
 *.py[cod]
-*.so
+*.egg-info/
+.Python
 build/
 dist/
-*.egg-info/
+*.egg
 
-# Virtual Environment
-.venv/
+# Virtual environments
 venv/
 env/
+build_env/
+
+# PyInstaller
+*.spec.bak
+
+# Test caches
+.pytest_cache/
+.coverage
+htmlcov/
 
 # IDE
 .vscode/
@@ -17,13 +26,23 @@ env/
 *.swp
 
 # OS
-.DS_Store
 Thumbs.db
+.DS_Store
 
-# Project
+# Output
 *.html
-!assets/templates/*.html
-output/
-.cache/
-*.html 
-!assets/templates/*.html 
+!tests/fixtures/*.html
+
+# Temporary test files
+test.mup
+test*.html
+
+# Debug scripts
+debug.py
+check_icons.py
+extract_css.py
+make_icons.py
+
+# Registry scripts (optional)
+register-mup.bat
+install.bat

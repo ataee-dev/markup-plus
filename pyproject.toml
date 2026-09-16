@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "markup-plus"
-version = "0.1.0"
+version = "0.6.0"
 description = "A modern markup language with more features than Markdown"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -12,29 +12,43 @@ license = { text = "MIT" }
 authors = [
     { name = "Ataee" }
 ]
-keywords = ["markup", "markdown", "language", "html", "documentation"]
+keywords = [
+    "markup", "markdown", "language", "html", "documentation",
+    "template", "components", "charts", "katex", "rtl",
+]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Natural Language :: Persian",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Documentation",
     "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
 ]
 
 [project.urls]
 Homepage = "https://github.com/USERNAME/markup-plus"
 Repository = "https://github.com/USERNAME/markup-plus"
 Issues = "https://github.com/USERNAME/markup-plus/issues"
+Changelog = "https://github.com/USERNAME/markup-plus/blob/main/CHANGELOG.md"
 
 [project.scripts]
 mup = "markup_plus.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["markup_plus*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+addopts = "-v --tb=short"
