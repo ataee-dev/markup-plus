@@ -25,3 +25,5 @@ Thumbs.db
 !assets/templates/*.html
 output/
 .cache/
+*.html 
+!assets/templates/*.html 
