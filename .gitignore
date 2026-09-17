@@ -1,48 +1,121 @@
+# ============================================================
 # Python
+# ============================================================
 __pycache__/
 *.py[cod]
-*.egg-info/
+*$py.class
+*.so
 .Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
 *.egg
+MANIFEST
 
-# Virtual environments
+# ============================================================
+# Virtual Environments
+# ============================================================
 venv/
 env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
 build_env/
 
+# ============================================================
 # PyInstaller
-*.spec.bak
+# ============================================================
+*.manifest
+*.spec
+pyinstaller-hooks/
 
-# Test caches
-.pytest_cache/
-.coverage
-htmlcov/
-
-# IDE
+# ============================================================
+# IDE and Editors
+# ============================================================
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
 
-# OS
-Thumbs.db
+# ============================================================
+# Operating System
+# ============================================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# Output
-*.html
-!tests/fixtures/*.html
+# ============================================================
+# Testing
+# ============================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
 
-# Temporary test files
-test.mup
-test*.html
+# ============================================================
+# Generated HTML (from examples)
+# ============================================================
+examples/*.html
 
-# Debug scripts
-debug.py
-check_icons.py
-extract_css.py
-make_icons.py
+# ============================================================
+# Installer (local only, not in Git)
+# ============================================================
+installer/
+installer-output/
+*.exe
 
-# Registry scripts (optional)
-register-mup.bat
-install.bat
+# ============================================================
+# Local development
+# ============================================================
+*.log
+*.bak
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# ============================================================
+# Distribution
+# ============================================================
+*.tar.gz
+*.zip
+*.whl
+*.egg
+
+# ============================================================
+# Environment
+# ============================================================
+.env
+.env.local
+.env.*.local
+
+# ============================================================
+# Jupyter
+# ============================================================
+.ipynb_checkpoints/

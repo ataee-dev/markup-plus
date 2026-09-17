@@ -82,7 +82,7 @@ def _highlight_inline(line: str) -> str:
     # Inline code
     line = re.sub(
         r"`([^`]+)`",
-        lambda m: theme.colorize(f"`{m.group(1)}`", theme.cyan),
+        lambda m: theme.colorize(f"`{m.group(1)}`", theme.Color.CYAN),
         line,
     )
     

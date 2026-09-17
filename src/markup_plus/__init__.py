@@ -14,8 +14,8 @@ Features:
 """
 
 __version__ = "0.6.0"
-__author__ = "Ataee"
-__license__ = "MIT"
+__author__ = "Hossein Ataee"
+__license__ = "Markup+ — Non-Commercial License"
 
 from .renderer import to_html
 from .parser import parse_text

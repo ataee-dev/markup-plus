@@ -1,324 +1,329 @@
-# 🔒 Security Policy
+Security Policy
+===============
 
-> **Version:** 0.6.0
-> **Last Updated:** January 2025
+Version: 0.6.0
+Last Updated: January 2026
 
-We take the security of **Markup+** seriously. Thank you for helping us keep
-this project safe.
-
----
-
-## 📑 Table of Contents
-
-1. [Supported Versions](#1-supported-versions)
-2. [Reporting a Vulnerability](#2-reporting-a-vulnerability)
-3. [What We Expect From You](#3-what-we-expect-from-you)
-4. [What You Can Expect From Us](#4-what-you-can-expect-from-us)
-5. [Security Considerations](#5-security-considerations)
-6. [Best Practices](#6-best-practices)
-7. [Acknowledgments](#7-acknowledgments)
+We take the security of Markup+ seriously. Thank you for helping us
+keep this project safe.
 
 ---
 
-## 1. Supported Versions
+Table of Contents
+-----------------
+
+1. Supported Versions
+2. Reporting a Vulnerability
+3. What We Expect From You
+4. What You Can Expect From Us
+5. Security Considerations
+6. Best Practices
+7. Acknowledgments
+8. Contact
+
+---
+
+1. Supported Versions
+---------------------
 
 We provide security updates for the following versions:
 
-| Version | Supported | Notes |
-|---------|:---------:|-------|
-| `0.6.x` | ✅ | Current stable release |
-| `0.5.x` | ⚠️ | Security fixes only |
-| `0.4.x` and older | ❌ | No longer supported |
+    Version        Supported    Notes
+    0.6.x          Yes          Current stable release
+    0.5.x          Partial      Security fixes only
+    0.4.x and older  No         No longer supported
 
-**Recommendation:** Always use the latest stable version.
+Recommendation: Always use the latest stable version.
 
-```bash
-pip install --upgrade markup-plus
-```
+    pip install --upgrade markup-plus
 
 ---
 
-## 2. Reporting a Vulnerability
+2. Reporting a Vulnerability
+----------------------------
 
-### 🔐 Private Report (Recommended)
+### Private Report (Recommended)
 
-If you discover a security vulnerability, **please do not report it
-publicly**. Instead, choose one of the following methods:
+If you discover a security vulnerability, please do not report it
+publicly. Instead, choose one of the following methods:
 
-**Method 1 — GitHub Security Advisories:**
+### Method 1: GitHub Security Advisories
 
-1. Go to the repository: https://github.com/USERNAME/markup-plus
-2. Click the **Security** tab
-3. Click **Report a vulnerability**
+1. Go to the repository: https://github.com/ataee-dev/markup-plus
+2. Click the Security tab
+3. Click Report a vulnerability
 4. Fill out the form
 
-**Method 2 — Email:**
+### Method 2: Email
 
 Send an email to:
 
-```
-security@markupplus.dev
-```
+    hosseinataee2009@gmail.com
 
-**Method 3 — Private Message:**
+Subject line: [SECURITY] Brief description
 
-Send a private message to one of the project maintainers on GitHub.
+### Method 3: Private Message
 
-### 📝 What Information to Send
+Send a private message to the project maintainer on GitHub.
 
-To help us respond quickly, please include the following:
+### What Information to Send
 
-```markdown
-**Vulnerability Type:**
-e.g., XSS, Code Injection, Path Traversal
+To help us respond quickly, please include:
 
-**Markup+ Version:**
-Output of `mup --version`
+    **Vulnerability Type:**
+    e.g., XSS, Code Injection, Path Traversal
 
-**Operating System:**
-e.g., Windows 10, Ubuntu 22.04, macOS 14
+    **Markup+ Version:**
+    Output of `mup --version`
 
-**Python Version:**
-Output of `python --version`
+    **Operating System:**
+    e.g., Windows 10, Ubuntu 22.04, macOS 14
 
-**Description:**
-Clear and complete description of the vulnerability
+    **Python Version:**
+    Output of `python --version`
 
-**Steps to Reproduce:**
-1. Create file `test.mup` with content: ...
-2. Run command `mup test.mup`
-3. Observe that ...
+    **Description:**
+    Clear and complete description of the vulnerability
 
-**Impact:**
-What attack is possible? What is at risk?
+    **Steps to Reproduce:**
+    1. Create file `test.mup` with content: ...
+    2. Run command `mup test.mup`
+    3. Observe that ...
 
-**Suggested Fix (Optional):**
-If you have a fix in mind, please describe it
+    **Impact:**
+    What attack is possible? What is at risk?
 
-**Additional Info:**
-Links, screenshots, outputs
-```
+    **Suggested Fix (Optional):**
+    If you have a fix in mind, please describe it
 
-### ⚠️ What NOT to Report
+    **Additional Info:**
+    Links, screenshots, outputs
 
-- ❌ Third-party dependency vulnerabilities (report to the original project)
-- ❌ Attacks requiring physical access
-- ❌ Theoretical issues not practically exploitable
-- ❌ Public information already in the documentation
+### What NOT to Report
+
+- Third-party dependency vulnerabilities (report to the original project)
+- Attacks requiring physical access
+- Theoretical issues not practically exploitable
+- Public information already in the documentation
 
 ---
 
-## 3. What We Expect From You
+3. What We Expect From You
+--------------------------
 
 When you report a vulnerability, please:
 
-- ✅ **Stay confidential** — don't disclose publicly until we've fixed it
-- ✅ **Be honest** — provide accurate and complete information
-- ✅ **Be patient** — fixing takes time
-- ✅ **Cooperate** — respond to our questions
-- ✅ **Coordinate** — agree with us before public disclosure
+- Stay confidential -- do not disclose publicly until we have fixed it
+- Be honest -- provide accurate and complete information
+- Be patient -- fixing takes time
+- Cooperate -- respond to our questions
+- Coordinate -- agree with us before public disclosure
 
-**Please do NOT:**
-- ❌ Exploit the vulnerability
-- ❌ Expose user data
-- ❌ Damage systems
-- ❌ Attempt extortion
+Please do NOT:
+
+- Exploit the vulnerability
+- Expose user data
+- Damage systems
+- Attempt extortion
 
 ---
 
-## 4. What You Can Expect From Us
+4. What You Can Expect From Us
+------------------------------
 
-### ⏱️ Timeline
+### Timeline
 
-| Stage | Time |
-|-------|------|
-| **Acknowledgment** | Within 48 hours |
-| **Initial review** | Within 7 days |
-| **Full assessment** | Within 14 days |
-| **Fix** | Depends on severity |
-| **Release of fix** | Within 30 days |
+    Stage                   Time
+    Acknowledgment          Within 48 hours
+    Initial review          Within 7 days
+    Full assessment         Within 14 days
+    Fix                     Depends on severity
+    Release of fix          Within 30 days
 
-### 🎖️ Credit
+### Credit
 
-- 📝 Your name in `CHANGELOG.md` (if you wish)
-- 🏆 Mention in GitHub release
-- ⭐ In README (for significant vulnerabilities)
-- 🎁 Swag (if available)
+- Your name in CHANGELOG.md (if you wish)
+- Mention in GitHub release
+- Featured in README (for significant vulnerabilities)
+- Swag (if available)
 
-### 📢 Public Disclosure
+### Public Disclosure
 
-- We **always** coordinate with you before public disclosure
+- We always coordinate with you before public disclosure
 - If you wish to stay anonymous, we respect that
 - The public disclosure date is agreed upon by both parties
 
 ---
 
-## 5. Security Considerations
+5. Security Considerations
+--------------------------
 
 ### 5.1 Threat Model
 
-**What Markup+ is designed for:**
+What Markup+ is designed for:
 
-- ✅ Generating HTML from valid `.mup` files
-- ✅ Running in a local or trusted server environment
-- ✅ Converting trusted files to HTML
+- Generating HTML from valid .mup files
+- Running in a local or trusted server environment
+- Converting trusted files to HTML
 
-**What Markup+ is NOT designed for:**
+What Markup+ is NOT designed for:
 
-- ❌ Executing invalid or malicious `.mup` files
-- ❌ Running arbitrary code
-- ❌ Serving untrusted users
-- ❌ Real-time processing of user input
+- Executing invalid or malicious .mup files
+- Running arbitrary code
+- Serving untrusted users
+- Real-time processing of user input
 
 ### 5.2 Important Security Points
 
-#### 🔸 XSS (Cross-Site Scripting)
+#### XSS (Cross-Site Scripting)
 
-Markup+ **generates HTML output**. If `.mup` files come from untrusted
+Markup+ generates HTML output. If .mup files come from untrusted
 sources, JavaScript code may be embedded in the output HTML.
 
-**Recommendation:** Only process `.mup` files from trusted sources.
+Recommendation: Only process .mup files from trusted sources.
 
-#### 🔸 Code Injection
+#### Code Injection
 
-Markup+ **does not execute code** — it only converts text to HTML.
-However, the `@run` directive (in future versions) will execute HTML/JS code.
+Markup+ does not execute code. It only converts text to HTML.
+However, the @run directive (in future versions) will execute HTML
+and JavaScript code.
 
-**Recommendation:** Use `@run` only with trusted content.
+Recommendation: Use @run only with trusted content.
 
-#### 🔸 Path Traversal
+#### Path Traversal
 
-The `@import` directive loads external files. If the path comes from user
-input, it could access sensitive files.
+The @import directive loads external files. If the path comes from
+user input, it could access sensitive files.
 
-**Dangerous example:**
+Dangerous example:
 
-```mup
-@import "../../../etc/passwd"
-```
+    @import "../../../etc/passwd"
 
-**Recommendation:** Use `@import` only with fixed and trusted paths.
+Recommendation: Use @import only with fixed and trusted paths.
 
-#### 🔸 Denial of Service
+#### Denial of Service
 
 Large files or deeply nested structures can consume CPU and RAM.
 
-**Recommendation:**
-- Split large `.mup` files into smaller parts
+Recommendation:
+
+- Split large .mup files into smaller parts
 - Limit the nesting depth of loops
 
 ### 5.3 Dependencies
 
-Markup+ is written in **pure Python** and has no mandatory external
+Markup+ is written in pure Python and has no mandatory external
 dependencies.
 
 Optional dependencies (for testing):
 
-| Package | Purpose | Security |
-|---------|---------|----------|
-| `pytest` | Testing | ✅ Trusted |
-| `pytest-cov` | Test coverage | ✅ Trusted |
-| `black` | Code formatter | ✅ Trusted |
-| `ruff` | Linter | ✅ Trusted |
+    Package        Purpose              Security
+    pytest         Testing              Trusted
+    pytest-cov     Test coverage        Trusted
+    black          Code formatter       Trusted
+    ruff           Linter               Trusted
 
-**Note:** The HTML output uses trusted CDNs:
+Note: The HTML output uses trusted CDNs:
 
-- **Prism.js** (syntax highlighting) — `cdn.jsdelivr.net`
-- **Chart.js** (charts) — `cdn.jsdelivr.net`
-- **KaTeX** (math formulas) — `cdn.jsdelivr.net`
+- Prism.js (syntax highlighting) -- cdn.jsdelivr.net
+- Chart.js (charts) -- cdn.jsdelivr.net
+- KaTeX (math formulas) -- cdn.jsdelivr.net
 
 If CDN security matters to you, you can load the libraries locally.
 
 ---
 
-## 6. Best Practices
+6. Best Practices
+-----------------
 
-### 👤 For Users
+### For Users
 
-- ✅ **Trusted sources only:** Don't process `.mup` files from unknown sources
-- ✅ **Isolated environment:** Use containers or sandboxes on servers
-- ✅ **Stay updated:** Always install the latest version
-- ✅ **Limit access:** Store `.mup` files with restricted permissions
-- ✅ **Validate input:** Check user input before processing
-- ✅ **Enable logging:** Log suspicious activity
+- Trusted sources only: Do not process .mup files from unknown sources
+- Isolated environment: Use containers or sandboxes on servers
+- Stay updated: Always install the latest version
+- Limit access: Store .mup files with restricted permissions
+- Validate input: Check user input before processing
+- Enable logging: Log suspicious activity
 
-### 👨‍💻 For Developers
+### For Developers
 
-- ✅ **Validate input:** Check all inputs
-- ✅ **Escape output:** Escape generated HTML
-- ✅ **File restrictions:** Limit access to external files
-- ✅ **Dependency checks:** Keep dependencies up to date
-- ✅ **Security tests:** Write security tests
-- ✅ **Responsible disclosure:** Report vulnerabilities responsibly
+- Validate input: Check all inputs
+- Escape output: Escape generated HTML
+- File restrictions: Limit access to external files
+- Dependency checks: Keep dependencies up to date
+- Security tests: Write security tests
+- Responsible disclosure: Report vulnerabilities responsibly
 
-### 🏢 For Organizations
+### For Organizations
 
-- ✅ **Isolated environment:** Run Markup+ in a separate environment
-- ✅ **Content policy:** Define a safe content policy
-- ✅ **Training:** Train your team
-- ✅ **Monitoring:** Monitor systems
-- ✅ **Periodic review:** Regularly review security
+- Isolated environment: Run Markup+ in a separate environment
+- Content policy: Define a safe content policy
+- Training: Train your team
+- Monitoring: Monitor systems
+- Periodic review: Regularly review security
 
 ---
 
-## 7. Acknowledgments
+7. Acknowledgments
+------------------
 
 We thank everyone who helps keep Markup+ secure.
 
-### 🏆 Hall of Fame
+### Hall of Fame
 
 Those who have responsibly reported security vulnerabilities:
 
-<!-- This section is updated with each valid report -->
-
-*No reports yet — you could be the first!*
+No reports yet -- you could be the first.
 
 ---
 
-## 📚 Further Reading
-
-### Related Documents
-
-- [README.md](README.md) — Project overview
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
-- [GUIDE.md](GUIDE.md) — User guide
-- [DEVELOPER.md](DEVELOPER.md) — Developer guide
-- [ROADMAP.md](ROADMAP.md) — Roadmap
-
-### Useful Links
-
-- **GitHub Security:** https://github.com/USERNAME/markup-plus/security
-- **OWASP Top 10:** https://owasp.org/www-project-top-ten/
-- **CWE:** https://cwe.mitre.org/
-- **CVE:** https://cve.mitre.org/
-
-### Standards
-
-- [Semantic Versioning](https://semver.org/)
-- [Keep a Changelog](https://keepachangelog.com/)
-- [Conventional Commits](https://www.conventionalcommits.org/)
-
----
-
-## 📞 Contact
+8. Contact
+----------
 
 For security matters:
 
-- 🔒 **Security Email:** security@markupplus.dev
-- 🐛 **GitHub Issues:** https://github.com/USERNAME/markup-plus/issues (non-sensitive only)
-- 💬 **GitHub Discussions:** https://github.com/USERNAME/markup-plus/discussions
+- Security Email: hosseinataee2009@gmail.com
+- GitHub Issues: https://github.com/ataee-dev/markup-plus/issues (non-sensitive only)
+- GitHub Discussions: https://github.com/ataee-dev/markup-plus/discussions
 
 ---
 
-## 📜 License
+Further Reading
+---------------
 
-This document is released under the MIT License.
+Related Documents:
 
-Copyright © 2025 Ataee
+- README.md -- Project overview
+- CONTRIBUTING.md -- Contribution guidelines
+- docs/GUIDE.md -- User guide
+- docs/DEVELOPER.md -- Developer guide
+- ROADMAP.md -- Roadmap
+
+Useful Links:
+
+- GitHub Security: https://github.com/ataee-dev/markup-plus/security
+- OWASP Top 10: https://owasp.org/www-project-top-ten/
+- CWE: https://cwe.mitre.org/
+- CVE: https://cve.mitre.org/
+
+Standards:
+
+- Semantic Versioning: https://semver.org/
+- Keep a Changelog: https://keepachangelog.com/
+- Conventional Commits: https://www.conventionalcommits.org/
 
 ---
 
-**Version:** 0.6.0
-**Last Updated:** January 2025
+License
+-------
 
-**Thank you for your cooperation! 💜**
+This document is released under the Markup+ Non-Commercial License.
+
+Copyright 2026 Hossein Ataee
+
+---
+
+Version: 0.6.0
+Last Updated: January 2026
+
+Thank you for your cooperation.

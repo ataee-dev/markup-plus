@@ -88,7 +88,18 @@ def colorize(text: str, *codes: str) -> str:
     """Wrap text with ANSI codes."""
     if not USE_COLOR:
         return text
-    return "".join(codes) + text + Color.RESET
+    normalized = []
+    for c in codes:
+        if callable(c):
+            # c is a function like theme.cyan, call it on empty string to get the code
+            code = c("")
+            # extract the prefix (before empty text and RESET)
+            if code.endswith(Color.RESET):
+                code = code[:-len(Color.RESET)]
+            normalized.append(code)
+        else:
+            normalized.append(c)
+    return "".join(normalized) + text + Color.RESET
 
 
 def red(text: str) -> str:

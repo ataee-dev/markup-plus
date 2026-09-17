@@ -1,463 +1,201 @@
-# 🗺️ Markup+ Roadmap
+Roadmap
+=======
 
-This document outlines the **planned development** of Markup+.
+Version: 0.6.0
+Last Updated: September 2026
 
-For the past, see [CHANGELOG.md](CHANGELOG.md).
-For current work, see [GitHub Issues](https://github.com/USERNAME/markup-plus/issues).
+This document outlines the development history of Markup+.
+
+For the full version history, see CHANGELOG.md.
+For current work, see GitHub Issues:
+https://github.com/ataee-dev/markup-plus/issues
 
 ---
 
-## 🎯 Vision
+Vision
+------
 
 Markup+ aims to be:
 
-1. **The most feature-rich markup language** — everything Markdown has, plus powerful logic
-2. **Beginner-friendly** — no programming knowledge required
-3. **Beautiful by default** — professional output with zero configuration
-4. **RTL-first for Persian/Arabic** — built-in bidirectional text support
-5. **Extensible** — plugin system, custom renderers, IDE integration
+1. The most feature-rich markup language -- everything Markdown has,
+   plus powerful logic
+2. Beginner-friendly -- no programming knowledge required
+3. Beautiful by default -- professional output with zero configuration
+4. RTL-first for Persian and Arabic -- built-in bidirectional text support
+5. Extensible -- plugin system, custom renderers, IDE integration
 
 ---
 
-## 📅 Release Timeline
+Version History
+---------------
 
-```
-v0.6.0 ──────► v0.7.0 ──────► v0.8.0 ──────► v0.9.0 ──────► v1.0.0
- (now)        (Q1 2025)      (Q2 2025)       (Q3 2025)     (Q4 2025)
-   ✅             🚧              📋              📋            🎯
-```
+### v0.1.0 -- Phase 1: Core
 
-| Version | Status | Target | Focus |
-|---------|--------|--------|-------|
-| v0.6.0 | ✅ Released | Jan 2025 | Rich features |
-| v0.7.0 | 🚧 In Progress | Feb 2025 | Interactive elements |
-| v0.8.0 | 📋 Planned | Apr 2025 | Export formats |
-| v0.9.0 | 📋 Planned | Jul 2025 | Performance & plugins |
-| v1.0.0 | 🎯 Vision | Oct 2025 | Stability & IDE |
-| v1.1+ | 💭 Future | 2026+ | Ecosystem |
+Released: September 15, 2026
 
----
+- Headings (H1 to H6)
+- Paragraphs
+- Bold and italic formatting
+- Inline code
+- Basic HTML output
+- CLI entry point
+- Blockquotes and horizontal rules (Phase 2.2)
+- Enhanced code blocks with live preview (Phase 2.3.5)
 
-## 🚧 v0.7.0 — Interactive Elements
+### v0.2.0 -- Phase 2.4: Images
 
-**Target:** February 2025
-**Theme:** *"Make it interactive"*
+Released: September 15, 2026
 
-### Core Features
+- Image syntax with `![alt](url)`
+- Image options: width, height, align, caption, description, link, zoomable
+- Image alignment (left, center, right)
+- Image captions
+- Clickable images
 
-- [ ] **`@run` directive** — Execute HTML/JS/CSS in-place
-  ```mup
-  @run {lang="html"}
-  <button onclick="alert('Hi')">Click</button>
-  @end
-  ```
-  - Sandboxed iframe execution
-  - Error display
-  - Console output capture
+### v0.3.0 -- Phase 2.5: Complete feature set
 
-- [ ] **Nested lists** — Full support for indentation
-  ```mup
-  - Item 1
-    - Nested 1.1
-    - Nested 1.2
-  - Item 2
-  ```
+Released: September 15, 2026
 
-- [ ] **Table cell spanning**
-  ```mup
-  | Header 1 | Header 2 |
-  |----------|----------|
-  | Cell {colspan=2}    |
-  ```
+- Image lightbox with keyboard navigation
+- Light and dark themes
+- Scroll reveal animations
+- Theme switcher
 
-- [ ] **Table cell types**
-  - Markdown cell (default)
-  - Code cell
-  - Chart cell
-  - Image cell
+### v0.3.1 -- Phase 3.1: Links and formatting
 
-### Enhancements
+Released: September 15, 2026
 
-- [ ] **Better error messages** with line context
-  ```
-  Error at line 42, column 8:
-     42 │ @if x == 
-        │         ↑ unexpected end of expression
-  ```
+- Link syntax with `[text](url)` and `[text](url "title")`
+- Autolinks with `<https://example.com>`
+- Strikethrough with `~~text~~`
+- Links open in new tab
 
-- [ ] **Auto-fix suggestions**
-  ```
-  Unknown directive '@noet'. Did you mean '@note'?
-  ```
+### v0.3.2 -- Phase 3.2: Tables
 
-- [ ] **Watch mode** (`mup watch file.mup`)
-  - Auto-rebuild on file change
-  - Browser auto-reload
+Released: September 15, 2026
 
-- [ ] **Multi-file watch** (`mup watch docs/*.mup`)
+- Markdown-style tables
+- Column alignment: left, center, right
+- Table header styling
+- Alternating row colors
 
-### Documentation
+### v0.3.3 -- Phase 3.3: Auto RTL
 
-- [ ] Add `@run` to `GUIDE.md`
-- [ ] Add nested list examples
-- [ ] Add table spanning examples
-- [ ] Video tutorial (YouTube)
+Released: September 16, 2026
 
----
+- Automatic RTL detection for Persian, Arabic, Hebrew, Urdu
+- 30 percent RTL character threshold
+- `--rtl` and `--ltr` flags
+- Persian-friendly fonts and layout
 
-## 📋 v0.8.0 — Export Formats
+### v0.4.0 -- Phase 3.4-3.5: Task lists and TOC
 
-**Target:** April 2025
-**Theme:** *"Beyond HTML"*
+Released: September 16, 2026
 
-### Export Formats
+- Task lists with checkboxes (`- [x]` and `- [ ]`)
+- Front matter support for metadata
+- Table of contents directive (`@toc`)
+- Footnotes support with `[^1]` syntax
 
-- [ ] **PDF export** (`mup file.mup --pdf`)
-  - Print-friendly CSS
-  - Page breaks
-  - Table of contents
+### v0.5.0 -- Phase 4: Variables and Logic
 
-- [ ] **Markdown export** (`mup file.mup --md`)
-  - Convert back to Markdown
-  - Lossy (loses variables/logic)
+Released: September 16, 2026
 
-- [ ] **EPUB export** (`mup book.mup --epub`)
-  - For e-books
-  - Chapter splitting
+- Variable system (`@let`) with strings, numbers, booleans, arrays
+- Conditional blocks (`@if`, `@elif`, `@else`, `@endif`)
+- Loop blocks (`@each` with optional index)
+- Filter system: `upper`, `lower`, `capitalize`, `title`, `reverse`, `length`
+- Comment directive (`@#`)
+- Variable substitution with `{name}`
+- Filter chaining with `|`
 
-- [ ] **JSON export** (`mup file.mup --json`)
-  - AST as JSON
-  - For integrations
+### v0.6.0 -- Phase 5: Rich Features
 
-- [ ] **Static site generation** (`mup build docs/`)
-  - Multiple `.mup` → multiple `.html`
-  - Shared layout
-  - Auto-linking
+Released: September 16, 2026
 
-### Import Features
-
-- [ ] **`@import` with variables**
-  ```mup
-  @import "card.mup" {title="Hello", body="World"}
-  ```
-
-- [ ] **`@include` for raw text**
-  ```mup
-  @include "code.py"
-  ```
-
-- [ ] **External data sources**
-  ```mup
-  @let data = @json("data.json")
-  @let rows = @csv("sales.csv")
-  ```
-
-### Templates
-
-- [ ] **Custom HTML templates**
-  - Override default
-  - Template variables
-  - Partials
-
-- [ ] **Theme marketplace**
-  - Share themes
-  - Install: `mup theme install <name>`
+- Alert directives: `@note`, `@warning`, `@tip`, `@danger`, `@success`
+- Rich quote directive (`@quote`) with author and source
+- Tabs directive (`@tabs` and `@tab`)
+- Accordion directive (`@collapse` and `@item`)
+- Chart directive (`@chart`) with bar, line, pie, doughnut
+- Math formulas with KaTeX (inline and block)
+- Component system (`@def` and component calls)
+- Timeline directive (`@timeline`)
+- File imports (`@import`)
+- Table of contents directive (`@toc`) with custom title
+- Custom CSS support via `--css` flag
+- Ready-made themes
+- Standalone executable for Windows
 
 ---
 
-## 📋 v0.9.0 — Performance & Plugins
+Project Statistics
+------------------
 
-**Target:** July 2025
-**Theme:** *"Fast and extensible"*
+Statistics as of v0.6.0:
 
-### Performance
+    Phase      Feature                          Tests
+    Phase 1    Core                               11
+    Phase 2    Blocks and Images                 ~50
+    Phase 2.5  Rich Code and Lightbox            ~95
+    Phase 3    Tables, TOC, Footnotes             126
+    Phase 4    Variables, Logic, Loops            174
+    Phase 5    Components, Charts, Math          ~220
 
-- [ ] **Incremental compilation**
-  - Only rebuild changed parts
-  - Cache parsed ASTs
-
-- [ ] **Streaming parser** for large files
-  - Handle multi-GB files
-  - Low memory footprint
-
-- [ ] **Parallel rendering** (multiprocessing)
-  - Speed up large documents
-
-- [ ] **Lazy loading of charts and math**
-  - Only render when scrolled to
-  - Reduce initial load time
-
-### Plugin System
-
-- [ ] **Plugin API**
-  ```python
-  from markup_plus.plugin import Plugin
-
-  class MyPlugin(Plugin):
-      name = "my-plugin"
-      version = "1.0.0"
-
-      def register(self, registry):
-          registry.add_directive("myblock", self.parse_myblock)
-          registry.add_renderer("myblock", self.render_myblock)
-  ```
-
-- [ ] **Plugin discovery**
-  - Entry points
-  - Auto-load from `~/.markup-plus/plugins/`
-
-- [ ] **Built-in plugins**
-  - `markup-plus-emoji` — Emoji shortcodes
-  - `markup-plus-diagrams` — Mermaid diagrams
-  - `markup-plus-maps` — Interactive maps
-  - `markup-plus-syntax` — Custom syntax themes
-
-### Advanced Features
-
-- [ ] **Regex-based replacements**
-  ```mup
-  @replace pattern="/TODO: (\w+)/g" text="Issue: $1"
-  ```
-
-- [ ] **Custom directives**
-  ```mup
-  @custom "my-directive" handler="my_handler"
-  ```
-
-- [ ] **Snippets**
-  ```mup
-  @snippet "warn" 
-  @warning
-  {content}
-  @end
-  @end
-
-  @warn{content="Careful!"}
-  ```
+Total features: 45
+Total tests: ~220
+Total phases completed: 5
+Total versions released: 6
 
 ---
 
-## 🎯 v1.0.0 — Stability & IDE
+Feature Requests
+----------------
 
-**Target:** October 2025
-**Theme:** *"Ready for everyone"*
+Want a feature not on this list? Open an issue:
 
-### Stability
-
-- [ ] **API frozen** — no breaking changes until v2.0.0
-- [ ] **100% test coverage** on core modules
-- [ ] **Comprehensive benchmarks**
-- [ ] **Security audit**
-- [ ] **Performance guarantees** (e.g., 10k-line doc in <1s)
-
-### Desktop IDE
-
-- [ ] **Markup+ Studio** — cross-platform desktop app
-  - Editor with syntax highlighting
-  - Live preview (side-by-side)
-  - File tree sidebar
-  - Export buttons
-  - Theme switcher
-  - Built-in terminal
-  - Component snippets
-  - Error panel
-
-- [ ] **Technology:** PyQt6 or Tauri
-- [ ] **Platforms:** Windows, macOS, Linux
-- [ ] **Size:** <50 MB installer
-
-### Windows Installer
-
-- [ ] **One-click installer** (`MarkupPlus-Setup-1.0.0.exe`)
-  - Welcome screen
-  - Install location picker
-  - Components: Core, CLI, IDE, Docs
-  - Add to PATH
-  - File association (`.mup`)
-  - Desktop shortcut
-  - Uninstaller
-
-- [ ] **Technology:** Inno Setup
-- [ ] **Multi-language:** English, Persian, Arabic
-
-### Documentation
-
-- [ ] **Documentation website** (docs.markupplus.dev)
-  - Search
-  - Versioned docs
-  - Interactive examples
-  - Playground
-
-- [ ] **Video course** (YouTube)
-  - Getting started
-  - Advanced features
-  - Real-world projects
-
-- [ ] **Book** (PDF, EPUB)
-  - "Learning Markup+"
-
-### Community
-
-- [ ] **Discord server**
-- [ ] **Discussion forum**
-- [ ] **Monthly newsletter**
-- [ ] **Showcase gallery**
+https://github.com/ataee-dev/markup-plus/issues/new
 
 ---
 
-## 💭 v1.1+ — The Future
+Out of Scope
+------------
 
-**Target:** 2026+
+These are not planned for Markup+:
 
-### Integrations
+- General-purpose programming -- use Python or JavaScript
+- Server-side logic -- use a web framework
+- Database ORM -- use SQLAlchemy
+- Full CMS -- use WordPress or Strapi
+- Real-time apps -- use React or Vue
+- Mobile apps -- use React Native or Flutter
 
-- [ ] **VS Code extension**
-  - Syntax highlighting
-  - Live preview
-  - Snippets
-  - Error checking
-
-- [ ] **JetBrains plugin**
-  - IntelliJ, PyCharm, WebStorm
-
-- [ ] **Vim/Neovim plugin**
-- [ ] **Sublime Text package**
-- [ ] **Atom package** (if still alive)
-
-### Cloud Features
-
-- [ ] **Online editor** (editor.markupplus.dev)
-  - No installation
-  - Share links
-  - Collaboration
-  - Version history
-
-- [ ] **Cloud sync**
-  - Save to cloud
-  - Access anywhere
-
-- [ ] **Publishing platform** (markupplus.dev)
-  - Publish directly
-  - Custom domains
-  - Analytics
-
-### AI Features
-
-- [ ] **AI writing assistant**
-  - Suggest completions
-  - Fix grammar
-  - Translate
-
-- [ ] **AI-generated charts**
-  ```mup
-  @chart-ai
-  Show me last quarter's sales
-  @end
-  ```
-
-- [ ] **AI documentation**
-  - Auto-generate docs from code
-
-### Advanced Rendering
-
-- [ ] **3D graphics** (Three.js)
-- [ ] **Interactive diagrams** (Mermaid, D3.js)
-- [ ] **Animated transitions**
-- [ ] **Dark mode auto-scheduling**
-- [ ] **Accessibility improvements** (WCAG 2.1 AA)
-
-### Enterprise
-
-- [ ] **Team collaboration**
-- [ ] **Private registries**
-- [ ] **SSO integration**
-- [ ] **Audit logs**
-- [ ] **On-premise deployment**
+Markup+ stays focused on static document generation and content markup.
 
 ---
 
-## 🎨 Feature Requests
-
-Want a feature not on this list? [Open an issue!](https://github.com/USERNAME/markup-plus/issues/new?template=feature_request.md)
-
-**Currently considering:**
-
-- [ ] Video embeds (`@video`)
-- [ ] Audio embeds (`@audio`)
-- [ ] Interactive forms (`@form`)
-- [ ] Database queries (`@query`)
-- [ ] Real-time collaboration
-- [ ] Version control integration
-- [ ] REST API
-- [ ] GraphQL support
-
----
-
-## 📊 Prioritization Criteria
-
-Features are prioritized by:
-
-| Factor | Weight | Description |
-|--------|:------:|-------------|
-| **User demand** | 40% | Number of requests |
-| **Impact** | 25% | How many users benefit |
-| **Effort** | 20% | Implementation complexity |
-| **Alignment** | 15% | Matches project vision |
-
-Low-impact features with high effort are deprioritized.
-
----
-
-## 🚫 Out of Scope
-
-These are **not planned** for Markup+:
-
-- ❌ **General-purpose programming** — use Python/JS
-- ❌ **Server-side logic** — use a web framework
-- ❌ **Database ORM** — use SQLAlchemy
-- ❌ **Full CMS** — use WordPress/Strapi
-- ❌ **Real-time apps** — use React/Vue
-- ❌ **Mobile apps** — use React Native/Flutter
-
-Markup+ stays focused on **static document generation** and **content markup**.
-
----
-
-## 🤝 How to Influence the Roadmap
-
-1. **Vote on issues** — 👍 reactions count
-2. **Open feature requests** — with use cases
-3. **Contribute code** — implement and submit PR
-4. **Sponsor** — financial support speeds things up
-5. **Spread the word** — more users = more priority
-
----
-
-## 📅 Milestone Tracking
-
-See live progress on [GitHub Milestones](https://github.com/USERNAME/markup-plus/milestones):
-
-- [v0.7.0](https://github.com/USERNAME/markup-plus/milestone/1) — Interactive Elements
-- [v0.8.0](https://github.com/USERNAME/markup-plus/milestone/2) — Export Formats
-- [v0.9.0](https://github.com/USERNAME/markup-plus/milestone/3) — Performance & Plugins
-- [v1.0.0](https://github.com/USERNAME/markup-plus/milestone/4) — Stability & IDE
-
----
-
-## 💬 Discuss the Roadmap
+Discuss the Roadmap
+-------------------
 
 Have thoughts? Join the discussion:
 
-- 💬 [GitHub Discussions](https://github.com/USERNAME/markup-plus/discussions)
-- 🐛 [Feature Requests](https://github.com/USERNAME/markup-plus/issues/new?template=feature_request.md)
-- 📧 [Email](mailto:maintainer@markupplus.dev)
+- GitHub Discussions: https://github.com/ataee-dev/markup-plus/discussions
+- Feature Requests: https://github.com/ataee-dev/markup-plus/issues/new
+- Email: hosseinataee2009@gmail.com
 
 ---
 
-**Last updated:** January 2025
-**Next review:** February 2025
+Contact
+-------
+
+- Email: hosseinataee2009@gmail.com
+- Repository: https://github.com/ataee-dev/markup-plus
+- Issues: https://github.com/ataee-dev/markup-plus/issues
+- Discussions: https://github.com/ataee-dev/markup-plus/discussions
 
 ---
 
-> *"A roadmap is a promise to the future. But it's also a promise to the
-> present — that we know where we're going."*
+Last updated: September 2026
+
+Markup+ Non-Commercial License
+Copyright 2026 Hossein Ataee

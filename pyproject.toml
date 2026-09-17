@@ -1,29 +1,39 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "markup-plus"
 version = "0.6.0"
-description = "A modern markup language with more features than Markdown"
+description = "A modern markup language that extends Markdown with variables, logic, components, charts, math, and auto RTL."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = {text = "Markup+ Non-Commercial License"}
 authors = [
-    { name = "Ataee" }
+    {name = "Hossein Ataee", email = "hosseinataee2009@gmail.com"}
+]
+maintainers = [
+    {name = "Hossein Ataee", email = "hosseinataee2009@gmail.com"}
 ]
 keywords = [
-    "markup", "markdown", "language", "html", "documentation",
-    "template", "components", "charts", "katex", "rtl",
+    "markup",
+    "markdown",
+    "documentation",
+    "template",
+    "rtl",
+    "persian",
+    "arabic",
+    "hebrew",
+    "charts",
+    "katex",
+    "static-site",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Natural Language :: Persian",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -33,22 +43,81 @@ classifiers = [
     "Topic :: Documentation",
     "Topic :: Text Processing :: Markup",
     "Topic :: Text Processing :: Markup :: HTML",
+    "Natural Language :: English",
+    "Natural Language :: Persian",
+    "Natural Language :: Arabic",
+    "Natural Language :: Hebrew",
 ]
 
 [project.urls]
-Homepage = "https://github.com/USERNAME/markup-plus"
-Repository = "https://github.com/USERNAME/markup-plus"
-Issues = "https://github.com/USERNAME/markup-plus/issues"
-Changelog = "https://github.com/USERNAME/markup-plus/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/ataee-dev/markup-plus"
+Repository = "https://github.com/ataee-dev/markup-plus"
+Issues = "https://github.com/ataee-dev/markup-plus/issues"
+Discussions = "https://github.com/ataee-dev/markup-plus/discussions"
+Changelog = "https://github.com/ataee-dev/markup-plus/blob/master/CHANGELOG.md"
+Documentation = "https://github.com/ataee-dev/markup-plus/blob/master/docs/GUIDE.md"
+Roadmap = "https://github.com/ataee-dev/markup-plus/blob/master/ROADMAP.md"
 
 [project.scripts]
 mup = "markup_plus.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["markup_plus*"]
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+build = [
+    "build>=1.0",
+    "pyinstaller>=6.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/markup_plus"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/markup_plus/themes/css/base.css" = "markup_plus/themes/css/base.css"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/examples",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/CODE_OF_CONDUCT.md",
+    "/SECURITY.md",
+    "/ROADMAP.md",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "B",
+    "C4",
+    "UP",
+]
+ignore = [
+    "E501",
+    "B008",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-python_files = "test_*.py"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
 addopts = "-v --tb=short"
