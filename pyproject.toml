@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "markup-plus"
-version = "0.6.0"
+version = "0.6.1"
 description = "A modern markup language that extends Markdown with variables, logic, components, charts, math, and auto RTL."
 readme = "README.md"
 requires-python = ">=3.9"

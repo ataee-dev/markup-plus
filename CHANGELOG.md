@@ -20,6 +20,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.1] - 2026-09-17
+
+### Fixed
+- Logo now displays correctly on PyPI (uses absolute URL)
+
+### Changed
+- Updated README with absolute logo URL for PyPI compatibility
+
+---
+
+
 ## [0.6.0] - 2026-09-16
 
 Release v0.6.0: Custom CSS, themes, standalone exe.

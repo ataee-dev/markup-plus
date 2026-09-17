@@ -13,7 +13,7 @@ Features:
     - Light/dark themes
 """
 
-__version__ = "0.6.0"
+__version__ = "0.6.1"
 __author__ = "Hossein Ataee"
 __license__ = "Markup+ — Non-Commercial License"
 
