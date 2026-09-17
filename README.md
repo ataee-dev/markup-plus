@@ -10,8 +10,9 @@
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Non--Commercial-red.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-174%20passing-success.svg)](tests/)
+[![PyPI](https://img.shields.io/badge/pypi-markup--plus-blue.svg)](https://pypi.org/project/markup-plus/)
 
-[Installation](#installation) • [Quick Start](#quick-start) • [Features](#features) • [Documentation](#documentation) • [Contributing](#contributing)
+[Installation](#installation) • [Quick Start](#quick-start) • [Features](#features) • [Screenshots](#screenshots) • [Documentation](#documentation) • [Contributing](#contributing)
 
 </div>
 
@@ -79,7 +80,7 @@ Verify:
 mup --version
 ```
 
-Expected output: `Markup+ v0.6.0`
+Expected output: `Markup+ v0.6.1`
 
 ---
 
@@ -147,6 +148,57 @@ mup file.mup --rtl        Right-to-left layout
 mup file.mup --css x.css  Custom CSS
 mup file.mup -o out.html  Custom output path
 mup file.mup --debug      Show debug info
+```
+
+---
+
+## Screenshots
+
+Click any thumbnail to view the full-size image.
+
+### Themes
+
+| Light Theme | Dark Theme |
+|:-----------:|:----------:|
+| [![Light Theme](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-light.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-light.png) | [![Dark Theme](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-dark.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-dark.png) |
+
+### Content Features
+
+| Code Blocks | Charts |
+|:-----------:|:------:|
+| [![Code Blocks](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-code-block.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-code-block.png) | [![Charts](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-chart.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-chart.png) |
+
+| Math Formulas | Tables |
+|:-------------:|:------:|
+| [![Math](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-math.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-math.png) | [![Tables](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-table.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-table.png) |
+
+| Alerts | Accordions |
+|:------:|:----------:|
+| [![Alerts](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-alerts.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-alerts.png) | [![Accordions](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-accordion.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-accordion.png) |
+
+### Interactive Features
+
+| Image Gallery | Lightbox |
+|:-------------:|:--------:|
+| [![Gallery](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-gallery.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-gallery.png) | [![Lightbox](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-lightbox.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-lightbox.png) |
+
+### Command-Line Interface
+
+| CLI in Terminal | Windows Installer |
+|:---------------:|:-----------------:|
+| [![CLI](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-terminal.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-terminal.png) | [![Installer](https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/demo-setup.png)](https://github.com/ataee-dev/markup-plus/blob/master/assets/images/demo-setup.png) |
+
+---
+
+## Full Demo
+
+Want to see everything in action? Open the **[complete demo document](examples/hello.mup)** — it tests all 20+ features of Markup+.
+
+After installation, run:
+
+```bash
+mup examples/hello.mup
+start examples/hello.html    # Windows
 ```
 
 ---
