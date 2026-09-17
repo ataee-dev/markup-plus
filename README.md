@@ -6,7 +6,7 @@
 
 **A modern markup language with more features than Markdown.**
 
-[![Version](https://img.shields.io/badge/version-0.6.0-blue.svg)](https://github.com/ataee-dev/markup-plus/releases)
+[![Version](https://img.shields.io/badge/version-0.6.1-blue.svg)](https://github.com/ataee-dev/markup-plus/releases)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-Non--Commercial-red.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-174%20passing-success.svg)](tests/)
