@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/images/mup-logo.png" alt="Markup+ Logo" width="150">
+<img src="https://raw.githubusercontent.com/ataee-dev/markup-plus/master/assets/images/mup-logo.png" alt="Markup+ Logo" width="150">
 
 # Markup+
 
