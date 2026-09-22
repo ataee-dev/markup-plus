@@ -247,9 +247,12 @@ See [LICENSE](LICENSE) for full text.
 
 ---
 
-## Contact
+## Contact & Community
 
 - **Email:** hosseinataee2009@gmail.com
-- **Repository:** https://github.com/ataee-dev/markup-plus
-- **Issues:** https://github.com/ataee-dev/markup-plus/issues
-- **Discussions:** https://github.com/ataee-dev/markup-plus/discussions
+- **Repository (JS):** https://github.com/ataee-dev/markup-plus-js
+- **Repository (Python):** https://github.com/ataee-dev/markup-plus
+- **Issues (JS):** https://github.com/ataee-dev/markup-plus-js/issues
+- **Discussions (JS):** https://github.com/ataee-dev/markup-plus-js/discussions
+- **npm:** https://www.npmjs.com/package/markup-plus-js
+- **PyPI:** https://pypi.org/project/markup-plus/

@@ -1,0 +1,2339 @@
+# Code Blocks Full Test
+
+## 1. Python (basic)
+
+```python
+print("Hello, World!")
+x = 42
+```
+
+## 2. Python with title
+
+```python {title="app.py"}
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Markup+"))
+```
+
+## 3. HTML with Preview
+
+```html {title="page.html"}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .box {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Hello, Markup+!</h1>
+        <p>This is a live preview.</p>
+    </div>
+</body>
+</html>
+```
+
+## 4. CSS with Preview
+
+```css {title="style.css"}
+h1 {
+    color: #7c3aed;
+    font-size: 32px;
+}
+button {
+    background: #7c3aed;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+button:hover {
+    background: #5b21b6;
+}
+```
+
+## 5. JavaScript with Preview
+
+```javascript {title="app.js"}
+const name = "Markup+";
+console.log("Hello, " + name);
+console.log("2 + 2 =", 2 + 2);
+console.log("Done!");
+```
+
+## 6. Bash (no preview)
+
+```bash
+pip install markup-plus
+mup examples/code.mup
+```
+
+## 7. With Line Numbers and Highlight
+
+```python {title="advanced.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+## 8. No Buttons
+
+```text {copy=false download=false}
+This block has no buttons.
+Just plain text.
+```
+
+## 9. JSON
+
+```json {title="config.json"}
+{
+    "name": "markup-plus",
+    "version": "0.2.0",
+    "features": ["code", "math", "charts"]
+}
+```
+# Markup+ Full Feature Test
+
+This document tests **all features** of Markup+ v0.1.0.
+
+---
+
+## 1. Headings
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 2. Text Formatting
+
+This is **bold text** and this is *italic text*.
+
+You can combine **bold and *italic*** together.
+
+This is `inline code` inside a paragraph.
+
+---
+
+## 3. Paragraphs
+
+This is the first paragraph.
+
+This is the second paragraph, separated by a blank line.
+
+And a third one.
+
+---
+
+## 4. Unordered Lists
+
+- First item
+- Second item with **bold**
+- Third item with *italic*
+- Fourth item with `code`
+
+---
+
+## 5. Ordered Lists
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML
+
+---
+
+## 6. Blockquotes
+
+> This is a simple blockquote.
+> It spans multiple lines.
+
+> A quote with **bold** and *italic* formatting.
+
+---
+
+## 7. Horizontal Rules
+
+Above the line.
+
+---
+
+Below the line.
+
+---
+
+## 8. Code Blocks
+
+### Python
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("World")
+```
+
+### JavaScript
+
+```javascript
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+
+greet("World");
+```
+
+### Bash
+
+```bash
+pip install markup-plus
+mup examples/fulltest.mup
+```
+
+### No Language
+
+```
+Just plain text code block.
+No highlighting.
+```
+
+---
+
+## 9. Mixed Content
+
+Here's a list with code blocks after it:
+
+1. First step
+2. Second step
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And finally a **bold closing statement**.
+
+---
+
+## 10. Edge Cases
+
+Text with multiple `code spans` in one line.
+
+Text with multiple **bold words**.
+
+Special characters: < > & " '
+
+Numbers: 1 2 3 42 1000
+
+---
+
+## Summary
+
+All features work:
+
+- Headings (H1-H6)
+- Bold, Italic, Inline code
+- Paragraphs
+- Unordered lists
+- Ordered lists
+- Blockquotes
+- Horizontal rules
+- Code blocks (with/without language)
+# Gallery Demo
+
+## Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Mountain](https://picsum.photos/400/300?random=1)
+![Beach](https://picsum.photos/400/300?random=2)
+![Forest](https://picsum.photos/400/300?random=3)
+![City](https://picsum.photos/400/300?random=4)
+![Desert](https://picsum.photos/400/300?random=5)
+![Lake](https://picsum.photos/400/300?random=6)
+@end
+
+## With Captions and Descriptions
+
+@gallery {columns=2}
+![Aurora](https://picsum.photos/500/350?random=7){caption="Northern Lights" desc="A stunning aurora borealis over the snowy forest in Norway."}
+![Sunset](https://picsum.photos/500/350?random=8){caption="Golden Sunset" desc="The sun setting over the calm Pacific ocean."}
+@end
+
+## Photo Grid (4 columns)
+
+@gallery {columns=4}
+![1](https://picsum.photos/300/300?random=10)
+![2](https://picsum.photos/300/300?random=11)
+![3](https://picsum.photos/300/300?random=12)
+![4](https://picsum.photos/300/300?random=13)
+@end
+
+## Single Image with Description
+
+![Aurora](https://picsum.photos/700/400?random=20){caption="Aurora Borealis" desc="The aurora borealis, also known as the northern lights, is a natural light display in Earth's sky, predominantly seen in high-latitude regions around the Arctic and Antarctic."}
+
+## Instructions
+
+Click any image to open the lightbox.
+
+**Keyboard shortcuts:**
+- `←` / `→` — Previous / Next
+- `+` / `-` — Zoom in / out
+- `0` — Reset zoom
+- `ESC` — Close
+- Click image in lightbox — Toggle 2x zoom---
+title: Hello Markup+
+author: Ataee
+date: 2025-01-15
+---
+
+# {title}
+
+> A modern markup language with more features than Markdown
+
+**Author:** {author} | **Date:** {date}
+
+@toc
+
+---
+
+## 👋 Welcome
+
+Welcome to **Markup+**! This is your first document.
+
+@note
+This is a **note** box. Use it for helpful information.
+@end
+
+## ✨ Features
+
+Markup+ is more than Markdown. It includes:
+
+- **Variables** — `@let name = "Ali"`
+- **Filters** — `{name|upper}`
+- **Conditionals** — `@if` / `@elif` / `@else`
+- **Loops** — `@each item in items`
+- **Components** — reusable blocks
+- **Charts** — bar, line, pie, doughnut
+- **Math** — via KaTeX
+- **Tabs** & **Accordions**
+- **Alerts** — note, warning, tip, danger, success
+- **Auto RTL** — Persian, Arabic, Hebrew
+
+## 📝 Basic Syntax
+
+### Headings
+
+```mup
+# Heading 1
+## Heading 2
+### Heading 3
+```
+
+### Text
+
+```mup
+**Bold** and *italic* and ~~strikethrough~~ and `inline code`
+```
+
+### Lists
+
+- Item one
+- Item two
+- Item three
+
+1. First step
+2. Second step
+3. Third step
+
+### Task List
+
+- [x] Install Markup+
+- [x] Write your first document
+- [ ] Share it with the world
+
+### Code Block
+
+```python {title="hello.py"}
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Markup+"))
+```
+
+### Table
+
+| Feature | Markdown | Markup+ |
+|---------|:--------:|:-------:|
+| Variables | ❌ | ✅ |
+| Logic | ❌ | ✅ |
+| Charts | ❌ | ✅ |
+| Math | ❌ | ✅ |
+| RTL | ❌ | ✅ |
+
+## 🎨 Rich Content
+
+### Charts
+
+@chart(type="bar" title="Popularity Over Time")
+data: [10, 25, 45, 80, 150]
+labels: ["2021", "2022", "2023", "2024", "2025"]
+@end
+
+### Math
+
+The famous formula:
+
+$$ E = mc^2 $$
+
+And inline math like $a^2 + b^2 = c^2$ works too.
+
+### Tabs
+
+@tabs
+@tab "Python"
+```python
+print("Hello from Python")
+```
+@end
+
+@tab "JavaScript"
+```javascript
+console.log("Hello from JS");
+```
+@end
+
+@tab "Bash"
+```bash
+echo "Hello from Bash"
+```
+@end
+@end
+
+### Accordion
+
+@collapse
+@item "What is Markup+?"
+Markup+ is a modern markup language that extends Markdown.
+
+It includes variables, logic, components, and much more.
+@end
+
+@item "Is it free?"
+Yes! Markup+ is released under the Markup+ — Non-Commercial License license.
+@end
+
+@item "Where can I learn more?"
+- [User Guide](../../GUIDE.md)
+- [Developer Guide](../../DEVELOPER.md)
+@end
+@end
+
+## ⚠️ Alerts
+
+@warning
+This is a **warning** — something might go wrong.
+@end
+
+@tip
+This is a **tip** — a helpful hint.
+@end
+
+@danger
+This is **danger** — critical info.
+@end
+
+@success
+This is **success** — operation completed!
+@end
+
+## 💬 Quote
+
+@quote(author="Donald Knuth")
+Premature optimization is the root of all evil.
+@end
+
+## 📅 Timeline
+
+@timeline
+2020: Markup+ project started
+2022: First public release
+2024: Reached 10,000 users
+2025: v0.6.0 with rich features
+@end
+
+## 🧩 Components
+
+@def Card(title, body)
+> **{title}**
+>
+> {body}
+@end
+
+@Card(title="Getting Started", body="Read the GUIDE.md for full documentation.")
+@Card(title="Need Help?", body="Open an issue on GitHub.")
+@Card(title="Contribute", body="Check CONTRIBUTING.md for guidelines.")
+
+## 🎯 Variables & Filters
+
+@let project = "Markup+"
+@let version = "0.6.0"
+
+- Project: **{project}**
+- Version: `{version}`
+- Uppercase: **{project|upper}**
+- Reversed: **{project|reverse}**
+
+@if version == "0.6.0"
+@success
+You're using the latest version!
+@end
+@else
+@warning
+A newer version is available. Please upgrade.
+@end
+@endif
+
+## 🚀 Loop
+
+@let languages = ["Python", "JavaScript", "Bash", "Markup+"]
+
+Languages supported in examples:
+
+@each lang in languages
+- **{lang}**
+@end
+
+## 🔗 Links
+
+- [GitHub Repository](https://github.com/ataee-dev/markup-plus)
+- [User Guide](../../GUIDE.md)
+- [Developer Guide](../../DEVELOPER.md)
+- [Roadmap](../../ROADMAP.md)
+
+---
+
+## 🎉 Conclusion
+
+**Markup+** is a superset of Markdown — everything you know works, plus:
+
+@success
+You now know the basics of Markup+. Happy writing!
+@end
+
+---
+
+*Made with 💜 using Markup+ v0.6.0*# Images Demo
+
+## Simple Image
+
+![A sample image](https://picsum.photos/400/200)
+
+## With Title
+
+![Sample](https://picsum.photos/300/200 "Sample title")
+
+## With Custom Width
+
+![Small image](https://picsum.photos/600/300){width=300}
+
+## Centered
+
+![Centered image](https://picsum.photos/500/250){align=center}
+
+## With Caption
+
+![Beautiful view](https://picsum.photos/400/250){caption="A beautiful landscape"}
+
+## Clickable Image
+
+![Click me](https://picsum.photos/300/200){link=https://example.com}
+
+## Fully Featured
+
+![Full featured](https://picsum.photos/500/300){
+    width=400
+    align=center
+    caption="Fully featured image"
+    link=https://example.com
+}
+
+## Inline Image
+
+Here's an image inline: ![icon](https://picsum.photos/20/20) right here in the text.# Links & Formatting Demo
+
+## Simple Links
+
+Visit [Google](https://google.com) for search.
+
+Check out [GitHub](https://github.com) for code.
+
+## Links with Title
+
+Read the [documentation](https://docs.example.com "Official Docs") for details.
+
+See the [API reference](https://api.example.com "Complete API").
+
+## Autolinks
+
+Go to <https://github.com> for the source.
+
+Visit <https://markup-plus.dev> for docs.
+
+## Strikethrough
+
+This is ~~outdated~~ text.
+
+The price was ~~$99~~ now **$49**!
+
+## Combined Formatting
+
+Read the **[official docs](https://docs.example.com)** for more.
+
+This is ~~**bold and strikethrough**~~ together.
+
+Visit <https://example.com> for *everything* you need.
+
+## Links in Lists
+
+- [Google](https://google.com)
+- [GitHub](https://github.com)
+- ~~[Removed link](https://old.com)~~
+
+## Links with Formatting
+
+Visit [**GitHub**](https://github.com) — it's *awesome*!
+
+Read [`markup-plus`](https://npmjs.com/markup-plus) on npm.# Lists Demo
+
+## Unordered List
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+
+## Ordered List
+
+1. Step one
+2. Step two
+3. Step three with *italic*
+
+## Mixed Content
+
+Some text before a list.
+
+- Apple
+- Banana
+- Cherry
+
+Some text after the list.---
+title: آزمون کامل فاز ۳
+author: Ataee
+version: 0.4.0
+date: 2025-01-15
+---
+
+# {title}
+
+نویسنده: **{author}** | نسخه: `{version}` | تاریخ: {date}
+
+@toc {title="فهرست مطالب"}
+
+
+---
+
+## ۱. مقدمه
+
+این سند **آزمون کامل فاز ۳** است[^intro].
+
+## ۲. چک‌لیست قابلیت‌ها
+
+- [x] Phase 1: Core
+- [x] Phase 2: Blocks
+- [x] Phase 2.5: Rich Features
+- [x] Phase 3.1: Links
+- [x] Phase 3.2: Tables
+- [x] Phase 3.3: RTL Detection
+- [x] Phase 3.4: Task Lists + Front Matter
+- [x] Phase 3.5: TOC + Footnotes
+
+## ۳. جدول با تراز
+
+| قابلیت | نسخه | وضعیت |
+|--------|:----:|:-----:|
+| لینک | 0.3.1 | ✅ |
+| جدول | 0.3.2 | ✅ |
+| RTL | 0.3.3 | ✅ |
+| Task Lists | 0.3.4 | ✅ |
+| TOC | 0.3.5 | ✅ |
+
+## ۴. کد نمونه
+
+```python {title="example.py"}
+def hello(name):
+    print(f"Hello, {name}!")
+    return True
+
+hello("Markup+")
+```
+
+```javascript {title="app.js"}
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+greet("World");
+```
+
+## ۵. لینک‌ها و نقل‌قول
+
+Visit [GitHub](https://github.com) for source code[^github].
+
+> این یک نقل‌قول زیباست.
+> می‌تواند چند خطی باشد.
+
+لینک خودکار: <https://markup-plus.dev>
+
+## ۶. تصویر و گالری
+
+![تصویر نمونه](https://picsum.photos/600/400?random=999){caption="تصویر تست" desc="یک تصویر نمونه برای تست"}
+
+@gallery {columns=3}
+![۱](https://picsum.photos/400/300?random=1000)
+![۲](https://picsum.photos/400/300?random=1001)
+![۳](https://picsum.photos/400/300?random=1002)
+@end
+
+## ۷. لیست‌های ساده
+
+### نامرتب
+
+- مورد اول
+- مورد دوم
+- مورد سوم
+
+### مرتب
+
+1. اول
+2. دوم
+3. سوم
+
+### چک‌لیست
+
+- [x] کار انجام شده
+- [ ] کار در انتظار
+- [x] کار تمام شده
+
+## ۸. نتیجه‌گیری
+
+Markup+ حالا یک زبان نشانه‌گذاری کامل است[^conclusion]!
+
+**همه‌ی قابلیت‌ها کار می‌کنند!** 🎉
+
+---
+
+[^intro]: این پانویس برای تست است.
+[^github]: سورس کد روی GitHub قرار دارد.
+[^conclusion]: تبریک! فاز ۳ کامل شد.---
+title: Phase 3 Complete Test
+author: Ataee
+version: 0.4.0
+date: 2025-01-15
+---
+
+# {title}
+
+Author: **{author}** | Version: `{version}` | Date: {date}
+
+@toc
+
+---
+
+## 1. Introduction
+
+This is the **complete Phase 3 test**[^intro].
+
+## 2. Feature Checklist
+
+- [x] Phase 1: Core
+- [x] Phase 2: Blocks
+- [x] Phase 2.5: Rich Features
+- [x] Phase 3.1: Links
+- [x] Phase 3.2: Tables
+- [x] Phase 3.3: RTL Detection
+- [x] Phase 3.4: Task Lists + Front Matter
+- [x] Phase 3.5: TOC + Footnotes
+
+## 3. Table with Alignment
+
+| Feature | Version | Status |
+|---------|:-------:|:------:|
+| Links | 0.3.1 | ✅ |
+| Tables | 0.3.2 | ✅ |
+| RTL | 0.3.3 | ✅ |
+| Task Lists | 0.3.4 | ✅ |
+| TOC | 0.3.5 | ✅ |
+
+## 4. Code Example
+
+```python {title="example.py"}
+def hello(name):
+    print(f"Hello, {name}!")
+    return True
+
+hello("Markup+")
+```
+
+## 5. Links and Quotes
+
+Visit [GitHub](https://github.com) for source code[^github].
+
+> This is a beautiful quote.
+> It can span multiple lines.
+
+Autolink: <https://markup-plus.dev>
+
+## 6. Image and Gallery
+
+![Sample image](https://picsum.photos/600/400?random=999){caption="Test Image" desc="A sample image for testing"}
+
+@gallery {columns=3}
+![1](https://picsum.photos/400/300?random=1000)
+![2](https://picsum.photos/400/300?random=1001)
+![3](https://picsum.photos/400/300?random=1002)
+@end
+
+## 7. Lists
+
+### Unordered
+
+- First item
+- Second item
+- Third item
+
+### Ordered
+
+1. First
+2. Second
+3. Third
+
+### Checklist
+
+- [x] Completed task
+- [ ] Pending task
+- [x] Finished task
+
+## 8. Conclusion
+
+Markup+ is now a complete markup language[^conclusion]!
+
+**All features work!** 🎉
+
+---
+
+[^intro]: This footnote is for testing.
+[^github]: Source code is on GitHub.
+[^conclusion]: Congratulations! Phase 3 is complete.---
+title: آزمون کامل فاز ۴
+author: Ataee
+version: 0.5.0
+---
+
+# {title}
+
+نویسنده: **{author}** | نسخه: `{version}`
+
+@toc
+
+---
+
+## ۱. متغیرهای ساده
+
+@let name = "علی"
+@let age = 30
+@let city = "تهران"
+@let is_active = true
+
+سلام **{name}**!
+
+شما {age} سال دارید و در {city} زندگی می‌کنید.
+
+وضعیت: {is_active}
+
+---
+
+## ۲. فیلترها
+
+@let title = "markup plus"
+
+- بدون فیلتر: {title}
+- upper: {title | upper}
+- capitalize: {title | capitalize}
+- title: {title | title}
+- ترکیب: {title | upper | reverse}
+
+---
+
+## ۳. شرط‌ها
+
+@let version_num = 5
+
+@if version_num == 5
+✅ نسخه ۵ پایدار است!
+@elif version_num == 4
+⚠️ نسخه ۴ قدیمی است
+@else
+❌ نسخه نامشخص
+@endif
+
+### شرط با متغیر رشته‌ای
+
+@let role = "admin"
+
+@if role == "admin"
+🔐 شما دسترسی کامل دارید
+@else
+👤 شما کاربر عادی هستید
+@endif
+
+---
+
+## ۴. حلقه‌ها
+
+@let fruits = ["سیب", "موز", "گیلاس", "پرتقال"]
+
+### لیست میوه‌ها
+
+@each fruit in fruits
+- {fruit}
+@end
+
+### با شماره
+
+@each i, fruit in fruits
+{i}. {fruit}
+@end
+
+---
+
+## ۵. حلقه با شرط
+
+@let scores = [95, 67, 88, 42, 78]
+
+### نمرات
+
+@each score in scores
+@if score >= 80
+- ✅ **{score}** - عالی
+@elif score >= 60
+- ⚠️ {score} - متوسط
+@else
+- ❌ {score} - نیاز به تلاش
+@endif
+@end
+
+---
+
+## ۶. کامنت‌ها
+
+@# این یک کامنت است
+
+متن معمولی اینجا.
+
+@# کامنت دیگر
+
+---
+
+## ۷. جدول با متغیر
+
+@let product = "لپ‌تاپ"
+@let price = 15000000
+@let stock = 5
+
+| محصول | قیمت | موجودی |
+|-------|------|--------|
+| {product} | {price} | {stock} |
+
+---
+
+## ۸. ترکیب همه‌چیز
+
+@let team = ["علی", "سارا", "رضا"]
+
+### اعضای تیم
+
+@each member in team
+- **{member}** — فعال ✅
+@end
+
+### خلاصه
+
+@let team_size = 3
+
+@if team_size >= 3
+تیم شما {team_size} عضو دارد — آماده برای پروژه!
+@else
+تیم شما {team_size} عضو دارد — نیاز به نیروی بیشتر
+@endif
+
+---
+
+## نتیجه‌گیری
+
+**Markup+ حالا یک زبان برنامه‌نویسی کامل است!** 🎉
+
+- ✅ متغیر (`@let`)
+- ✅ فیلتر (`| upper`, `| lower`, `| reverse`)
+- ✅ شرط (`@if` / `@elif` / `@else` / `@endif`)
+- ✅ حلقه (`@each`)
+- ✅ کامنت (`@#`)---
+title: آزمون کامل فاز ۵
+author: Ataee
+version: 0.6.0
+date: 2025-01-15
+---
+
+# {title}
+
+نویسنده: **{author}** | نسخه: `{version}` | تاریخ: {date}
+
+@toc
+
+---
+
+## ۱. هشدارها (Alerts)
+
+@note
+این یک **نکته مهم** است که باید بدانید.
+Markup+ حالا از کادرهای رنگی پشتیبانی می‌کند.
+@end
+
+@warning
+⚠️ **مراقب باشید!** این کار ممکن است مشکل ایجاد کند.
+قبل از ادامه مطمئن شوید که بکاپ دارید.
+@end
+
+@tip
+💡 **راه سریع‌تر:** از `Ctrl+S` برای ذخیره استفاده کنید.
+@end
+
+@danger
+🚨 **خطر!** هرگز این دستور را روی سیستم production اجرا نکنید:
+```bash
+rm -rf /
+```
+@end
+
+@success
+✅ **عملیات با موفقیت انجام شد!**
+پروژه حالا آماده‌ی انتشار است.
+@end
+
+---
+
+## ۲. نقل‌قول زیبا (Rich Quote)
+
+@quote(author="حافظ", source="دیوان")
+هر که را جامه ز عشقی چاک شد
+او ز عشق مصطفی بی‌باک شد
+@end
+
+@quote(author="داگلاس آدامز", source="راهنمای کهکشان")
+نگران نباشید و یک حوله بردارید.
+@end
+
+@quote(author="آلبرت اینشتین")
+تخیل مهم‌تر از دانش است، زیرا دانش محدود است.
+@end
+
+---
+
+## ۳. تب‌ها (Tabs)
+
+### نمونه‌ی کد در زبان‌های مختلف
+
+@tabs
+@tab "Python"
+```python
+def hello(name):
+    print(f"Hello, {name}!")
+    return True
+
+hello("Markup+")
+```
+@end
+
+@tab "JavaScript"
+```javascript
+function hello(name) {
+    console.log(`Hello, ${name}!`);
+    return true;
+}
+
+hello("Markup+");
+```
+@end
+
+@tab "Bash"
+```bash
+echo "Hello, Markup+!"
+echo "Version: 0.6.0"
+```
+@end
+
+@tab "Python + Flask"
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return "Hello from Markup+!"
+```
+@end
+@end
+
+---
+
+## ۴. آکاردئون (FAQ)
+
+@collapse
+@item "چطور Markup+ را نصب کنم؟"
+از pip استفاده کنید:
+
+```bash
+pip install markup-plus
+```
+
+سپس با دستور `mup` فایل‌های خود را تبدیل کنید.
+@end
+
+@item "چطور یک فایل .mup بسازم؟"
+کافی است یک فایل با پسوند `.mup` بسازید و با این دستور تبدیل کنید:
+
+```bash
+mup build file.mup
+```
+
+خروجی HTML در همان پوشه ساخته می‌شود.
+@end
+
+@item "آیا RTL پشتیبانی می‌شود؟"
+بله! Markup+ به‌صورت **خودکار** فارسی، عربی و عبری را تشخیص می‌دهد و صفحه را راست‌چین می‌کند.
+
+حتی می‌توانید دستی هم تعیین کنید:
+
+```bash
+mup file.mup --rtl
+mup file.mup --ltr
+```
+@end
+
+@item "چطور یک نمودار بسازم؟"
+با دستور `@chart`:
+
+```
+@chart(type="bar")
+data: [10, 20, 30]
+labels: ["A", "B", "C"]
+@end
+```
+@end
+
+@item "فرق Markup+ با Markdown چیه؟"
+Markup+ تمام قابلیت‌های Markdown را دارد، **به‌علاوه**:
+
+- متغیر (`@let`)
+- شرط (`@if`)
+- حلقه (`@each`)
+- کامپوننت (`@def`)
+- نمودار (`@chart`)
+- فرمول ریاضی (`$$...$$`)
+- تب و آکاردئون
+- ویدیو
+- و بیشتر...
+
+@end
+@end
+
+---
+
+## ۵. نمودارها (Charts)
+
+### نمودار میله‌ای — فروش ماهانه
+
+@chart(type="bar" title="فروش ماهانه ۱۴۰۴")
+data: [120, 250, 180, 320, 290, 410]
+labels: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور"]
+@end
+
+### نمودار خطی — رشد کاربران
+
+@chart(type="line" title="رشد کاربران Markup+")
+data: [10, 50, 120, 300, 750, 1500, 3200]
+labels: ["۱۴۰۰", "۱۴۰۱", "۱۴۰۲", "۱۴۰۳", "۱۴۰۴", "۱۴۰۵", "۱۴۰۶"]
+@end
+
+### نمودار دایره‌ای — سهم بازار
+
+@chart(type="pie" title="سهم مرورگرها در ایران")
+data: [55, 20, 15, 10]
+labels: ["Chrome", "Firefox", "Safari", "Others"]
+@end
+
+### نمودار دایره‌ای توپر — سهم سیستم‌عامل
+
+@chart(type="doughnut" title="سیستم‌عامل کاربران")
+data: [65, 20, 10, 5]
+labels: ["Windows", "macOS", "Linux", "Other"]
+@end
+
+---
+
+## ۶. فرمول‌های ریاضی (Math)
+
+### فرمول معروف اینشتین
+
+$$ E = mc^2 $$
+
+### معادله درجه دو
+
+$$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+
+### انتگرال گاوسی
+
+$$ \int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2} $$
+
+### فرمول اویلر
+
+$$ e^{i\pi} + 1 = 0 $$
+
+### سری فیبوناچی
+
+$$ F_n = F_{n-1} + F_{n-2} $$
+
+### فرمول ریاضی درون‌خطی
+
+می‌دانیم که $E = mc^2$ و همچنین $a^2 + b^2 = c^2$.
+
+### ماتریس
+
+$$ \begin{pmatrix} a & b \\ c & d \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} ax + by \\ cx + dy \end{pmatrix} $$
+
+---
+
+## ۷. کامپوننت‌ها (Components)
+
+### تعریف کامپوننت Card
+
+@def Card(title, body)
+> **{title}**
+>
+> {body}
+@end
+
+### استفاده از کامپوننت
+
+@Card(title="سلام دنیا", body="این یک کارت قابل استفاده مجدد است.")
+
+@Card(title="Markup+", body="بهترین زبان نشانه‌گذاری دنیا!")
+
+@Card(title="فاز ۵", body="کامپوننت‌ها حالا کار می‌کنند — این سومین استفاده است!")
+
+### تعریف کامپوننت Info
+
+@def Info(label, value)
+**{label}:** `{value}`
+@end
+
+### استفاده از Info
+
+@Info(label="نسخه", value="0.6.0")
+@Info(label="تاریخ انتشار", value="2025-01-15")
+@Info(label="نویسنده", value="Ataee")
+
+---
+
+## ۸. خط زمانی (Timeline)
+
+@timeline
+2020: شروع پروژه Markup+
+2021: نوشتن اولین نسخه Lexer
+2022: انتشار نسخه ۱.۰ با قابلیت‌های پایه
+2023: رسیدن به ۱۰۰۰ کاربر فعال
+2024: بازنویسی کامل با معماری جدید
+2025-01: انتشار نسخه ۰.۶.۰ با قابلیت‌های پیشرفته
+2025-06: هدف — نسخه ۱.۰ پایدار
+@end
+
+---
+
+## ۹. ترکیب همه‌چیز
+
+### نمودار + جدول
+
+@chart(type="bar" title="آمار پروژه")
+data: [45, 126, 174, 40]
+labels: ["قابلیت‌ها", "تست‌ها", "کامیت‌ها", "مستندات"]
+@end
+
+| مورد | تعداد | وضعیت |
+|------|:-----:|:-----:|
+| قابلیت‌ها | 45 | ✅ |
+| تست‌ها | 174 | ✅ |
+| فازها | 5 | ✅ |
+| نسخه‌ها | 6 | ✅ |
+
+### هشدار + کد
+
+@tip
+برای مشاهده‌ی نسخه فعلی از این دستور استفاده کنید:
+@end
+
+```bash
+mup --version
+```
+
+@let philosopher = "سقراط"
+
+@quote{author="{philosopher}"}
+زندگی بررسی‌نشده ارزش زیستن ندارد.
+@end
+---
+
+## ۱۰. یک مثال واقعی — صفحه‌ی محصول
+
+@def Product(name, price, stock, description)
+### {name}
+
+**قیمت:** {price} تومان
+**موجودی:** {stock} عدد
+
+{description}
+
+@if stock > 0
+✅ **موجود است** — می‌توانید سفارش دهید
+@else
+❌ **ناموجود** — به‌زودی شارژ می‌شود
+@endif
+@end
+
+### محصولات فروشگاه
+
+@Product(name="لپ‌تاپ", price="15000000", stock="5", description="لپ‌تاپ گیمینگ با RTX 4060")
+
+@Product(name="ماوس", price="500000", stock="0", description="ماوس بی‌سیم با DPI 16000")
+
+@Product(name="کیبورد", price="1200000", stock="12", description="کیبورد مکانیکی RGB")
+
+---
+
+## نتیجه‌گیری
+
+**Markup+ حالا یک زبان برنامه‌نویسی کامل است!** 🎉
+
+@success
+همه‌ی قابلیت‌های فاز ۵ با موفقیت پیاده‌سازی شدند!
+@end
+
+### چک‌لیست قابلیت‌ها
+
+- ✅ کامپوننت (`@def`, `@Card(...)`)
+- ✅ نمودار (`@chart`) — Chart.js
+- ✅ فرمول ریاضی (`$$...$$`) — KaTeX
+- ✅ تب (`@tabs`) — تعاملی با JavaScript
+- ✅ آکاردئون (`@collapse`) — بازشو و بسته‌شو
+- ✅ هشدار (`@note`, `@warning`, `@tip`, `@danger`, `@success`)
+- ✅ نقل‌قول زیبا (`@quote`)
+- ✅ خط زمانی (`@timeline`)
+- ✅ ایمپورت (`@import`)
+- ✅ فهرست خودکار (`@toc`)
+
+### آمار پروژه
+
+| فاز | قابلیت | تست‌ها |
+|:---:|--------|:------:|
+| ۱ | Core | 11 |
+| ۲ | Blocks + Images | ~50 |
+| ۲.۵ | Rich Code + Lightbox | ~95 |
+| ۳ | Tables + TOC + Footnotes | 126 |
+| ۴ | Variables + Logic + Loops | 174 |
+| **۵** | **Components + Charts + Math** | **~220** |
+
+---
+
+**Markup+ — فراتر از یک زبان نشانه‌گذاری** 🚀# Quotes and Rules Demo
+
+## Blockquote
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+## Quote with formatting
+
+> Here we have **bold** and *italic* inside a quote.
+
+## Horizontal Rules
+
+First section content.
+
+---
+
+Second section content.
+
+***
+
+Third section content.
+
+## Combined
+
+Some text.
+
+> A quote in the middle.
+
+---
+
+Some more text after.# Markup+ Showcase
+
+Welcome to the **complete feature demo** of `Markup+` — a modern markup language with more features than Markdown.
+
+---
+
+## 1. Text Formatting
+
+This is **bold**, this is *italic*, and this is `inline code`.
+
+You can combine them: **bold with *italic* inside**.
+
+Special characters: `< > & " '` are escaped safely.
+
+---
+
+## 2. Headings (H1-H6)
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 3. Lists
+
+### Unordered
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+- Fourth item with *italic*
+
+### Ordered
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML
+
+---
+
+## 4. Blockquotes
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+> **Bold quote** with *italic* and `code`.
+
+---
+
+## 5. Code Blocks
+
+### Python
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("Markup+")
+```
+
+### JavaScript
+
+```javascript
+const greet = (name) => {
+    console.log(`Hello, ${name}!`);
+};
+
+greet("Markup+");
+```
+
+### Bash
+
+```bash
+pip install markup-plus
+mup examples/showcase.mup
+```
+
+### Code with Line Numbers
+
+```python {title="app.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+### HTML with Live Preview
+
+```html {title="preview.html"}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Live Preview!</h1>
+        <p>This HTML is rendered live inside Markup+.</p>
+    </div>
+</body>
+</html>
+```
+
+### JavaScript with Live Preview
+
+```javascript {title="demo.js"}
+const user = { name: "Markup+", version: 0.2 };
+console.log("Hello,", user.name);
+console.log("Version:", user.version);
+console.log("2 + 2 =", 2 + 2);
+console.log("Array:", [1, 2, 3].map(x => x * 2));
+```
+
+### Code Without Buttons
+
+```text {copy=false download=false}
+This block has no buttons.
+Just plain text.
+```
+
+---
+
+## 6. Single Images
+
+### Simple Image
+
+![Sample](https://picsum.photos/600/400?random=1)
+
+### With Caption and Description
+
+![Northern Lights](https://picsum.photos/700/400?random=2){caption="Aurora Borealis" desc="The aurora borealis, also known as the northern lights, is a natural light display in Earth's sky, predominantly seen in high-latitude regions around the Arctic and Antarctic."}
+
+### Centered Image
+
+![Centered](https://picsum.photos/500/300?random=3){align=center}
+
+### With Custom Width
+
+![Small](https://picsum.photos/600/400?random=4){width=300}
+
+### Non-zoomable Image
+
+![No zoom](https://picsum.photos/400/250?random=5){zoomable=false caption="Not zoomable"}
+
+---
+
+## 7. Image Galleries
+
+### Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Mountain](https://picsum.photos/400/300?random=10)
+![Beach](https://picsum.photos/400/300?random=11)
+![Forest](https://picsum.photos/400/300?random=12)
+![City](https://picsum.photos/400/300?random=13)
+![Desert](https://picsum.photos/400/300?random=14)
+![Lake](https://picsum.photos/400/300?random=15)
+@end
+
+### Gallery with Captions
+
+@gallery {columns=2 caption="My travel photos"}
+![Sunset](https://picsum.photos/500/350?random=20){caption="Golden Sunset" desc="The sun setting over the calm Pacific ocean."}
+![Forest](https://picsum.photos/500/350?random=21){caption="Misty Forest" desc="A quiet morning in the deep woods."}
+@end
+
+### Photo Grid (4 columns)
+
+@gallery {columns=4}
+![1](https://picsum.photos/300/300?random=30)
+![2](https://picsum.photos/300/300?random=31)
+![3](https://picsum.photos/300/300?random=32)
+![4](https://picsum.photos/300/300?random=33)
+![5](https://picsum.photos/300/300?random=34)
+![6](https://picsum.photos/300/300?random=35)
+![7](https://picsum.photos/300/300?random=36)
+![8](https://picsum.photos/300/300?random=37)
+@end
+
+---
+
+## 8. Mixed Content
+
+Here's a list with code:
+
+1. First step
+2. Second step
+3. Third step
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And a **closing statement**.
+
+---
+
+## 9. Keyboard Shortcuts
+
+When you open an image in the lightbox:
+
+| Key | Action |
+|-----|--------|
+| `←` / `→` | Previous / Next image |
+| `+` / `-` | Zoom in / out |
+| `0` | Reset zoom |
+| `ESC` | Close lightbox |
+| Click image | Toggle 2x zoom |
+
+---
+
+## 10. Theme Test
+
+This document works in both **light** and **dark** themes.
+
+Try both:
+
+```bash
+mup examples/showcase.mup
+mup examples/showcase.mup --dark
+```
+
+---
+
+## 🎉 Summary
+
+Everything works:
+
+- ✅ Headings (H1-H6)
+- ✅ Bold, italic, inline code
+- ✅ Paragraphs
+- ✅ Unordered and ordered lists
+- ✅ Blockquotes
+- ✅ Horizontal rules
+- ✅ Code blocks with syntax highlighting
+- ✅ Code copy/download/preview buttons
+- ✅ Live preview for HTML/CSS/JS
+- ✅ Single images with lightbox
+- ✅ Image galleries with lightbox
+- ✅ Image zoom in lightbox
+- ✅ Image descriptions
+- ✅ Light and dark themes
+- ✅ Native-like smooth animations
+
+**Enjoy Markup+!** 🚀# Tables Demo
+
+## Simple Table
+
+| Name  | Age | City    |
+|-------|-----|---------|
+| Ali   | 30  | Tehran  |
+| Sara  | 25  | London  |
+| Reza  | 35  | Paris   |
+
+## Table with Alignment
+
+| Left      | Center | Right |
+|:----------|:------:|------:|
+| Apple     | 10     | $5    |
+| Banana    | 20     | $10   |
+| Cherry    | 15     | $7.5  |
+
+## Table with Formatting
+
+| Feature        | Status | Notes          |
+|----------------|:------:|----------------|
+| **Bold**       | ✅     | Works          |
+| *Italic*       | ✅     | Works          |
+| `Code`         | ✅     | Works          |
+| [Link](https://example.com) | ✅ | Works |
+
+## Table with Numbers
+
+| Metric    | Q1    | Q2    | Q3    |
+|:----------|------:|------:|------:|
+| Revenue   | 12000 | 15000 | 18000 |
+| Users     | 340   | 520   | 780   |
+| Growth    | +12%  | +53%  | +50%  |
+
+## Table with Long Content
+
+| Language | Description                                  | Popularity |
+|----------|----------------------------------------------|:----------:|
+| Python   | General-purpose, easy to learn               | ⭐⭐⭐⭐⭐  |
+| JavaScript | Web language, everywhere                   | ⭐⭐⭐⭐⭐  |
+| Rust     | Fast and safe systems programming            | ⭐⭐⭐⭐   |
+| Go       | Simple, fast, great for servers              | ⭐⭐⭐⭐   |
+
+## Mixed Content with Table
+
+Here's some text before.
+
+| Column A | Column B |
+|----------|----------|
+| Value 1  | Value 2  |
+| Value 3  | Value 4  |
+
+And some text after.
+
+## Table with Inline Links
+
+| Resource | Link                                  |
+|----------|---------------------------------------|
+| Docs     | [Documentation](https://docs.example.com) |
+| Source   | [GitHub](https://github.com)          |
+| Website  | <https://example.com>                 |# Markup+ Complete Test
+
+Welcome to **Markup+** — a modern markup language with `more features` than Markdown.
+
+---
+
+## 1. Text Formatting
+
+This is **bold text**, this is *italic text*, and this is `inline code`.
+
+You can combine: **bold with *italic* inside**.
+
+Special characters: `< > & " '` are safely escaped.
+
+Strikethrough ~~text~~ here.
+
+---
+
+## 2. Headings (H1-H6)
+
+### Level 3 Heading
+
+#### Level 4 Heading
+
+##### Level 5 Heading
+
+###### Level 6 Heading
+
+---
+
+## 3. Paragraphs
+
+This is the first paragraph.
+
+This is the second paragraph, separated by a blank line.
+
+And a third one.
+
+---
+
+## 4. Unordered List
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+- Fourth item with *italic*
+
+---
+
+## 5. Ordered List
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML output
+
+---
+
+## 6. List with Links
+
+- [Google](https://google.com) for search
+- [GitHub](https://github.com) for code
+- ~~[Old link](https://old.com)~~ removed
+- Autolink: <https://example.com>
+
+---
+
+## 7. Blockquote
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+> **Bold in quote** with *italic* and `code`.
+
+---
+
+## 8. Horizontal Rules
+
+Above the line.
+
+---
+
+Below the line.
+
+---
+
+## 9. Python Code Block
+
+```python
+def greet(name):
+    print(f"Hello, {name}!")
+    return True
+
+greet("World")
+```
+
+## 10. JavaScript Code Block
+
+```javascript
+function greet(name) {
+    console.log(`Hello, ${name}!`);
+}
+greet("World");
+```
+
+## 11. Plain Code Block
+
+```
+This is a code block.
+Without any coloring.
+```
+
+## 12. HTML Code Block with Preview
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Live Preview!</h1>
+        <p>This HTML renders live.</p>
+    </div>
+</body>
+</html>
+```
+
+## 13. Code Block with Line Highlights
+
+```python {title="app.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("Ali", "ali@example.com")]
+```
+
+---
+
+## 14. Simple Image
+
+![Sample image](https://picsum.photos/600/400?random=100)
+
+---
+
+## 15. Image with Caption and Description
+
+![Beautiful view](https://picsum.photos/700/400?random=101){caption="Mountain view" desc="A beautiful view of green mountains in northern Iran, captured in spring."}
+
+---
+
+## 16. Centered Image
+
+![Centered](https://picsum.photos/500/300?random=102){align=center}
+
+---
+
+## 17. Image with Custom Width
+
+![Small](https://picsum.photos/600/400?random=103){width=300}
+
+---
+
+## 18. Simple Gallery (3 columns)
+
+@gallery {columns=3}
+![Image 1](https://picsum.photos/400/300?random=200)
+![Image 2](https://picsum.photos/400/300?random=201)
+![Image 3](https://picsum.photos/400/300?random=202)
+![Image 4](https://picsum.photos/400/300?random=203)
+![Image 5](https://picsum.photos/400/300?random=204)
+![Image 6](https://picsum.photos/400/300?random=205)
+@end
+
+---
+
+## 19. Gallery with Captions
+
+@gallery {columns=2 caption="My travel photos"}
+![Sunset](https://picsum.photos/500/350?random=300){caption="Golden Sunset" desc="Beautiful sunset by the sea."}
+![Forest](https://picsum.photos/500/350?random=301){caption="Misty Forest" desc="Early morning in northern forests."}
+@end
+
+---
+
+## 20. Simple Table
+
+| Name | Age | City |
+|------|-----|------|
+| Ali | 30 | Tehran |
+| Sara | 25 | Isfahan |
+| Reza | 35 | Shiraz |
+
+---
+
+## 21. Table with Alignment
+
+| Product | Quantity | Price |
+|:--------|:--------:|------:|
+| Apple | 10 | 5000 |
+| Banana | 20 | 10000 |
+| Cherry | 15 | 7500 |
+
+---
+
+## 22. Table with Formatting
+
+| Feature | Status | Notes |
+|---------|:------:|-------|
+| **Bold** | ✅ | Works |
+| *Italic* | ✅ | Works |
+| `Code` | ✅ | Works |
+| [Link](https://example.com) | ✅ | Works |
+
+---
+
+## 23. Mixed Content
+
+Here's a list with code:
+
+1. Step one
+2. Step two
+3. Step three
+
+```python
+# Example code
+x = 42
+print(x)
+```
+
+Then a quote:
+
+> Code is poetry.
+
+And a **closing statement**.
+
+---
+
+## 24. Links Test
+
+- Simple link: [Google](https://google.com)
+- Link with title: [Docs](https://docs.example.com "Official Docs")
+- Autolink: <https://example.com>
+- Combined: [**Bold link**](https://example.com)
+- Strikethrough: ~~[Old link](https://old.com)~~
+
+---
+
+## 25. Summary
+
+All features work:
+
+- ✅ Headings (H1-H6)
+- ✅ Bold, italic, inline code
+- ✅ Strikethrough
+- ✅ Paragraphs
+- ✅ Unordered and ordered lists
+- ✅ Blockquotes
+- ✅ Horizontal rules
+- ✅ Code blocks with syntax highlighting
+- ✅ Copy/download/preview buttons
+- ✅ Live preview for HTML/CSS/JS
+- ✅ Single images with lightbox
+- ✅ Galleries with lightbox
+- ✅ Image zoom
+- ✅ Image descriptions
+- ✅ Tables with alignment
+- ✅ Light and dark themes
+- ✅ Smooth animations
+- ✅ Scroll animations
+
+**Enjoy Markup+!** 🚀# آزمون جامع Markup+
+
+به **Markup+** خوش آمدید — یک زبان نشانه‌گذاری مدرن با `قابلیت‌های بیشتر` از مارک‌داون.
+
+---
+
+## ۱. قالب‌بندی متن
+
+این **متن بولد** است، این *متن ایتالیک* است، و این `کد درون‌خطی`.
+
+می‌توانید ترکیب کنید: **بولد با *ایتالیک* داخل**.
+
+کاراکترهای خاص: `< > & " '` به‌طور امن escape شده‌اند.
+
+متن ~~خط‌خورده~~ اینجا.
+
+---
+
+## ۲. عنوان‌ها (H1-H6)
+
+### عنوان سطح ۳
+
+#### عنوان سطح ۴
+
+##### عنوان سطح ۵
+
+###### عنوان سطح ۶
+
+---
+
+## ۳. پاراگراف‌ها
+
+این پاراگراف اول است.
+
+این پاراگراف دوم است، جدا شده با یک خط خالی.
+
+و این یکی سوم.
+
+---
+
+## ۴. لیست نامرتب
+
+- مورد اول
+- مورد دوم با **بولد**
+- مورد سوم با `کد`
+- مورد چهارم با *ایتالیک*
+
+---
+
+## ۵. لیست مرتب
+
+1. نصب پایتون
+2. نصب Markup+
+3. نوشتن یک فایل `.mup`
+4. اجرای `mup file.mup`
+5. باز کردن خروجی HTML
+
+---
+
+## ۶. لیست ترکیبی با لینک
+
+- [گوگل](https://google.com) برای جستجو
+- [گیت‌هاب](https://github.com) برای کد
+- ~~[لینک قدیمی](https://old.com)~~ حذف شده
+- لینک خودکار: <https://example.com>
+
+---
+
+## ۷. نقل‌قول
+
+> این یک نقل‌قول ساده است.
+> می‌تواند چند خط باشد.
+
+> **بولد در نقل‌قول** با *ایتالیک* و `کد`.
+
+---
+
+## ۸. خط جداکننده
+
+بالای خط.
+
+---
+
+پایین خط.
+
+---
+
+## ۹. بلوک کد پایتون
+
+```python
+def سلام(نام):
+    print(f"سلام، {نام}!")
+    return True
+
+سلام("دنیا")
+```
+
+## ۱۰. بلوک کد جاوااسکریپت
+
+```javascript
+function greet(name) {
+    console.log(`Hello, ${name}!`);
+}
+greet("World");
+```
+
+## ۱۱. بلوک کد بدون زبان
+
+```
+این یک بلوک کد است.
+بدون هیچ رنگی.
+```
+
+## ۱۲. بلوک کد HTML با پیش‌نمایش
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>پیش‌نمایش زنده!</h1>
+        <p>این HTML به‌صورت زنده رندر می‌شود.</p>
+    </div>
+</body>
+</html>
+```
+
+## ۱۳. بلوک کد با خطوط هایلایت
+
+```python {title="app.py" linenos hl=[3,7]}
+import asyncio
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    name: str
+    email: str
+
+async def fetch_users():
+    await asyncio.sleep(1)
+    return [User("علی", "ali@example.com")]
+```
+
+---
+
+## ۱۴. تصویر ساده
+
+![تصویر نمونه](https://picsum.photos/600/400?random=100)
+
+---
+
+## ۱۵. تصویر با کپشن و توضیحات
+
+![منظره زیبا](https://picsum.photos/700/400?random=101){caption="کوه‌های زیبا" desc="نمایی از کوه‌های سرسبز در شمال ایران که در فصل بهار گرفته شده است."}
+
+---
+
+## ۱۶. تصویر وسط‌چین
+
+![وسط](https://picsum.photos/500/300?random=102){align=center}
+
+---
+
+## ۱۷. تصویر با عرض سفارشی
+
+![کوچک](https://picsum.photos/600/400?random=103){width=300}
+
+---
+
+## ۱۸. گالری ساده (۳ ستونه)
+
+@gallery {columns=3}
+![تصویر ۱](https://picsum.photos/400/300?random=200)
+![تصویر ۲](https://picsum.photos/400/300?random=201)
+![تصویر ۳](https://picsum.photos/400/300?random=202)
+![تصویر ۴](https://picsum.photos/400/300?random=203)
+![تصویر ۵](https://picsum.photos/400/300?random=204)
+![تصویر ۶](https://picsum.photos/400/300?random=205)
+@end
+
+---
+
+## ۱۹. گالری با کپشن
+
+@gallery {columns=2 caption="سفرنامه من"}
+![غروب](https://picsum.photos/500/350?random=300){caption="غروب آفتاب" desc="غروب زیبا در ساحل دریا."}
+![جنگل](https://picsum.photos/500/350?random=301){caption="جنگل مه‌آلود" desc="صبح زود در جنگل‌های شمال."}
+@end
+
+---
+
+## ۲۰. جدول ساده
+
+| نام | سن | شهر |
+|------|-----|------|
+| علی | ۳۰ | تهران |
+| سارا | ۲۵ | اصفهان |
+| رضا | ۳۵ | شیراز |
+
+---
+
+## ۲۱. جدول با تراز
+
+| کالا | تعداد | قیمت |
+|:-----|:-----:|------:|
+| سیب | ۱۰ | ۵۰۰۰ |
+| موز | ۲۰ | ۱۰۰۰۰ |
+| گیلاس | ۱۵ | ۷۵۰۰ |
+
+---
+
+## ۲۲. جدول با قالب‌بندی
+
+| ویژگی | وضعیت | توضیحات |
+|--------|:-----:|---------|
+| **بولد** | ✅ | کار می‌کند |
+| *ایتالیک* | ✅ | کار می‌کند |
+| `کد` | ✅ | کار می‌کند |
+| [لینک](https://example.com) | ✅ | کار می‌کند |
+
+---
+
+## ۲۳. محتوای ترکیبی
+
+اینجا یک لیست با بلوک کد داریم:
+
+1. مرحله اول
+2. مرحله دوم
+3. مرحله سوم
+
+```python
+# کد نمونه
+x = 42
+print(x)
+```
+
+بعد یک نقل‌قول:
+
+> کد شعر است.
+
+و یک **بیانیه پایانی**.
+
+---
+
+## ۲۴. تست لینک‌ها
+
+- لینک ساده: [گوگل](https://google.com)
+- لینک با عنوان: [مستندات](https://docs.example.com "مستندات رسمی")
+- لینک خودکار: <https://example.com>
+- ترکیبی: [**لینک بولد**](https://example.com)
+- خط‌خورده: ~~[لینک قدیمی](https://old.com)~~
+
+---
+
+## ۲۵. خلاصه
+
+همه‌ی قابلیت‌ها کار می‌کنند:
+
+- ✅ عنوان‌ها (H1-H6)
+- ✅ بولد، ایتالیک، کد درون‌خطی
+- ✅ خط‌خورده
+- ✅ پاراگراف‌ها
+- ✅ لیست نامرتب و مرتب
+- ✅ نقل‌قول
+- ✅ خط جداکننده
+- ✅ بلوک کد با Syntax Highlighting
+- ✅ دکمه‌های کپی/دانلود/پیش‌نمایش
+- ✅ پیش‌نمایش زنده برای HTML/CSS/JS
+- ✅ تصاویر تکی با لایت‌باکس
+- ✅ گالری‌ها با لایت‌باکس
+- ✅ بزرگ‌نمایی تصاویر
+- ✅ توضیحات تصاویر
+- ✅ جدول‌ها با تراز
+- ✅ تم روشن و تاریک
+- ✅ انیمیشن‌های نرم
+- ✅ انیمیشن اسکرول
+
+**از Markup+ لذت ببرید!** 🚀
