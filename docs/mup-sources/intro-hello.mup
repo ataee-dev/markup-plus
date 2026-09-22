@@ -1,0 +1,33 @@
+# Hello, Markup+
+
+This is a **Markdown**-style document with a few Markup+ features on top.
+
+@let name = "World"
+@let version = "0.6.4"
+
+Hello, **{name}**!
+
+You are reading this in **Markup+ {version}**.
+
+## Features used here
+
+- Headings
+- Bold
+- Inline code
+- Variables
+- A note block
+
+@note
+This document was rendered from a .mup file by the Markup+ JS runtime.
+@end
+
+| Feature | Supported |
+|---------|:---------:|
+| Markdown | Yes |
+| Variables | Yes |
+| Charts | Yes |
+| Math | Yes |
+
+@tip
+Everything you see here was written in Markup+, not HTML.
+@end

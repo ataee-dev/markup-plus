@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Loops — Markup+ JS</title>
+  <meta name="description" content="Iterate over arrays with @each and optional index.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html" class="active">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Loops</span></nav>
+
+<article class="article">
+
+<h1>Loops</h1>
+<p class="lead">Repeat content for each item in a list. Loops combined with conditionals and components make Markup+ documents truly dynamic.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why loops?</div>
+    <p>Generate lists, tables, and repeated blocks from data. Change the data, and the output updates automatically.</p>
+  </div>
+</div>
+
+<h2 id="basic">Basic loop</h2>
+
+<p>The syntax is <code>@each item in list ... @end</code>. The loop variable is available inside the block.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Loop over a list</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-basic.mup" title="Basic loop" loading="lazy" style="width:100%;min-height:220px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="index">Loop with index</h2>
+
+<p>Get the position of each item with <code>@each i, item in list</code>. The index starts at 1.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Loop with index</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-index.mup" title="Loop with index" loading="lazy" style="width:100%;min-height:200px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-index.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="condition">Loop with condition</h2>
+
+<p>Combine <code>@each</code> with <code>@if</code> to filter items inside the loop.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Loop + condition</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-condition.mup" title="Loop with condition" loading="lazy" style="width:100%;min-height:220px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-condition.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="nested">Nested loops</h2>
+
+<p>Loops can be nested. Each loop has its own scope.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Nested loops</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-nested.mup" title="Nested loops" loading="lazy" style="width:100%;min-height:280px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-nested.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="inline">Inline arrays</h2>
+
+<p>You can loop over an array defined inline without <code>@let</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Inline array</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-inline.mup" title="Inline array" loading="lazy" style="width:100%;min-height:180px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-inline.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="data">Practical example: data-driven table</h2>
+
+<p>Build a table from data using a loop:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Data-driven table</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-table.mup" title="Data-driven table" loading="lazy" style="width:100%;min-height:260px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-table.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="team">Team members example</h3>
+
+<p>Combine loops with filters to display team information:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Team list</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/05-team.mup" title="Team list" loading="lazy" style="width:100%;min-height:240px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/05-team.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>Missing <code>@end</code></td><td>Every <code>@each</code> must close with <code>@end</code></td></tr>
+    <tr><td><code>@each in list</code></td><td>Specify the loop variable: <code>@each item in list</code></td></tr>
+    <tr><td><code>@each x in "text"</code></td><td>The list must be an array, not a string</td></tr>
+    <tr><td><code>@each i, x in list</code> order</td><td>Index comes first: <code>i, item</code></td></tr>
+    <tr><td>Loop variable used outside the block</td><td>Loop variables only exist inside the loop</td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>Simple loop</td><td><code>@each item in list ... @end</code></td></tr>
+    <tr><td>With index</td><td><code>@each i, item in list ... @end</code></td></tr>
+    <tr><td>With condition</td><td><code>@each item in list ... @if cond ... @endif ... @end</code></td></tr>
+    <tr><td>Nested loops</td><td><code>@each a in outer ... @each b in inner ... @end ... @end</code></td></tr>
+    <tr><td>Inline array</td><td><code>@each x in [1, 2, 3] ... @end</code></td></tr>
+    <tr><td>Get length</td><td><code>{list|length}</code></td></tr>
+    <tr><td>Reverse list</td><td><code>{list|reverse}</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Learn about <a href="06-components.html">Components</a> to define reusable blocks, or explore <a href="12-charts.html">Charts</a> to visualize your data.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="04-conditionals.html" class="nav-prev"><span>← Previous</span><strong>04 · Conditionals</strong></a>
+  <a href="06-components.html" class="nav-next"><span>Next →</span><strong>06 · Components</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

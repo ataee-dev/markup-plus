@@ -1,0 +1,11 @@
+# Installation
+
+Choose your package manager:
+
+- **npm**: `npm install markup-plus-js`
+- **pip**: `pip install markup-plus`
+- **CDN**: `https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js`
+
+@tip
+Use npm for JavaScript projects, pip for Python projects.
+@end

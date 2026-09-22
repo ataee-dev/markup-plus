@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Installation — Markup+ JS</title>
+  <meta name="description" content="Install Markup+ via npm, CDN, or from source. Also covers the Python implementation and CLI.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html" class="active">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Getting Started</span><span>/</span><span>Installation</span></nav>
+
+<article class="article">
+
+<h1>Installation</h1>
+<p class="lead">Install Markup+ in your environment — JavaScript via npm, browsers via CDN, Python via pip, or run the CLI directly. Then set up your editor for a smooth workflow.</p>
+
+<h2 id="choose">1. Choose your method</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Environment</th>
+      <th>Method</th>
+      <th>Best for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Node.js / bundler</td>
+      <td><a href="#npm">npm install</a></td>
+      <td>Apps, build tools, TypeScript projects</td>
+    </tr>
+    <tr>
+      <td>Browser (no build)</td>
+      <td><a href="#cdn">CDN script tag</a></td>
+      <td>Prototypes, static HTML, CodePen</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td><a href="#python">pip install</a></td>
+      <td>Python scripts, servers, CI pipelines</td>
+    </tr>
+    <tr>
+      <td>Command line</td>
+      <td><a href="#cli">npm i -g</a></td>
+      <td>Converting <code>.mup</code> files from a terminal</td>
+    </tr>
+    <tr>
+      <td>Source</td>
+      <td><a href="#source">git clone</a></td>
+      <td>Contributing, patching, local development</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="requirements">2. Requirements</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Runtime</th>
+      <th>Minimum version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Node.js</td>
+      <td>18.0.0 or newer</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>3.9 or newer</td>
+    </tr>
+    <tr>
+      <td>Browsers</td>
+      <td>Chrome 90+, Firefox 88+, Safari 14+, Edge 90+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="npm">3. Install via npm (JavaScript)</h2>
+
+<p>For Node.js projects, bundlers, and any environment that supports npm.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npm install markup-plus-js</code></pre>
+  </div>
+</div>
+
+<p>Or with a package manager of your choice:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Package managers</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># npm
+npm install markup-plus-js
+
+# yarn
+yarn add markup-plus-js
+
+# pnpm
+pnpm add markup-plus-js
+
+# bun
+bun add markup-plus-js</code></pre>
+  </div>
+</div>
+
+<h3 id="npm-usage">Basic usage</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>index.js</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { toHTML } from 'markup-plus-js';
+
+const html = toHTML('# Hello World', {
+  theme: 'dark',
+});
+
+console.log(html);</code></pre>
+  </div>
+</div>
+
+<h3 id="npm-typescript">With TypeScript</h3>
+
+<p>Types are bundled — no <code>@types/</code> package needed.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">import { toHTML, Theme, RenderOptions } from 'markup-plus-js';
+
+const theme: Theme = 'dracula';
+const options: RenderOptions = { theme };
+
+const html: string = toHTML('# Hello', options);
+console.log(html);</code></pre>
+  </div>
+</div>
+
+<h3 id="npm-commonjs">CommonJS</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>CommonJS</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const { toHTML } = require('markup-plus-js');
+
+const html = toHTML('# Hello');</code></pre>
+  </div>
+</div>
+
+<h3 id="npm-subpaths">Subpath imports</h3>
+
+<p>The package exposes several subpath entry points for advanced use cases:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Subpaths</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">// Main entry (recommended)
+import { toHTML } from 'markup-plus-js';
+
+// Parser only
+import { parse } from 'markup-plus-js/parser';
+
+// Renderer only
+import { renderBody } from 'markup-plus-js/renderer';
+
+// AST classes
+import * as ast from 'markup-plus-js/ast';
+
+// Base CSS as a string
+import baseCSS from 'markup-plus-js/base-css';</code></pre>
+  </div>
+</div>
+
+<h2 id="cdn">4. Install via CDN (Browser)</h2>
+
+<p>No installation needed. Just add a script tag to your HTML page.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>index.html</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">HTML</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"&gt;&lt;/script&gt;
+
+&lt;div id="app"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  document.getElementById('app').innerHTML =
+    MarkupPlus.renderBody('# Hello World');
+&lt;/script&gt;</code></pre>
+  </div>
+</div>
+
+<p>For the full guide — including ESM, version pinning, and offline use — see <a href="cdn-usage.html">CDN Usage</a>.</p>
+
+<h2 id="python">5. Install via pip (Python)</h2>
+
+<p>The Python implementation produces equivalent HTML output. Use it in Python scripts, servers, or CI pipelines.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">pip install markup-plus</code></pre>
+  </div>
+</div>
+
+<p>Or in a virtual environment (recommended):</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Virtual environment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Windows
+python -m venv venv
+venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+
+# Install
+pip install markup-plus</code></pre>
+  </div>
+</div>
+
+<h3 id="python-usage">Python usage</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>example.py</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+html = to_html("# Hello World", theme="dark")
+print(html)</code></pre>
+  </div>
+</div>
+
+<h3 id="python-verify">Verify installation</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">python -c "import markup_plus; print(markup_plus.__version__)"</code></pre>
+  </div>
+</div>
+
+<p>For the full Python API, see the <a href="python-api.html">Python API reference</a>.</p>
+
+<h2 id="cli">6. Command-line interface</h2>
+
+<p>The CLI is bundled with the npm package. Install it globally to use <code>mup-js</code> from any directory.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Global install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npm install -g markup-plus-js</code></pre>
+  </div>
+</div>
+
+<p>Or run it once without installing:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>One-off run</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npx markup-plus-js hello.mup</code></pre>
+  </div>
+</div>
+
+<h3 id="cli-verify">Verify</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify CLI</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js --version
+# Markup+ JS v0.6.4
+
+mup-js --help</code></pre>
+  </div>
+</div>
+
+<h3 id="cli-quick">Quick CLI example</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Convert a file</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Convert hello.mup to hello.html
+mup-js hello.mup
+
+# Watch for changes and rebuild
+mup-js watch hello.mup
+
+# Create a new document
+mup-js new my-doc
+
+# Validate a file
+mup-js check hello.mup
+
+# Initialize a project
+mup-js init my-project</code></pre>
+  </div>
+</div>
+
+<p>For the full CLI reference, see <a href="cli-reference.html">CLI Reference</a>.</p>
+
+<h2 id="source">7. Install from source</h2>
+
+<p>Clone the repository and link it locally. Use this for contributing or if you need to modify the source.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Clone and install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">git clone https://github.com/ataee-dev/markup-plus-js.git
+cd markup-plus-js
+
+npm install
+npm test
+npm run build</code></pre>
+  </div>
+</div>
+
+<p>To link it into another project on the same machine:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Link locally</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># In the markup-plus-js folder
+npm link
+
+# In your project folder
+npm link markup-plus-js</code></pre>
+  </div>
+</div>
+
+<h2 id="verify">8. Verify the install</h2>
+
+<p>Run this to confirm everything works:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify JavaScript</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">node -e "import('markup-plus-js').then(m => console.log('v' + m.version))"
+# v0.6.4</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify Python</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">python -c "import markup_plus; print(markup_plus.__version__)"</code></pre>
+  </div>
+</div>
+
+<h2 id="first-doc">9. Your first document</h2>
+
+<p>Create a file called <code>hello.mup</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>hello.mup</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup"># Hello, Markup+
+
+This is **bold** and this is *italic*.
+
+@let name = "World"
+
+Hello, {name}!
+
+@note
+Markup+ extends Markdown with variables, conditionals, loops, and more.
+@end</code></pre>
+  </div>
+</div>
+
+<p>Convert it:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Convert</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js hello.mup
+
+# Creates hello.html
+# Open it in a browser:
+# Windows:  start hello.html
+# macOS:    open hello.html
+# Linux:    xdg-open hello.html</code></pre>
+  </div>
+</div>
+
+<h2 id="upgrade">10. Upgrade</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Installed via</th>
+      <th>Upgrade command</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>npm (local)</td>
+      <td><code>npm update markup-plus-js</code></td>
+    </tr>
+    <tr>
+      <td>npm (global)</td>
+      <td><code>npm update -g markup-plus-js</code></td>
+    </tr>
+    <tr>
+      <td>pip</td>
+      <td><code>pip install --upgrade markup-plus</code></td>
+    </tr>
+    <tr>
+      <td>CDN</td>
+      <td>Change version in the script URL</td>
+    </tr>
+    <tr>
+      <td>From source</td>
+      <td><code>git pull &amp;&amp; npm install</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="uninstall">11. Uninstall</h2>
+
+<div class="example">
+  <div class="example-header">
+    <span>Remove</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># npm local
+npm uninstall markup-plus-js
+
+# npm global
+npm uninstall -g markup-plus-js
+
+# pip
+pip uninstall markup-plus</code></pre>
+  </div>
+</div>
+
+<h2 id="troubleshooting">12. Troubleshooting</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>npm ERR! 404 Not Found</code></td>
+      <td>Package name typo</td>
+      <td>Use <code>markup-plus-js</code> (with hyphen and <code>js</code>)</td>
+    </tr>
+    <tr>
+      <td><code>Cannot find module 'markup-plus-js'</code></td>
+      <td>Install ran in wrong directory</td>
+      <td>Run <code>npm install</code> inside your project folder (where <code>package.json</code> is)</td>
+    </tr>
+    <tr>
+      <td><code>ERR_REQUIRE_ESM</code></td>
+      <td>Using <code>require()</code> in an ESM-only context</td>
+      <td>Use <code>import</code>, or add <code>"type": "module"</code> to package.json</td>
+    </tr>
+    <tr>
+      <td><code>MarkupPlus is not defined</code></td>
+      <td>Script tag loaded after your script, or network error</td>
+      <td>Put the CDN script first, and wrap your code in <code>window.addEventListener('load', ...)</code></td>
+    </tr>
+    <tr>
+      <td><code>pip: command not found</code></td>
+      <td>Python not installed or pip not in PATH</td>
+      <td>Install Python from python.org and check "Add to PATH"</td>
+    </tr>
+    <tr>
+      <td><code>mup-js: command not found</code></td>
+      <td>Global install folder not in PATH</td>
+      <td>Use <code>npx markup-plus-js</code> instead, or add npm global bin to PATH</td>
+    </tr>
+    <tr>
+      <td>Slow install</td>
+      <td>Network speed</td>
+      <td>Try a different registry: <code>npm install --registry=https://registry.npmjs.org/</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="editor-setup">13. Editor setup (VS Code)</h2>
+
+<p>Markup+ files use the <code>.mup</code> extension. VS Code doesn't know about them out of the box, but a few small tweaks make editing comfortable.</p>
+
+<h3 id="file-association">File association</h3>
+
+<p>Tell VS Code to open <code>.mup</code> files as Markdown by default:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>settings.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "files.associations": {
+    "*.mup": "markdown"
+  }
+}</code></pre>
+  </div>
+</div>
+
+<p>Open Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), search <strong>Preferences: Open User Settings (JSON)</strong>, and add the snippet.</p>
+
+<h3 id="recommended-extensions">Recommended extensions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Extension</th>
+      <th>Purpose</th>
+      <th>ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Markdown All in One</td>
+      <td>Shortcuts, TOC, preview</td>
+      <td><code>yzhang.markdown-all-in-one</code></td>
+    </tr>
+    <tr>
+      <td>markdownlint</td>
+      <td>Style linting</td>
+      <td><code>DavidAnson.vscode-markdownlint</code></td>
+    </tr>
+    <tr>
+      <td>Prettier</td>
+      <td>Formatting</td>
+      <td><code>esbenp.prettier-vscode</code></td>
+    </tr>
+    <tr>
+      <td>Code Spell Checker</td>
+      <td>Typo detection</td>
+      <td><code>streetsidesoftware.code-spell-checker</code></td>
+    </tr>
+    <tr>
+      <td>Live Server</td>
+      <td>Preview generated HTML</td>
+      <td><code>ritwickdey.LiveServer</code></td>
+    </tr>
+    <tr>
+      <td>Error Lens</td>
+      <td>Inline errors</td>
+      <td><code>usernamehw.errorlens</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Install all at once from the terminal:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Install extensions</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">code --install-extension yzhang.markdown-all-in-one
+code --install-extension DavidAnson.vscode-markdownlint
+code --install-extension esbenp.prettier-vscode
+code --install-extension streetsidesoftware.code-spell-checker
+code --install-extension ritwickdey.LiveServer
+code --install-extension usernamehw.errorlens</code></pre>
+  </div>
+</div>
+
+<h3 id="snippets">Custom snippets</h3>
+
+<p>Add snippets for common Markup+ directives. Open Command Palette, search <strong>Preferences: Configure User Snippets</strong>, choose <strong>markdown.json</strong>, and add:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>markdown.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "Markup+ Note": {
+    "prefix": "note",
+    "body": ["@note", "$1", "@end"],
+    "description": "Markup+ note block"
+  },
+  "Markup+ Warning": {
+    "prefix": "warning",
+    "body": ["@warning", "$1", "@end"],
+    "description": "Markup+ warning block"
+  },
+  "Markup+ Tip": {
+    "prefix": "tip",
+    "body": ["@tip", "$1", "@end"],
+    "description": "Markup+ tip block"
+  },
+  "Markup+ Danger": {
+    "prefix": "danger",
+    "body": ["@danger", "$1", "@end"],
+    "description": "Markup+ danger block"
+  },
+  "Markup+ Success": {
+    "prefix": "success",
+    "body": ["@success", "$1", "@end"],
+    "description": "Markup+ success block"
+  },
+  "Markup+ Variable": {
+    "prefix": "let",
+    "body": ["@let ${1:name} = \"${2:value}\""],
+    "description": "Markup+ variable definition"
+  },
+  "Markup+ If": {
+    "prefix": "if",
+    "body": ["@if ${1:condition}", "$2", "@endif"],
+    "description": "Markup+ conditional block"
+  },
+  "Markup+ Each": {
+    "prefix": "each",
+    "body": ["@each ${1:item} in ${2:list}", "$3", "@end"],
+    "description": "Markup+ loop block"
+  },
+  "Markup+ Component": {
+    "prefix": "def",
+    "body": ["@def ${1:Name}(${2:args})", "$3", "@end"],
+    "description": "Markup+ component definition"
+  },
+  "Markup+ Chart": {
+    "prefix": "chart",
+    "body": [
+      "@chart(type=\"${1|bar,line,pie,doughnut|}\" title=\"${2:Title}\")",
+      "data: [${3:1, 2, 3}]",
+      "labels: [\"${4:A, B, C}\"]",
+      "@end"
+    ],
+    "description": "Markup+ chart"
+  },
+  "Markup+ Tabs": {
+    "prefix": "tabs",
+    "body": ["@tabs", "@tab \"${1:Tab 1}\"", "$2", "@end", "@end"],
+    "description": "Markup+ tab group"
+  },
+  "Markup+ Collapse": {
+    "prefix": "collapse",
+    "body": ["@collapse", "@item \"${1:Title}\"", "$2", "@end", "@end"],
+    "description": "Markup+ accordion"
+  },
+  "Markup+ TOC": {
+    "prefix": "toc",
+    "body": ["@toc"],
+    "description": "Markup+ table of contents"
+  }
+}</code></pre>
+  </div>
+</div>
+
+<p>Now typing <code>note</code> and pressing <kbd>Tab</kbd> expands to a note block. Same for <code>warning</code>, <code>tip</code>, <code>if</code>, <code>each</code>, <code>chart</code>, etc.</p>
+
+<h3 id="tasks">Build tasks</h3>
+
+<p>Create a VS Code task to convert the current file with one keystroke. Add this to <code>.vscode/tasks.json</code> in your project:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>tasks.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Markup+: Build current file",
+      "type": "shell",
+      "command": "npx markup-plus-js ${file}",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Markup+: Watch current file",
+      "type": "shell",
+      "command": "npx markup-plus-js watch ${file}",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Markup+: Check current file",
+      "type": "shell",
+      "command": "npx markup-plus-js check ${file}",
+      "problemMatcher": []
+    }
+  ]
+}</code></pre>
+  </div>
+</div>
+
+<p>Then bind them to keyboard shortcuts in <code>keybindings.json</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>keybindings.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">[
+  {
+    "key": "ctrl+alt+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Markup+: Build current file",
+    "when": "editorLangId == markdown"
+  },
+  {
+    "key": "ctrl+alt+w",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Markup+: Watch current file",
+    "when": "editorLangId == markdown"
+  },
+  {
+    "key": "ctrl+alt+c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Markup+: Check current file",
+    "when": "editorLangId == markdown"
+  }
+]</code></pre>
+  </div>
+</div>
+
+<h3 id="live-preview">Live preview workflow</h3>
+
+<p>A practical setup for editing <code>.mup</code> with live preview:</p>
+
+<ol>
+  <li>Open a terminal and start the watch mode:
+    <pre class="example-code"><code class="language-bash">npx markup-plus-js watch hello.mup</code></pre>
+  </li>
+  <li>Open the generated <code>hello.html</code> in VS Code.</li>
+  <li>Right-click it and choose <strong>Open with Live Server</strong>.</li>
+  <li>Edit <code>hello.mup</code> — the HTML rebuilds on save, Live Server reloads the browser.</li>
+</ol>
+
+<h2 id="other-editors">14. Other editors</h2>
+
+<h3 id="sublime">Sublime Text</h3>
+
+<p>Add a syntax mapping in <strong>Preferences → Settings</strong>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Sublime settings</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "extensions": ["mup"],
+  "syntax": "Packages/Markdown/Markdown.sublime-syntax"
+}</code></pre>
+  </div>
+</div>
+
+<h3 id="neovim">Neovim</h3>
+
+<p>Add to your config:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>init.lua</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Lua</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-lua">vim.filetype.add({
+  extension = {
+    mup = 'markdown',
+  },
+})</code></pre>
+  </div>
+</div>
+
+<h3 id="jetbrains">JetBrains IDEs (WebStorm, IntelliJ)</h3>
+
+<ol>
+  <li>Open <strong>Settings → Editor → File Types</strong>.</li>
+  <li>Select <strong>Markdown</strong>.</li>
+  <li>Add <code>*.mup</code> to the <em>Registered Patterns</em>.</li>
+</ol>
+
+<h2 id="gitattributes">15. Git integration</h2>
+
+<p>Tell Git to treat <code>.mup</code> files as Markdown for diffs and syntax highlighting on GitHub:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>.gitattributes</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Text</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">*.mup linguist-language=Markdown
+*.mup diff=markdown
+*.mup text eol=lf</code></pre>
+  </div>
+</div>
+
+<p>Place this at the root of your repository. GitHub will now show <code>.mup</code> files with proper syntax highlighting.</p>
+
+<h2 id="gitignore">16. Recommended .gitignore</h2>
+
+<p>For projects that generate HTML from <code>.mup</code> files, add this to <code>.gitignore</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>.gitignore</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Text</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Markup+ generated output
+*.html
+!index.html
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+*.log</code></pre>
+  </div>
+</div>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Note</div>
+    <p>If you want to keep generated HTML in the repository (e.g. for GitHub Pages), remove the <code>*.html</code> line.</p>
+  </div>
+</div>
+
+<h2 id="project-layout">17. Recommended project layout</h2>
+
+<p>A typical Markup+ project:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Folder structure</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Text</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">my-project/
+├── docs/
+│   ├── index.mup
+│   ├── guide.mup
+│   └── api.mup
+├── assets/
+│   ├── style.css
+│   └── logo.png
+├── build/
+│   ├── index.html       (generated)
+│   └── guide.html       (generated)
+├── .gitattributes
+├── .gitignore
+├── package.json
+└── README.md</code></pre>
+  </div>
+</div>
+
+<p>Convert everything in <code>docs/</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Batch convert</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Windows
+for %f in (docs\*.mup) do mup-js "%f" -o "build\%~nf.html"
+
+# macOS / Linux
+for f in docs/*.mup; do
+  mup-js "$f" -o "build/$(basename "$f" .mup).html"
+done</code></pre>
+  </div>
+</div>
+
+<h2 id="npm-scripts">18. npm scripts setup</h2>
+
+<p>Add these scripts to <code>package.json</code> for common tasks:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>package.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "scripts": {
+    "build": "mup-js docs/index.mup -o build/index.html",
+    "watch": "mup-js watch docs/index.mup -o build/index.html",
+    "check": "mup-js check docs/index.mup",
+    "new": "mup-js new docs/draft",
+    "init": "mup-js init"
+  }
+}</code></pre>
+  </div>
+</div>
+
+<p>Then run <code>npm run watch</code> while editing.</p>
+
+<h2 id="ci-setup">19. CI/CD setup</h2>
+
+<p>Example GitHub Actions workflow that builds Markup+ files on every push:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>.github/workflows/build-docs.yml</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">YAML</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-yaml">name: Build Markup+ docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Markup+
+        run: npm install -g markup-plus-js
+
+      - name: Build all .mup files
+        run: |
+          for f in docs/*.mup; do
+            mup-js "$f" -o "build/$(basename "$f" .mup).html"
+          done
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-html
+          path: build/</code></pre>
+  </div>
+</div>
+
+<h2 id="env-setup">20. Environment variables</h2>
+
+<p>Markup+ respects a few environment variables:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>NO_COLOR</code></td>
+      <td>Disable colored CLI output</td>
+    </tr>
+    <tr>
+      <td><code>FORCE_COLOR</code></td>
+      <td>Force colored output even when not a TTY</td>
+    </tr>
+    <tr>
+      <td><code>DEBUG</code></td>
+      <td>Enable debug logging in CLI</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>Disable colors</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Windows (CMD)
+set NO_COLOR=1
+mup-js hello.mup
+
+# Windows (PowerShell)
+$env:NO_COLOR=1
+mup-js hello.mup
+
+# macOS / Linux
+NO_COLOR=1 mup-js hello.mup</code></pre>
+  </div>
+</div>
+
+<h2 id="setup-summary">21. Setup summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Command / setting</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Associate <code>.mup</code> with Markdown in VS Code</td>
+      <td><code>"files.associations": { "*.mup": "markdown" }</code></td>
+    </tr>
+    <tr>
+      <td>Install recommended VS Code extensions</td>
+      <td><code>code --install-extension ...</code></td>
+    </tr>
+    <tr>
+      <td>Add custom snippets</td>
+      <td>Preferences → Configure User Snippets → markdown.json</td>
+    </tr>
+    <tr>
+      <td>Build on save with a keyboard shortcut</td>
+      <td><code>.vscode/tasks.json</code> + <code>keybindings.json</code></td>
+    </tr>
+    <tr>
+      <td>Live preview while editing</td>
+      <td><code>mup-js watch</code> + Live Server extension</td>
+    </tr>
+    <tr>
+      <td>Fix GitHub language detection</td>
+      <td><code>.gitattributes</code> with <code>linguist-language=Markdown</code></td>
+    </tr>
+    <tr>
+      <td>Ignore generated HTML</td>
+      <td><code>.gitignore</code> with <code>*.html</code></td>
+    </tr>
+    <tr>
+      <td>Auto-build on push</td>
+      <td>GitHub Actions workflow</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="next">22. Next steps</h2>
+
+<ul>
+  <li><a href="cdn-usage.html">CDN Usage</a> — Browser-only, no build step.</li>
+  <li><a href="../examples/01-basics.html">Basics</a> — Learn Markup+ syntax.</li>
+  <li><a href="cli-reference.html">CLI Reference</a> — All commands and options.</li>
+  <li><a href="javascript-api.html">JavaScript API</a> — Full API reference.</li>
+  <li><a href="python-api.html">Python API</a> — Python equivalents.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Ready to write?</div>
+    <p>Jump into the <a href="../examples/01-basics.html">Basics</a> example to start using Markup+ in minutes.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="getting-started.html" class="nav-prev"><span>← Previous</span><strong>Introduction</strong></a>
+  <a href="cdn-usage.html" class="nav-next"><span>Next →</span><strong>CDN Usage</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+});
+</script>
+
+</body>
+</html>

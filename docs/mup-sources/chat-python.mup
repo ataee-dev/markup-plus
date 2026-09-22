@@ -1,0 +1,21 @@
+from flask import Flask, request, jsonify
+from markup_plus import to_html
+
+app = Flask(__name__)
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    user_message = request.json["message"]
+
+    # Get LLM response (returns MUP source)
+    mup_response = ask_llm(user_message)
+
+    # Render as full HTML page
+    html = to_html(mup_response, theme="light")
+
+    # Extract just the body content
+    body_start = html.find("<body")
+    body_end = html.find("</body>")
+    body_html = html[body_start:body_end]
+
+    return jsonify({"html": body_html})

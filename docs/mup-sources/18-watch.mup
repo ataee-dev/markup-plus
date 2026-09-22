@@ -1,0 +1,9 @@
+# CLI Watch
+
+Auto-rebuild on file changes:
+
+```bash
+mup-js watch hello.mup
+```
+
+Every time you save hello.mup, hello.html rebuilds automatically.

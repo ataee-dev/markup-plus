@@ -1,0 +1,17 @@
+@let user_role = "admin"
+@let is_verified = true
+
+@if user_role == "admin"
+### Admin Panel
+
+@if is_verified
+Welcome, verified admin!
+@else
+Please verify your email first.
+@endif
+
+@else
+### User Panel
+
+Welcome, regular user.
+@endif

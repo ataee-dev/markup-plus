@@ -1,0 +1,26 @@
+import { renderFragment } from 'markup-plus-js';
+
+async function sendMessage(userInput) {
+  // 1. Get LLM response (returns MUP source)
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userInput })
+  });
+
+  const { mup } = await response.json();
+
+  // 2. Render as scoped fragment
+  const html = renderFragment(mup, {
+    theme: 'light',
+    scoped: true,
+    includeScripts: true,
+    includeCDNScripts: true
+  });
+
+  // 3. Append to chat
+  const messageEl = document.createElement('div');
+  messageEl.className = 'chat-message bot';
+  messageEl.innerHTML = html;
+  document.getElementById('messages').appendChild(messageEl);
+}

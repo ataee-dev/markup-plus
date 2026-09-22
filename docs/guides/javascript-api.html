@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>JavaScript API — Markup+ JS</title>
+  <meta name="description" content="Complete JavaScript API reference for Markup+ — rendering, parsing, CSS, RTL, and utilities.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html" class="active">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>JavaScript API</span></nav>
+
+<article class="article">
+
+<h1>JavaScript API</h1>
+<p class="lead">Complete reference for the <code>markup-plus-js</code> public API — rendering functions, parsing, CSS helpers, RTL utilities, and AST classes.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">TypeScript support</div>
+    <p>All functions and types are fully typed. Import types alongside functions for full IntelliSense support. See <a href="typescript.html">TypeScript guide</a>.</p>
+  </div>
+</div>
+
+<h2 id="import">Importing</h2>
+
+<p>Main entry point — most users only need this:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic import</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import {
+  toHTML,
+  toHTMLAsync,
+  renderBody,
+  renderFragment,
+  parse,
+} from 'markup-plus-js';</code></pre>
+  </div>
+</div>
+
+<p>Subpath imports for advanced use cases:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Subpath imports</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">// Parser only
+import { parse } from 'markup-plus-js/parser';
+
+// Renderer only
+import { renderBody } from 'markup-plus-js/renderer';
+
+// AST classes
+import { Document, Heading } from 'markup-plus-js/ast';
+
+// Base CSS string
+import baseCSS from 'markup-plus-js/base-css';</code></pre>
+  </div>
+</div>
+
+<h2 id="rendering">Rendering functions</h2>
+
+<h3 id="tohtml">toHTML(source, options?)</h3>
+
+<p>Converts a Markup+ source string into a complete HTML document (with <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>):</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>toHTML</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { toHTML } from 'markup-plus-js';
+
+const html = toHTML('# Hello World', {
+  title: 'My Page',
+  theme: 'dracula',
+  autoDarkMode: true,
+});
+
+console.log(html);
+// <!DOCTYPE html><html>...</html></code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">function toHTML(
+  source: string,
+  options?: RenderOptions
+): string;</code></pre>
+  </div>
+</div>
+
+<h3 id="tohtmlasync">toHTMLAsync(source, options?)</h3>
+
+<p>Async version with support for <code>@import</code> directives that need file system access:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>toHTMLAsync</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { toHTMLAsync } from 'markup-plus-js';
+
+const source = `
+@import "header.mup"
+
+# Main Content
+
+More content here.
+`;
+
+const html = await toHTMLAsync(source, {
+  baseDir: './docs'
+});</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">function toHTMLAsync(
+  source: string,
+  options?: RenderOptions
+): Promise&lt;string&gt;;</code></pre>
+  </div>
+</div>
+
+<h3 id="renderbody">renderBody(source, options?)</h3>
+
+<p>Renders only the body content (no <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code> wrapper). Ideal for embedding into existing pages:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>renderBody</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { renderBody } from 'markup-plus-js';
+
+const body = renderBody('# Hello\n\nWelcome!');
+document.getElementById('content').innerHTML = body;</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">function renderBody(
+  source: string,
+  options?: RenderOptions
+): string;</code></pre>
+  </div>
+</div>
+
+<h3 id="renderfragment">renderFragment(source, options?)</h3>
+
+<p>Renders a scoped fragment suitable for chatbots and widgets. CSS is scoped so it doesn't interfere with the host page:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>renderFragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { renderFragment } from 'markup-plus-js';
+
+const response = `
+# Answer
+
+Here is a **formatted** answer.
+
+@tip
+This is a tip.
+@end
+`;
+
+const fragment = renderFragment(response, {
+  theme: 'light',
+  scoped: true,
+  includeScripts: true,
+  includeCDNScripts: true,
+});
+
+document.getElementById('chat').innerHTML = fragment;</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">function renderFragment(
+  source: string,
+  options?: RenderOptions
+): string;</code></pre>
+  </div>
+</div>
+
+<h3 id="parse">parse(source)</h3>
+
+<p>Parses a Markup+ source string into an AST document. Useful for building tooling around the language:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>parse</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { parse } from 'markup-plus-js';
+
+const doc = parse('# Hello\n\nWorld');
+
+console.log(doc.children);
+// [
+//   Heading { level: 1, text: 'Hello', slug: 'hello' },
+//   Paragraph { text: 'World' }
+// ]
+
+console.log(doc.meta);
+// { title: 'Hello' }</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>TypeScript signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">function parse(source: string): Document;</code></pre>
+  </div>
+</div>
+
+<h2 id="options">RenderOptions</h2>
+
+<p>All rendering functions accept an optional <code>RenderOptions</code> object:</p>
+
+<h3 id="options-basic">Basic options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>title</code></td><td>string</td><td><code>"Markup+ Document"</code></td><td>HTML <code>&lt;title&gt;</code> value</td></tr>
+    <tr><td><code>theme</code></td><td>Theme</td><td><code>"light"</code></td><td>Theme name</td></tr>
+    <tr><td><code>direction</code></td><td>Direction</td><td><code>null</code></td><td><code>"ltr"</code>, <code>"rtl"</code>, or auto-detect</td></tr>
+    <tr><td><code>lang</code></td><td>string</td><td><code>null</code></td><td>HTML <code>lang</code> attribute</td></tr>
+    <tr><td><code>customCSS</code></td><td>string</td><td><code>null</code></td><td>Raw CSS to inject</td></tr>
+  </tbody>
+</table>
+
+<h3 id="options-layout">Layout options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>wrapperTag</code></td><td>WrapperTag</td><td><code>"div"</code></td><td><code>div</code>, <code>section</code>, <code>article</code>, <code>main</code>, <code>aside</code></td></tr>
+    <tr><td><code>customClass</code></td><td>string</td><td><code>""</code></td><td>Extra class on wrapper</td></tr>
+    <tr><td><code>containerMaxWidth</code></td><td>string</td><td><code>"900px"</code></td><td>Container max-width</td></tr>
+    <tr><td><code>containerPadding</code></td><td>string</td><td><code>"40px 24px 80px"</code></td><td>Container padding</td></tr>
+    <tr><td><code>contentWidth</code></td><td>string</td><td><code>null</code></td><td>Content max-width</td></tr>
+  </tbody>
+</table>
+
+<h3 id="options-typography">Typography options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>fontFamily</code></td><td>string</td><td><code>null</code></td><td>Custom font stack</td></tr>
+    <tr><td><code>fontSize</code></td><td>string</td><td><code>null</code></td><td>Base font size</td></tr>
+    <tr><td><code>lineHeight</code></td><td>string</td><td><code>null</code></td><td>Line height</td></tr>
+  </tbody>
+</table>
+
+<h3 id="options-scripts">Scripts &amp; CDN options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>includeCDN</code></td><td>boolean</td><td><code>true</code></td><td>Include Prism, KaTeX, Chart.js from CDN</td></tr>
+    <tr><td><code>includeScripts</code></td><td>boolean</td><td><code>false</code></td><td>Include interactive scripts (tabs, collapse)</td></tr>
+    <tr><td><code>includeCDNScripts</code></td><td>boolean</td><td><code>false</code></td><td>CDN links in fragments</td></tr>
+    <tr><td><code>externalCss</code></td><td>string[]</td><td><code>null</code></td><td>Array of external CSS URLs</td></tr>
+    <tr><td><code>baseDir</code></td><td>string</td><td><code>null</code></td><td>Base directory for <code>@import</code></td></tr>
+  </tbody>
+</table>
+
+<h3 id="options-visual">Visual options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>theme</code></td><td>Theme</td><td><code>"light"</code></td><td>Theme name</td></tr>
+    <tr><td><code>autoDarkMode</code></td><td>boolean</td><td><code>false</code></td><td>Respect <code>prefers-color-scheme</code></td></tr>
+    <tr><td><code>animations</code></td><td>boolean</td><td><code>true</code></td><td>Enable entrance animations</td></tr>
+    <tr><td><code>animationsList</code></td><td>AnimationName[]</td><td><code>[]</code></td><td>Specific animations to use</td></tr>
+    <tr><td><code>a11y</code></td><td>boolean</td><td><code>false</code></td><td>Accessibility improvements</td></tr>
+    <tr><td><code>printStyles</code></td><td>boolean</td><td><code>true</code></td><td>Include print styles</td></tr>
+    <tr><td><code>timeBasedTheme</code></td><td>TimeBasedTheme</td><td><code>null</code></td><td>Day/night theme switching</td></tr>
+  </tbody>
+</table>
+
+<h3 id="options-fragment">Fragment options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>scoped</code></td><td>boolean</td><td><code>true</code></td><td>Scope CSS with unique class</td></tr>
+  </tbody>
+</table>
+
+<h2 id="types">Type aliases</h2>
+
+<h3 id="type-theme">Theme</h3>
+
+<p>Union of all valid theme names:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Theme type</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">type Theme =
+  | "light"
+  | "dark"
+  | "minimal"
+  | "github"
+  | "dracula"
+  | "nord"
+  | "solarized"
+  | "material"
+  | "catppuccin"
+  | "tokyo-night"
+  | "one-dark"
+  | "rose-pine"
+  | string;</code></pre>
+  </div>
+</div>
+
+<h3 id="type-direction">Direction</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Direction type</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">type Direction = "ltr" | "rtl" | null;</code></pre>
+  </div>
+</div>
+
+<h3 id="type-wrapper">WrapperTag</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>WrapperTag type</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">type WrapperTag = "div" | "section" | "article" | "main" | "aside";</code></pre>
+  </div>
+</div>
+
+<h3 id="type-animation">AnimationName</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>AnimationName type</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">type AnimationName =
+  | "slide-up"
+  | "slide-left"
+  | "slide-right"
+  | "zoom"
+  | "bounce"
+  | "flip"
+  | "fade";</code></pre>
+  </div>
+</div>
+
+<h3 id="type-time">TimeBasedTheme</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>TimeBasedTheme interface</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">interface TimeBasedTheme {
+  light: Theme;
+  dark: Theme;
+  dayStart: number;    // hour (0-23)
+  nightStart: number;  // hour (0-23)
+}</code></pre>
+  </div>
+</div>
+
+<h2 id="css">CSS API</h2>
+
+<h3 id="css-build">buildCSS(customCSS, options)</h3>
+
+<p>Build the final CSS by combining base CSS, theme CSS, and custom CSS:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>buildCSS</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { buildCSS } from 'markup-plus-js';
+
+const css = buildCSS('body { font-size: 18px; }', {
+  theme: 'dracula'
+});
+
+console.log(css.length); // length in characters</code></pre>
+  </div>
+</div>
+
+<h3 id="css-theme">getThemeCSS(theme)</h3>
+
+<p>Get the CSS string for a specific theme:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>getThemeCSS</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { getThemeCSS } from 'markup-plus-js';
+
+const draculaCSS = getThemeCSS('dracula');</code></pre>
+  </div>
+</div>
+
+<h3 id="css-register">registerTheme(name, css)</h3>
+
+<p>Register a custom theme at runtime:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>registerTheme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { registerTheme } from 'markup-plus-js';
+
+registerTheme('my-brand', `
+  :root {
+    --mup-accent: #ff6b6b;
+    --mup-bg: #1a1a2e;
+  }
+`);
+
+// Now usable as theme
+const html = toHTML('# Hello', { theme: 'my-brand' });</code></pre>
+  </div>
+</div>
+
+<h3 id="css-others">Other CSS functions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>isValidTheme(name)</code></td><td><code>(name: string) =&gt; boolean</code></td><td>Check if theme exists</td></tr>
+    <tr><td><code>unregisterTheme(name)</code></td><td><code>(name: string) =&gt; boolean</code></td><td>Remove a custom theme</td></tr>
+    <tr><td><code>listThemes()</code></td><td><code>() =&gt; string[]</code></td><td>Get all theme names</td></tr>
+  </tbody>
+</table>
+
+<h2 id="rtl">RTL utilities</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>isRTLText</code></td><td><code>(text: string) =&gt; boolean</code></td><td>Check if text is RTL</td></tr>
+    <tr><td><code>isRTLChar</code></td><td><code>(ch: string) =&gt; boolean</code></td><td>Check if char is RTL</td></tr>
+    <tr><td><code>isLTRChar</code></td><td><code>(ch: string) =&gt; boolean</code></td><td>Check if char is LTR</td></tr>
+    <tr><td><code>detectDirection</code></td><td><code>(title, body, explicit?) =&gt; "ltr" | "rtl"</code></td><td>Detect document direction</td></tr>
+    <tr><td><code>directionToLang</code></td><td><code>(dir: "ltr" | "rtl") =&gt; string</code></td><td>Map direction to lang attr</td></tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>RTL detection</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { isRTLText, detectDirection } from 'markup-plus-js';
+
+isRTLText('سلام');      // true
+isRTLText('hello');     // false
+
+detectDirection('Title', 'سلام دنیا');  // "rtl"
+detectDirection('Title', 'Hello');      // "ltr"
+detectDirection('Title', 'Hello', 'rtl'); // "rtl" (explicit wins)</code></pre>
+  </div>
+</div>
+
+<h2 id="ast">AST classes</h2>
+
+<p>All AST node classes are exported. Useful for building custom renderers:</p>
+
+<h3 id="ast-node">Node (base class)</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Node class</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">class Node {
+  line: number;
+  constructor(line?: number);
+}</code></pre>
+  </div>
+</div>
+
+<h3 id="ast-document">Document</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Document class</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-typescript">class Document extends Node {
+  children: Node[];
+  meta: Record&lt;string, string&gt;;
+  footnotes: Record&lt;string, string&gt;;
+  variables: Record&lt;string, any&gt;;
+  components: Record&lt;string, ComponentDef&gt;;
+}</code></pre>
+  </div>
+</div>
+
+<h3 id="ast-all">All AST classes</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Classes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Document</td><td><code>Document</code></td></tr>
+    <tr><td>Text blocks</td><td><code>Heading</code>, <code>Paragraph</code>, <code>BlockQuote</code>, <code>HorizontalRule</code></td></tr>
+    <tr><td>Lists</td><td><code>ListBlock</code></td></tr>
+    <tr><td>Code</td><td><code>CodeBlock</code></td></tr>
+    <tr><td>Images</td><td><code>ImageBlock</code>, <code>GalleryBlock</code></td></tr>
+    <tr><td>Tables</td><td><code>TableBlock</code></td></tr>
+    <tr><td>Logic</td><td><code>IfBlock</code>, <code>EachBlock</code>, <code>VariableDef</code></td></tr>
+    <tr><td>Components</td><td><code>ComponentDef</code>, <code>ComponentCall</code></td></tr>
+    <tr><td>Rich content</td><td><code>ChartBlock</code>, <code>MathBlock</code>, <code>TabsBlock</code>, <code>CollapseBlock</code>, <code>AlertBlock</code>, <code>QuoteBlock</code>, <code>TimelineBlock</code></td></tr>
+    <tr><td>Imports</td><td><code>ImportBlock</code></td></tr>
+    <tr><td>Inline</td><td><code>Text</code>, <code>Bold</code>, <code>Italic</code>, <code>InlineCode</code>, <code>Strikethrough</code>, <code>Link</code>, <code>AutoLink</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="utilities">Utility functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>parseLiteral</code></td><td><code>(token, variables?) =&gt; any</code></td><td>Parse a literal token</td></tr>
+    <tr><td><code>tokenizeExpr</code></td><td><code>(expr: string) =&gt; string[]</code></td><td>Tokenize an expression</td></tr>
+    <tr><td><code>evaluateCondition</code></td><td><code>(expr, variables?) =&gt; boolean</code></td><td>Evaluate <code>@if</code> condition</td></tr>
+    <tr><td><code>evaluateIterable</code></td><td><code>(expr, variables?) =&gt; any[]</code></td><td>Evaluate <code>@each</code> iterable</td></tr>
+    <tr><td><code>substituteVariables</code></td><td><code>(text, variables?) =&gt; string</code></td><td>Replace <code>{var}</code> with values</td></tr>
+    <tr><td><code>applyFilters</code></td><td><code>(value, filters) =&gt; any</code></td><td>Apply filter chain</td></tr>
+    <tr><td><code>applyOne</code></td><td><code>(value, name) =&gt; any</code></td><td>Apply single filter</td></tr>
+  </tbody>
+</table>
+
+<h2 id="constants">Constants</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constant</th>
+      <th>Type</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>version</code></td><td>string</td><td>Package version</td></tr>
+    <tr><td><code>VERSION</code></td><td>string</td><td>Alias for version</td></tr>
+    <tr><td><code>VALID_THEMES</code></td><td>string[]</td><td>All theme names</td></tr>
+    <tr><td><code>baseCSS</code></td><td>string</td><td>Base CSS string</td></tr>
+    <tr><td><code>themes</code></td><td>object</td><td>Theme API object</td></tr>
+    <tr><td><code>FILTER_NAMES</code></td><td>string[]</td><td>All available filter names</td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="example-basic">Basic rendering</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic rendering</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { toHTML } from 'markup-plus-js';
+
+const html = toHTML(`
+# Hello, Markup+
+
+This is **bold** and *italic*.
+
+@note
+A note.
+@end
+`, {
+  title: 'My Page',
+  theme: 'dracula',
+  autoDarkMode: true,
+});</code></pre>
+  </div>
+</div>
+
+<h3 id="example-express">Express server</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Express integration</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import express from 'express';
+import { toHTMLAsync } from 'markup-plus-js';
+
+const app = express();
+
+app.get('/doc', async (req, res) => {
+  const source = await fs.readFile('doc.mup', 'utf8');
+  const html = await toHTMLAsync(source, {
+    baseDir: './docs',
+    theme: 'github',
+  });
+  res.type('html').send(html);
+});
+
+app.listen(3000);</code></pre>
+  </div>
+</div>
+
+<h3 id="example-react">React component</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>React component</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSX</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { useMemo } from 'react';
+import { renderBody } from 'markup-plus-js';
+
+function MarkupPlus({ source, theme = 'light' }) {
+  const html = useMemo(
+    () => renderBody(source, { theme }),
+    [source, theme]
+  );
+
+  return &lt;div dangerouslySetInnerHTML={{ __html: html }} /&gt;;
+}
+
+export default MarkupPlus;</code></pre>
+  </div>
+</div>
+
+<h3 id="example-chatbot">Chatbot handler</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Chatbot response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { renderFragment } from 'markup-plus-js';
+
+function renderBotMessage(markupSource) {
+  return renderFragment(markupSource, {
+    theme: 'light',
+    scoped: true,
+    includeScripts: true,
+    includeCDNScripts: true,
+  });
+}
+
+const response = `
+# Answer
+
+Here is the answer.
+
+@tip
+Try this out!
+@end
+`;
+
+chatContainer.innerHTML += renderBotMessage(response);</code></pre>
+  </div>
+</div>
+
+<h3 id="example-custom-renderer">Custom renderer</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom renderer using AST</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { parse } from 'markup-plus-js';
+import { Heading, Paragraph } from 'markup-plus-js/ast';
+
+function extractHeadings(source) {
+  const doc = parse(source);
+  return doc.children
+    .filter((node) => node instanceof Heading)
+    .map((h) => ({ level: h.level, text: h.text }));
+}
+
+const source = '# Title\n\n## Section\n\nContent';
+console.log(extractHeadings(source));
+// [{ level: 1, text: 'Title' }, { level: 2, text: 'Section' }]</code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Error</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Cannot find module</code></td>
+      <td>Package not installed</td>
+      <td><code>npm install markup-plus-js</code></td>
+    </tr>
+    <tr>
+      <td><code>ERR_REQUIRE_ESM</code></td>
+      <td>Using <code>require()</code> in ESM-only</td>
+      <td>Use <code>import</code>, or check package.json <code>type</code></td>
+    </tr>
+    <tr>
+      <td><code>toHTML is not a function</code></td>
+      <td>Wrong import path</td>
+      <td>Import from <code>markup-plus-js</code> not a subpath</td>
+    </tr>
+    <tr>
+      <td>Rendering fails on large input</td>
+      <td>Memory or performance</td>
+      <td>Split with <code>@import</code>, or use <code>toHTMLAsync</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore the <a href="python-api.html">Python API</a> for equivalent functionality, or <a href="typescript.html">TypeScript guide</a> for type usage.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="cli-reference.html" class="nav-prev"><span>← Previous</span><strong>CLI Reference</strong></a>
+  <a href="python-api.html" class="nav-next"><span>Next →</span><strong>Python API</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+});
+</script>
+
+</body>
+</html>

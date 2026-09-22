@@ -1,0 +1,7 @@
+# Plain Text Block
+
+```text
+This is a plain text block.
+No syntax highlighting.
+Just monospaced text.
+```

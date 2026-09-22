@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Python API — Markup+</title>
+  <meta name="description" content="Complete Python API reference for Markup+ — the language-agnostic markup language.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html" class="active">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>Python API</span></nav>
+
+<article class="article">
+
+<h1>Python API</h1>
+<p class="lead">Complete reference for the <code>markup-plus</code> Python package. Markup+ is a language-agnostic markup language — the same <code>.mup</code> files produce identical HTML whether rendered by the JavaScript or Python implementation.</p>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Language-agnostic by design</div>
+    <p>Markup+ is not tied to any language. The <code>.mup</code> source format is universal — you can write a document in Python, render it in JavaScript, or vice versa. Both implementations share the same syntax, features, and output.</p>
+  </div>
+</div>
+
+<h2 id="ecosystem">Markup+ ecosystem</h2>
+
+<p>Markup+ has multiple official implementations, all producing the same HTML output from the same <code>.mup</code> files:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Package</th>
+      <th>Version</th>
+      <th>Install</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>JavaScript</td>
+      <td><code>markup-plus-js</code></td>
+      <td>0.6.4</td>
+      <td><code>npm install markup-plus-js</code></td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td><code>markup-plus</code></td>
+      <td>0.6.1</td>
+      <td><code>pip install markup-plus</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Which one should I use?</div>
+    <p>Use the <strong>Python implementation</strong> if your project is written in Python (Flask, Django, data pipelines). Use the <strong>JavaScript implementation</strong> if your project is in Node.js, or if you need the most recent features (v0.6.4 includes TypeScript, fragment rendering, and more themes).</p>
+  </div>
+</div>
+
+<h2 id="install">Installation</h2>
+
+<div class="example">
+  <div class="example-header">
+    <span>Install via pip</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">pip install markup-plus</code></pre>
+  </div>
+</div>
+
+<p>Or in a virtual environment (recommended):</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Virtual env</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Windows
+python -m venv venv
+venv\Scripts\activate
+pip install markup-plus
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+pip install markup-plus</code></pre>
+  </div>
+</div>
+
+<p>Verify installation:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">import markup_plus
+
+print(markup_plus.__version__)   # 0.6.1
+print(markup_plus.__author__)    # Hossein Ataee</code></pre>
+  </div>
+</div>
+
+<h2 id="package-structure">Package structure</h2>
+
+<p>The Python package exposes the following top-level names:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Top-level API</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">import markup_plus
+
+# Available at the top level:
+markup_plus.to_html        # Main rendering function
+markup_plus.parse_text     # Parse source to AST
+markup_plus.ast            # AST node classes
+markup_plus.lexer          # Lexer module
+markup_plus.parser         # Parser module
+markup_plus.renderer       # Renderer internals
+markup_plus.themes         # Theme utilities
+
+# Metadata:
+markup_plus.__version__    # '0.6.1'
+markup_plus.__author__     # 'Hossein Ataee'
+markup_plus.__license__    # License info</code></pre>
+  </div>
+</div>
+
+<h2 id="to-html">to_html()</h2>
+
+<p>Converts Markup+ source into a complete HTML document with <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic usage</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+html = to_html("# Hello World")
+print(html)
+# &lt;!DOCTYPE html&gt;&lt;html&gt;...&lt;/html&gt;</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Full signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">to_html(
+    text: str,
+    title: str = 'Markup+ Document',
+    theme: str = 'light',
+    direction: str = None,
+    base_dir: str = None,
+    custom_css: str = None,
+) -> str</code></pre>
+  </div>
+</div>
+
+<h3 id="to-html-params">Parameters</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>text</code></td><td>str</td><td>—</td><td>Markup+ source content</td></tr>
+    <tr><td><code>title</code></td><td>str</td><td><code>"Markup+ Document"</code></td><td>HTML <code>&lt;title&gt;</code> value</td></tr>
+    <tr><td><code>theme</code></td><td>str</td><td><code>"light"</code></td><td>Theme name (see <a href="#themes">themes</a>)</td></tr>
+    <tr><td><code>direction</code></td><td>str | None</td><td><code>None</code></td><td><code>"ltr"</code>, <code>"rtl"</code>, or auto-detect</td></tr>
+    <tr><td><code>base_dir</code></td><td>str | None</td><td><code>None</code></td><td>Base directory for resolving <code>@import</code></td></tr>
+    <tr><td><code>custom_css</code></td><td>str | None</td><td><code>None</code></td><td>Raw CSS string to inject</td></tr>
+  </tbody>
+</table>
+
+<h3 id="to-html-examples">Examples</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>With theme and title</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+html = to_html(
+    "# My Document\n\nContent here.",
+    title="My Page",
+    theme="dark",
+)</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>With custom CSS</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">custom = """
+:root {
+    --accent: #ff6b6b;
+    --bg-page: #1a1a2e;
+}
+"""
+
+html = to_html(source, custom_css=custom)</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>Force RTL</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">html = to_html(source, direction="rtl")
+html = to_html(source, direction="ltr")</code></pre>
+  </div>
+</div>
+
+<h2 id="parse-text">parse_text()</h2>
+
+<p>Parses Markup+ source into an AST <code>Document</code> tree. Useful for building custom tooling, extractors, or analyzers:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic usage</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import parse_text
+
+doc = parse_text("# Hello\n\nWorld")
+
+print(doc.children)
+# [Heading(level=1, text='Hello', slug='hello'),
+#  Paragraph(text='World')]
+
+print(doc.meta)
+# {'title': 'Hello'}</code></pre>
+  </div>
+</div>
+
+<p><strong>Signature:</strong></p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Signature</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">parse_text(text: str) -> Document</code></pre>
+  </div>
+</div>
+
+<h3 id="ast-document">Document object</h3>
+
+<p>The returned <code>Document</code> has these attributes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>children</code></td><td>list[Node]</td><td>Top-level AST nodes</td></tr>
+    <tr><td><code>meta</code></td><td>dict</td><td>Front matter metadata</td></tr>
+    <tr><td><code>variables</code></td><td>dict</td><td>Variables defined with <code>@let</code></td></tr>
+    <tr><td><code>footnotes</code></td><td>dict</td><td>Footnote definitions</td></tr>
+    <tr><td><code>components</code></td><td>dict</td><td>Component definitions</td></tr>
+  </tbody>
+</table>
+
+<h2 id="ast">AST classes</h2>
+
+<p>All AST node classes are available in <code>markup_plus.ast</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Import AST classes</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import ast
+from markup_plus.ast import Heading, Paragraph, CodeBlock
+
+# Or:
+from markup_plus import parse_text
+doc = parse_text(source)
+
+for node in doc.children:
+    if isinstance(node, Heading):
+        print(f"H{node.level}: {node.text}")</code></pre>
+  </div>
+</div>
+
+<h3 id="ast-list">Available AST classes</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Classes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Base</td><td><code>Node</code>, <code>Document</code></td></tr>
+    <tr><td>Text blocks</td><td><code>Heading</code>, <code>Paragraph</code>, <code>BlockQuote</code>, <code>HorizontalRule</code></td></tr>
+    <tr><td>Lists</td><td><code>ListBlock</code></td></tr>
+    <tr><td>Code</td><td><code>CodeBlock</code></td></tr>
+    <tr><td>Images</td><td><code>ImageBlock</code>, <code>GalleryBlock</code></td></tr>
+    <tr><td>Tables</td><td><code>TableBlock</code></td></tr>
+    <tr><td>Navigation</td><td><code>TOCBlock</code></td></tr>
+    <tr><td>Logic</td><td><code>IfBlock</code>, <code>EachBlock</code>, <code>VariableDef</code></td></tr>
+    <tr><td>Components</td><td><code>ComponentDef</code>, <code>ComponentCall</code></td></tr>
+    <tr><td>Rich content</td><td><code>ChartBlock</code>, <code>MathBlock</code>, <code>TabsBlock</code>, <code>CollapseBlock</code>, <code>AlertBlock</code>, <code>QuoteBlock</code>, <code>TimelineBlock</code></td></tr>
+    <tr><td>Imports</td><td><code>ImportBlock</code></td></tr>
+    <tr><td>Inline</td><td><code>Text</code>, <code>Bold</code>, <code>Italic</code>, <code>InlineCode</code>, <code>Strikethrough</code>, <code>Link</code>, <code>AutoLink</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="themes">Theme utilities</h2>
+
+<p>The <code>markup_plus.themes</code> module handles CSS loading and building:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Theme utilities</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import themes
+
+# Build final CSS from base + theme + custom
+css = themes.build_css(theme="dracula", custom_css=None)
+
+# Load only the base CSS
+base = themes.load_base_css()
+
+# Load a custom CSS file
+custom = themes.load_custom_css("my-style.css")</code></pre>
+  </div>
+</div>
+
+<h3 id="themes-list">Available themes</h3>
+
+<p>All 12 themes work with the Python implementation:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Theme</th>
+      <th>Type</th>
+      <th>Best for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>light</code></td><td>Light</td><td>Default, documentation</td></tr>
+    <tr><td><code>dark</code></td><td>Dark</td><td>Code-heavy, evening reading</td></tr>
+    <tr><td><code>minimal</code></td><td>Light</td><td>Clean, distraction-free</td></tr>
+    <tr><td><code>github</code></td><td>Light</td><td>GitHub-style docs</td></tr>
+    <tr><td><code>dracula</code></td><td>Dark</td><td>Developer favorite</td></tr>
+    <tr><td><code>nord</code></td><td>Dark</td><td>Cool, muted tones</td></tr>
+    <tr><td><code>solarized</code></td><td>Both</td><td>Reduced eye strain</td></tr>
+    <tr><td><code>material</code></td><td>Dark</td><td>Modern, colorful</td></tr>
+    <tr><td><code>catppuccin</code></td><td>Dark</td><td>Pastel, cozy</td></tr>
+    <tr><td><code>tokyo-night</code></td><td>Dark</td><td>Deep blue, vibrant</td></tr>
+    <tr><td><code>one-dark</code></td><td>Dark</td><td>Atom editor style</td></tr>
+    <tr><td><code>rose-pine</code></td><td>Dark</td><td>Soft, warm</td></tr>
+  </tbody>
+</table>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Version note</div>
+    <p>Python v0.6.1 ships all 12 themes. Future versions may add more.</p>
+  </div>
+</div>
+
+<h2 id="renderer">Renderer internals</h2>
+
+<p>The <code>markup_plus.renderer</code> module exposes lower-level rendering functions. Most users don't need these, but they're useful for building custom tooling:</p>
+
+<h3 id="renderer-functions">Rendering functions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>render_ast(doc)</code></td><td>Render a full Document to HTML</td></tr>
+    <tr><td><code>render_node(node)</code></td><td>Render a single AST node</td></tr>
+    <tr><td><code>render_inline(text)</code></td><td>Render inline formatting</td></tr>
+    <tr><td><code>render_alert(node)</code></td><td>Render an alert block</td></tr>
+    <tr><td><code>render_chart(node)</code></td><td>Render a chart</td></tr>
+    <tr><td><code>render_code_block(node)</code></td><td>Render a code block</td></tr>
+    <tr><td><code>render_collapse(node)</code></td><td>Render a collapse group</td></tr>
+    <tr><td><code>render_component_call(node)</code></td><td>Render a component usage</td></tr>
+    <tr><td><code>render_component_def(node)</code></td><td>Render a component definition</td></tr>
+    <tr><td><code>render_each_block(node)</code></td><td>Render a loop</td></tr>
+    <tr><td><code>render_footnotes(doc)</code></td><td>Render footnotes section</td></tr>
+    <tr><td><code>render_gallery(node)</code></td><td>Render an image gallery</td></tr>
+    <tr><td><code>render_if_block(node)</code></td><td>Render a conditional</td></tr>
+    <tr><td><code>render_image(node)</code></td><td>Render an image</td></tr>
+    <tr><td><code>render_math(node)</code></td><td>Render a math formula</td></tr>
+    <tr><td><code>render_quote(node)</code></td><td>Render a rich quote</td></tr>
+    <tr><td><code>render_table(node)</code></td><td>Render a table</td></tr>
+    <tr><td><code>render_tabs(node)</code></td><td>Render a tab group</td></tr>
+    <tr><td><code>render_timeline(node)</code></td><td>Render a timeline</td></tr>
+    <tr><td><code>render_toc(node)</code></td><td>Render a table of contents</td></tr>
+    <tr><td><code>resolve_imports(doc)</code></td><td>Resolve <code>@import</code> directives</td></tr>
+  </tbody>
+</table>
+
+<h3 id="renderer-evaluator">Evaluator functions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>apply_filters(value, filters)</code></td><td>Apply a filter chain</td></tr>
+    <tr><td><code>evaluate_condition(expr, vars)</code></td><td>Evaluate an <code>@if</code> condition</td></tr>
+    <tr><td><code>evaluate_iterable(expr, vars)</code></td><td>Evaluate an <code>@each</code> iterable</td></tr>
+    <tr><td><code>substitute_variables(text, vars)</code></td><td>Replace <code>{var}</code> placeholders</td></tr>
+    <tr><td><code>is_rtl_text(text)</code></td><td>Check if text is RTL</td></tr>
+  </tbody>
+</table>
+
+<h3 id="renderer-constants">Renderer constants</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constant</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>HEAD</code></td><td>HTML head template string</td></tr>
+    <tr><td><code>TAIL</code></td><td>HTML tail template string</td></tr>
+    <tr><td><code>SVG_CODE</code>, <code>SVG_COPY</code>, <code>SVG_DOWNLOAD</code>, <code>SVG_EYE</code></td><td>SVG icon strings</td></tr>
+    <tr><td><code>ALERT_ICONS</code>, <code>ALERT_TITLES</code></td><td>Alert configuration</td></tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>Using renderer internals</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import parse_text
+from markup_plus import renderer
+
+doc = parse_text("# Hello\n\nWorld")
+
+# Render only the body (no &lt;html&gt; wrapper)
+body = renderer.render_ast(doc)
+print(body)
+
+# Extract all headings from a document
+def extract_headings(source: str):
+    doc = parse_text(source)
+    return [
+        {"level": n.level, "text": n.text}
+        for n in doc.children
+        if n.__class__.__name__ == "Heading"
+    ]
+
+print(extract_headings("# Title\n\n## Section"))</code></pre>
+  </div>
+</div>
+
+<h2 id="parser">Parser internals</h2>
+
+<p>The <code>markup_plus.parser</code> and <code>markup_plus.lexer</code> modules expose lower-level parsing:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>markup_plus.lexer</code></td><td>Tokenize <code>.mup</code> source into tokens</td></tr>
+    <tr><td><code>markup_plus.parser</code></td><td>Parse tokens into an AST tree</td></tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom parsing</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import lexer, parser
+
+# Tokenize
+source = "# Hello\n\nWorld"
+tokens = lexer.Lexer(source).tokenize()
+for t in tokens[:5]:
+    print(t.type, repr(t.value))
+
+# Parse
+doc = parser.parse_text(source)
+print(doc.children)</code></pre>
+  </div>
+</div>
+
+<h2 id="comparison">JavaScript vs Python</h2>
+
+<p>Both implementations produce identical HTML from the same <code>.mup</code> source, but expose different APIs:</p>
+
+<h3 id="comparison-features">Feature comparison</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>JavaScript</th>
+      <th>Python</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Version</td><td><code>0.6.4</code></td><td><code>0.6.1</code></td></tr>
+    <tr><td>Runtime</td><td>Node.js 18+</td><td>Python 3.9+</td></tr>
+    <tr><td>Install</td><td><code>npm install markup-plus-js</code></td><td><code>pip install markup-plus</code></td></tr>
+    <tr><td>Full HTML render</td><td><code>toHTML()</code></td><td><code>to_html()</code></td></tr>
+    <tr><td>Body-only render</td><td><code>renderBody()</code></td><td>—</td></tr>
+    <tr><td>Fragment render</td><td><code>renderFragment()</code></td><td>—</td></tr>
+    <tr><td>Async render</td><td><code>toHTMLAsync()</code></td><td>—</td></tr>
+    <tr><td>Parse to AST</td><td><code>parse()</code></td><td><code>parse_text()</code></td></tr>
+    <tr><td>Theme registration</td><td><code>registerTheme()</code></td><td>—</td></tr>
+    <tr><td>List themes</td><td><code>listThemes()</code></td><td>—</td></tr>
+    <tr><td>Build CSS</td><td><code>buildCSS()</code></td><td><code>themes.build_css()</code></td></tr>
+    <tr><td>RTL detection</td><td><code>isRTLText()</code></td><td><code>renderer.is_rtl_text()</code></td></tr>
+    <tr><td>TypeScript types</td><td>Bundled</td><td>—</td></tr>
+    <tr><td>Standalone executable</td><td>—</td><td>Windows installer</td></tr>
+    <tr><td>Output HTML</td><td>Identical</td><td>Identical</td></tr>
+  </tbody>
+</table>
+
+<h3 id="comparison-options">Options naming</h3>
+
+<p>JavaScript uses <code>camelCase</code>, Python uses <code>snake_case</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Concept</th>
+      <th>JavaScript</th>
+      <th>Python</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Custom CSS</td><td><code>customCSS</code></td><td><code>custom_css</code></td></tr>
+    <tr><td>Base directory</td><td><code>baseDir</code></td><td><code>base_dir</code></td></tr>
+    <tr><td>Auto dark mode</td><td><code>autoDarkMode</code></td><td>—</td></tr>
+    <tr><td>Include CDN</td><td><code>includeCDN</code></td><td>—</td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="example-basic">Basic rendering</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Render string</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+source = """
+# Hello, Markup+
+
+This is **bold** and *italic*.
+
+@note
+A note.
+@end
+"""
+
+html = to_html(source, title="My Page", theme="dark")
+
+with open("output.html", "w", encoding="utf-8") as f:
+    f.write(html)</code></pre>
+  </div>
+</div>
+
+<h3 id="example-file">Render a file</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Render file</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from pathlib import Path
+from markup_plus import to_html
+
+source = Path("docs/index.mup").read_text(encoding="utf-8")
+
+html = to_html(
+    source,
+    title="My Documentation",
+    theme="github",
+    base_dir="docs",
+)
+
+Path("build/index.html").write_text(html, encoding="utf-8")</code></pre>
+  </div>
+</div>
+
+<h3 id="example-flask">Flask integration</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Flask server</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from flask import Flask
+from markup_plus import to_html
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    source = """
+# Welcome
+
+This page is rendered with **Markup+**.
+
+@tip
+Fast and simple.
+@end
+"""
+    return to_html(source, title="Home", theme="light")
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+  </div>
+</div>
+
+<h3 id="example-batch">Batch conversion</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Batch convert folder</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from pathlib import Path
+from markup_plus import to_html
+
+docs_dir = Path("docs")
+build_dir = Path("build")
+build_dir.mkdir(exist_ok=True)
+
+for mup_file in docs_dir.glob("*.mup"):
+    source = mup_file.read_text(encoding="utf-8")
+    html = to_html(source, title=mup_file.stem)
+    output = build_dir / (mup_file.stem + ".html")
+    output.write_text(html, encoding="utf-8")
+    print(f"Built: {output}")</code></pre>
+  </div>
+</div>
+
+<h3 id="example-ast">AST analysis</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Extract all headings</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import parse_text
+from markup_plus.ast import Heading, CodeBlock
+
+doc = parse_text(open("docs/index.mup", encoding="utf-8").read())
+
+# All headings
+headings = [n for n in doc.children if isinstance(n, Heading)]
+for h in headings:
+    print(f"{'  ' * (h.level - 1)}{h.text}")
+
+# Count code blocks
+code_count = sum(1 for n in doc.children if isinstance(n, CodeBlock))
+print(f"Total code blocks: {code_count}")</code></pre>
+  </div>
+</div>
+
+<h3 id="example-rtl">Persian content</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>RTL document</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+source = """
+# سلام دنیا
+
+این یک متن **فارسی** است.
+"""
+
+# Auto-detect RTL
+html = to_html(source)
+
+# Or force it
+html = to_html(source, direction="rtl")</code></pre>
+  </div>
+</div>
+
+<h3 id="example-migration">Migrating from Python to JS</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Same source, different renderer</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python + JS</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python"># Python: docs/post.mup
+# JavaScript: docs/post.mup
+# Same file, same output — choose your renderer</code></pre>
+  </div>
+</div>
+
+<h2 id="cli">CLI usage</h2>
+
+<p>The Python package includes a <code>mup</code> command:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>CLI commands</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup --version
+mup --help
+mup file.mup
+mup file.mup --dark
+mup file.mup --theme dracula
+mup file.mup --rtl
+mup file.mup -o output.html
+mup new my-doc
+mup check file.mup
+mup open file.mup
+mup init my-project</code></pre>
+  </div>
+</div>
+
+<p>See the <a href="cli-reference.html">CLI Reference</a> for full command details.</p>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Error</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ModuleNotFoundError: markup_plus</code></td>
+      <td>Not installed</td>
+      <td><code>pip install markup-plus</code></td>
+    </tr>
+    <tr>
+      <td><code>ImportError: cannot import name 'toHTML'</code></td>
+      <td>Wrong function name</td>
+      <td>Use <code>to_html</code> (snake_case)</td>
+    </tr>
+    <tr>
+      <td><code>AttributeError: 'module' has no attribute 'render_body'</code></td>
+      <td>Function doesn't exist in Python</td>
+      <td>Use <code>renderer.render_ast()</code> instead</td>
+    </tr>
+    <tr>
+      <td><code>TypeError: to_html() got unexpected keyword</code></td>
+      <td>Wrong option name</td>
+      <td>Use snake_case: <code>custom_css</code> not <code>customCSS</code></td>
+    </tr>
+    <tr>
+      <td><code>FileNotFoundError</code></td>
+      <td>Input file missing</td>
+      <td>Check file path</td>
+    </tr>
+    <tr>
+      <td><code>UnicodeDecodeError</code></td>
+      <td>File not UTF-8</td>
+      <td>Open with <code>encoding="utf-8"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Python code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Import</td><td><code>from markup_plus import to_html</code></td></tr>
+    <tr><td>Render to HTML</td><td><code>to_html(source)</code></td></tr>
+    <tr><td>With theme</td><td><code>to_html(source, theme="dracula")</code></td></tr>
+    <tr><td>With title</td><td><code>to_html(source, title="My Page")</code></td></tr>
+    <tr><td>Force RTL</td><td><code>to_html(source, direction="rtl")</code></td></tr>
+    <tr><td>Custom CSS</td><td><code>to_html(source, custom_css="...")</code></td></tr>
+    <tr><td>Parse to AST</td><td><code>parse_text(source)</code></td></tr>
+    <tr><td>Body-only render</td><td><code>renderer.render_ast(doc)</code></td></tr>
+    <tr><td>Build CSS</td><td><code>themes.build_css(theme="dark")</code></td></tr>
+    <tr><td>Get version</td><td><code>markup_plus.__version__</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore the <a href="javascript-api.html">JavaScript API</a> for the full-featured implementation, or <a href="themes.html">Themes</a> for customization.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="javascript-api.html" class="nav-prev"><span>← Previous</span><strong>JavaScript API</strong></a>
+  <a href="themes.html" class="nav-next"><span>Next →</span><strong>Themes</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+});
+</script>
+
+</body>
+</html>

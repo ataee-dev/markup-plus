@@ -1,0 +1,12 @@
+# Photo Grid
+
+@gallery {columns=4}
+![1](https://picsum.photos/300/300?random=30)
+![2](https://picsum.photos/300/300?random=31)
+![3](https://picsum.photos/300/300?random=32)
+![4](https://picsum.photos/300/300?random=33)
+![5](https://picsum.photos/300/300?random=34)
+![6](https://picsum.photos/300/300?random=35)
+![7](https://picsum.photos/300/300?random=36)
+![8](https://picsum.photos/300/300?random=37)
+@end

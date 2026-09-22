@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>CDN Usage — Markup+ JS</title>
+  <meta name="description" content="Use Markup+ JS directly in the browser via jsDelivr or unpkg CDN — no build step required.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-html.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html" class="active">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Getting Started</span><span>/</span><span>CDN Usage</span></nav>
+
+<article class="article">
+
+<h1>CDN Usage</h1>
+<p class="lead">Use Markup+ JS directly in the browser via a CDN. No npm, no build step, no bundler — just a script tag.</p>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">When to use CDN</div>
+    <p>CDN is ideal for: quick prototypes, static HTML pages, documentation sites, CodePen/JSFiddle demos, and chatbot widgets. For production apps with build tools, prefer <a href="installation.html">npm installation</a>.</p>
+  </div>
+</div>
+
+<h2 id="quick-start">Quick start</h2>
+
+<p>Add a single script tag to your HTML, then call <code>MarkupPlus.toHTML()</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Minimal CDN example</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">Source</button>
+    </div>
+  </div>
+
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/cdn-quickstart.mup" title="CDN quick start" loading="lazy" style="width:100%;min-height:380px;border:none;background:white;display:block;"></iframe>
+  </div>
+
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-html" data-src="../mup-sources/cdn-quickstart.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="cdns">Available CDNs</h2>
+
+<p>Both jsDelivr and unpkg serve the package automatically from npm. No registration required.</p>
+
+<h3 id="jsdelivr">jsDelivr (recommended)</h3>
+
+<p>Fastest global CDN, supports ESM, has automatic version pinning and fallbacks.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>jsDelivr</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">HTML</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"&gt;&lt;/script&gt;</code></pre>
+  </div>
+</div>
+
+<h3 id="unpkg">unpkg</h3>
+
+<p>Serves files directly from npm. Useful as an alternative or fallback.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>unpkg</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">HTML</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-html">&lt;script src="https://unpkg.com/markup-plus-js@0.6.4/dist/markup-plus.min.js"&gt;&lt;/script&gt;</code></pre>
+  </div>
+</div>
+
+<h3 id="esm">ESM via jsDelivr</h3>
+
+<p>If you prefer ES modules, jsDelivr has an auto-generated ESM bundle with the <code>+esm</code> suffix:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>ESM import</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">HTML</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-html">&lt;script type="module"&gt;
+  import { toHTML, renderFragment } from 'https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/+esm';
+
+  document.body.innerHTML = toHTML('# Hello from ESM');
+&lt;/script&gt;</code></pre>
+  </div>
+</div>
+
+<h2 id="pinning">Version pinning</h2>
+
+<p><strong>Always pin the version</strong> in production. Otherwise a future breaking change could silently break your page.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>URL pattern</th>
+      <th>Behavior</th>
+      <th>Use case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>.../markup-plus-js@0.6.4/...</code></td>
+      <td>Exact version</td>
+      <td>Production — recommended</td>
+    </tr>
+    <tr>
+      <td><code>.../markup-plus-js@0.6/...</code></td>
+      <td>Latest 0.6.x</td>
+      <td>Patch updates only</td>
+    </tr>
+    <tr>
+      <td><code>.../markup-plus-js@0/...</code></td>
+      <td>Latest 0.x.x</td>
+      <td>Minor updates (risky)</td>
+    </tr>
+    <tr>
+      <td><code>.../markup-plus-js/...</code></td>
+      <td>Latest (any version)</td>
+      <td>Prototyping only</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout warning">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Warning</div>
+    <p>Do not use unpinned URLs (<code>.../markup-plus-js/...</code>) in production. A future release could break your page without warning.</p>
+  </div>
+</div>
+
+<h2 id="api">Available functions in the browser</h2>
+
+<p>Once loaded, the global <code>MarkupPlus</code> object exposes the same API as the npm package:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>MarkupPlus.toHTML(source, options)</code></td><td>Full HTML page</td></tr>
+    <tr><td><code>MarkupPlus.renderBody(source, options)</code></td><td>Body only (no <code>&lt;html&gt;</code>)</td></tr>
+    <tr><td><code>MarkupPlus.renderFragment(source, options)</code></td><td>Fragment for chatbots</td></tr>
+    <tr><td><code>MarkupPlus.parse(source)</code></td><td>Parse to AST</td></tr>
+    <tr><td><code>MarkupPlus.version</code></td><td>Version string</td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Common patterns</h2>
+
+<h3 id="full-page">Render a full page</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Full page render</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const source = `
+# Hello, Markup+
+
+This is **bold** and this is *italic*.
+
+@note
+Everything here was rendered client-side.
+@end
+`;
+
+const html = MarkupPlus.toHTML(source, {
+  title: 'My Page',
+  theme: 'dark',
+  includeCDN: true,
+});
+
+document.open();
+document.write(html);
+document.close();</code></pre>
+  </div>
+</div>
+
+<h3 id="embed">Embed into an existing page</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Embed body only</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const mup = `
+## Rendered inline
+
+This section was written in Markup+ and injected into an existing page.
+`;
+
+document.getElementById('content').innerHTML =
+  MarkupPlus.renderBody(mup);</code></pre>
+  </div>
+</div>
+
+<h3 id="fetch-remote">Fetch and render a remote .mup file</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Fetch remote file</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">async function renderFromUrl(url, target) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const source = await res.text();
+  document.getElementById(target).innerHTML =
+    MarkupPlus.renderBody(source);
+}
+
+renderFromUrl('./content/readme.mup', 'output');</code></pre>
+  </div>
+</div>
+
+<h3 id="chatbot">Chatbot fragment</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>renderFragment for chatbots</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const botResponse = `
+# Answer
+
+Here is a **formatted** answer from the bot.
+
+@tip
+This is a tip block.
+@end
+
+\`\`\`javascript
+console.log("with code");
+\`\`\`
+`;
+
+document.getElementById('chat').innerHTML =
+  MarkupPlus.renderFragment(botResponse, {
+    includeScripts: true,
+    includeCDNScripts: true,
+  });</code></pre>
+  </div>
+</div>
+
+<h2 id="cdn-libraries">CDN libraries for rich content</h2>
+
+<p>Markup+ can include CDN scripts for rich content. When you call <code>toHTML()</code> with <code>includeCDN: true</code>, the output HTML automatically loads:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Library</th>
+      <th>Purpose</th>
+      <th>CDN</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Prism.js</td>
+      <td>Syntax highlighting for code blocks</td>
+      <td><code>cdn.jsdelivr.net</code></td>
+    </tr>
+    <tr>
+      <td>Chart.js</td>
+      <td>Bar, line, pie, doughnut charts</td>
+      <td><code>cdn.jsdelivr.net</code></td>
+    </tr>
+    <tr>
+      <td>KaTeX</td>
+      <td>Math formulas (<code>$...$</code> and <code>$$...$$</code>)</td>
+      <td><code>cdn.jsdelivr.net</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Tip</div>
+    <p>If your page is used offline, set <code>includeCDN: false</code> and load Prism, Chart.js, and KaTeX yourself from a local copy.</p>
+  </div>
+</div>
+
+<h2 id="browser-support">Browser support</h2>
+
+<p>The CDN build works in all modern browsers:</p>
+
+<ul>
+  <li>Chrome / Edge 90+</li>
+  <li>Firefox 88+</li>
+  <li>Safari 14+</li>
+  <li>Opera 76+</li>
+</ul>
+
+<p>For older browsers, transpile with a bundler or use polyfills.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MarkupPlus is not defined</code></td>
+      <td>Script tag failed to load, or called too early</td>
+      <td>Check network tab. Use <code>window.addEventListener('load', ...)</code></td>
+    </tr>
+    <tr>
+      <td>Charts don't render</td>
+      <td><code>includeCDN: false</code></td>
+      <td>Set <code>includeCDN: true</code> in options</td>
+    </tr>
+    <tr>
+      <td>Math shows as raw text</td>
+      <td>KaTeX not loaded</td>
+      <td>Ensure <code>includeCDN: true</code></td>
+    </tr>
+    <tr>
+      <td>Old version cached</td>
+      <td>CDN cache</td>
+      <td>Pin the version explicitly: <code>@0.6.4</code></td>
+    </tr>
+    <tr>
+      <td>CORS error on <code>fetch()</code></td>
+      <td>Opening file via <code>file://</code></td>
+      <td>Use a local server: <code>python -m http.server</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="next">Next steps</h2>
+
+<ul>
+  <li><a href="installation.html">Installation</a> — Use the npm package for production apps.</li>
+  <li><a href="../examples/01-basics.html">Basics</a> — Start writing Markup+.</li>
+  <li><a href="javascript-api.html">JavaScript API</a> — Full reference of the public API.</li>
+  <li><a href="chatbot.html">Building a Chatbot</a> — Use fragment rendering.</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">See it in action</div>
+    <p>Open the <a href="../playground/index.html">Playground</a> — it uses CDN loading only, no build step.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="installation.html" class="nav-prev"><span>← Previous</span><strong>Installation</strong></a>
+  <a href="../examples/01-basics.html" class="nav-next"><span>Next →</span><strong>01 · Basics</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+Simple link: [Google](https://google.com)
+
+Link with title: [Markup+](https://github.com/ataee-dev/markup-plus "Main repo")
+
+Autolink: <https://example.com>
+
+Combined with formatting: [**Bold link**](https://example.com)

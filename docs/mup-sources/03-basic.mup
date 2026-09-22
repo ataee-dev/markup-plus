@@ -1,0 +1,10 @@
+# Variables
+
+Variables store reusable values.
+
+@let name = "World"
+@let version = "0.6.4"
+
+Hello, **{name}**!
+
+You are using Markup+ **{version}**.

@@ -1,0 +1,13 @@
+# Rename to .mup (optional)
+
+On Windows:
+
+ren docs\guide.md docs\guide.mup
+
+On macOS or Linux:
+
+mv docs/guide.md docs/guide.mup
+
+@note
+Renaming is optional. The .md extension works fine with Markup+.
+@end

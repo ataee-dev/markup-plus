@@ -1,0 +1,22 @@
+# Lists Demo
+
+## Unordered List
+
+- First item
+- Second item with **bold**
+- Third item with `code`
+- Fourth item with *italic*
+
+## Ordered List
+
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML output
+
+## Task List
+
+- [x] Completed task
+- [ ] Pending task
+- [x] Another done task

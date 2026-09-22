@@ -1,0 +1,27 @@
+interface RenderOptions {
+  title?: string;
+  theme?: Theme;
+  direction?: Direction;
+  customCSS?: string | null;
+  baseDir?: string | null;
+  animations?: boolean;
+  customClass?: string;
+  wrapperTag?: WrapperTag;
+  externalCss?: string | string[] | null;
+  lang?: string | null;
+  scoped?: boolean;
+  containerMaxWidth?: string;
+  containerPadding?: string;
+  includeCDN?: boolean;
+  includeScripts?: boolean;
+  includeCDNScripts?: boolean;
+  autoDarkMode?: boolean;
+  fontFamily?: string | null;
+  fontSize?: string | null;
+  lineHeight?: string | null;
+  contentWidth?: string | null;
+  animationsList?: AnimationName[];
+  a11y?: boolean;
+  printStyles?: boolean;
+  timeBasedTheme?: TimeBasedTheme | null;
+}

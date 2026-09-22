@@ -1,0 +1,20 @@
+@let name = "My Project"
+@let version = "1.2.0"
+
+# {name} v{version}
+
+Welcome to **{name} v{version}**!
+
+@tip
+This README uses variables - change the version once, update everywhere.
+@end
+
+## Installation
+
+Install with npm:
+
+npm install my-project
+
+## License
+
+{name} v{version} is released under the MIT License.

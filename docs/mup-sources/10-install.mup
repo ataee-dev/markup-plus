@@ -1,0 +1,42 @@
+# Installation Instructions
+
+Select your platform:
+
+@tabs
+@tab "Windows"
+## Windows Installation
+
+1. Download the installer
+2. Run the `.exe` file
+3. Follow the wizard
+
+```bash
+# Or with npm
+npm install -g markup-plus-js
+```
+@end
+
+@tab "macOS"
+## macOS Installation
+
+```bash
+# Using Homebrew
+brew install markup-plus-js
+
+# Or with npm
+npm install -g markup-plus-js
+```
+@end
+
+@tab "Linux"
+## Linux Installation
+
+```bash
+# Using apt
+sudo apt install markup-plus-js
+
+# Or with npm
+npm install -g markup-plus-js
+```
+@end
+@end

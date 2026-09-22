@@ -1,0 +1,11 @@
+@let role = "editor"
+
+@if role == "admin"
+You can manage users, content, and settings.
+@elif role == "editor"
+You can manage content only.
+@elif role == "viewer"
+You can read content.
+@else
+Unknown role.
+@endif

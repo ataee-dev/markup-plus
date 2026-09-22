@@ -1,0 +1,13 @@
+# If / Elif / Else
+
+@let score = 85
+
+@if score >= 90
+Excellent
+@elif score >= 70
+Good
+@elif score >= 50
+Average
+@else
+Needs improvement
+@endif

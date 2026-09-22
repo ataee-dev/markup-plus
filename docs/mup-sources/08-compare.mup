@@ -1,0 +1,14 @@
+# Comparison Table
+
+| Feature | Markdown | Markup+ |
+|---------|:--------:|:-------:|
+| Headings | Yes | Yes |
+| Lists | Yes | Yes |
+| Tables | Yes | Yes |
+| Variables | No | Yes |
+| Conditionals | No | Yes |
+| Loops | No | Yes |
+| Components | No | Yes |
+| Charts | No | Yes |
+| Math | No | Yes |
+| Auto RTL | No | Yes |

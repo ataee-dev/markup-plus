@@ -1,0 +1,19 @@
+# Subscript and Superscript
+
+## Superscript
+
+$x^2$ $x^3$ $x^n$ $x^{n+1}$ $e^x$ $e^{-x^2}$
+
+## Subscript
+
+$x_1$ $x_2$ $x_n$ $x_{i+1}$ $a_0$ $a_n$
+
+## Combined
+
+$x_i^2$ $x_n^{k+1}$ $a_{i,j}^2$
+
+## Special functions
+
+$f(x)$ $g(x, y)$ $\sin(x)$ $\cos(x)$ $\tan(x)$
+
+$\log(x)$ $\ln(x)$ $\exp(x)$ $\max(a, b)$ $\min(a, b)$

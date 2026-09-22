@@ -1,0 +1,9 @@
+User message
+    ↓
+LLM / API (returns MUP source)
+    ↓
+renderFragment(source, options)
+    ↓
+Scoped HTML
+    ↓
+Insert into chat UI

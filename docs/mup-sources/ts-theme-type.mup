@@ -1,0 +1,11 @@
+import { toHTML, Theme } from 'markup-plus-js';
+
+// Type-safe: valid themes only
+const theme1: Theme = 'dracula';      // OK
+const theme2: Theme = 'light';        // OK
+// const theme3: Theme = 'invalid';   // Error at compile time
+
+// Using a theme variable
+function render(content: string, theme: Theme): string {
+  return toHTML(content, { theme });
+}

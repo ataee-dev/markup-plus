@@ -1,0 +1,18 @@
+# GitHub Theme
+
+Matches the look and feel of GitHub's documentation.
+
+## Features
+
+- Clean typography
+- GitHub blue links
+- Familiar code blocks
+
+```javascript
+// Works like GitHub READMEs
+const greeting = 'Hello, GitHub';
+```
+
+@note
+Great for READMEs and API documentation hosted on GitHub.
+@end

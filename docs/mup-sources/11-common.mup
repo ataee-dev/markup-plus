@@ -1,0 +1,41 @@
+# Common Formulas
+
+## Physics
+
+Einstein's mass-energy equivalence:
+
+$$ E = mc^2 $$
+
+Newton's second law:
+
+$$ F = ma $$
+
+## Mathematics
+
+Quadratic formula:
+
+$$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+
+Pythagorean theorem:
+
+$$ a^2 + b^2 = c^2 $$
+
+## Calculus
+
+Derivative definition:
+
+$$ f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} $$
+
+Integral of e^{-x^2}:
+
+$$ \int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2} $$
+
+## Statistics
+
+Mean:
+
+$$ \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i $$
+
+Standard deviation:
+
+$$ \sigma = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})^2} $$

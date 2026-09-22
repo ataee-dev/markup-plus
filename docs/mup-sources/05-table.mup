@@ -1,0 +1,9 @@
+# Data-Driven Table
+
+@let users = ["Ali", "Sara", "Reza"]
+
+| User | Status |
+|------|--------|
+@each user in users
+| {user} | Active |
+@end

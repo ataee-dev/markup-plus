@@ -1,0 +1,12 @@
+# Pricing comparison
+
+| Plan | Price | Users | Storage |
+|------|------:|------:|--------:|
+| Free | $0 | 1 | 1 GB |
+| Pro | $12 | 5 | 50 GB |
+| Team | $49 | 20 | 200 GB |
+| Enterprise | Custom | Unlimited | Unlimited |
+
+@note
+All plans include a 14-day free trial.
+@end

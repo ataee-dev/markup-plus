@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Building a Chatbot — Markup+</title>
+  <meta name="description" content="Build a chatbot that renders rich Markup+ responses using renderFragment.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html" class="active">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>Building a Chatbot</span></nav>
+
+<article class="article">
+
+<h1>Building a Chatbot</h1>
+<p class="lead">Use <code>renderFragment</code> to render rich Markup+ responses inside a chat interface. Fragments are scoped so they don't interfere with the host page's CSS.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why fragments for chat?</div>
+    <p>Chatbot responses need rich formatting — code, tables, lists, links. <code>renderFragment</code> produces scoped HTML that won't break your chat UI's styles.</p>
+  </div>
+</div>
+
+<h2 id="concept">The concept</h2>
+
+<p>A typical chatbot pipeline looks like this:</p>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-pipeline.mup"></code></pre>
+
+<p>Markup+ handles the last two steps — turning MUP source into rich, scoped HTML.</p>
+
+<h2 id="basic">Basic fragment rendering</h2>
+
+<p>The core function for chat responses:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>renderFragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="scoping">Why scoping matters</h2>
+
+<p>Without <code>scoped: true</code>, the fragment's CSS would leak into your page and break your chat UI. With scoping:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Effect</th>
+      <th>Use case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>scoped: true</code></td>
+      <td>All CSS is prefixed with a unique class</td>
+      <td>Embedding in existing pages (recommended)</td>
+    </tr>
+    <tr>
+      <td><code>scoped: false</code></td>
+      <td>CSS is included as-is (may conflict)</td>
+      <td>Full control over the page</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>Scoped fragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-scoped.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="live-example">Live example</h2>
+
+<p>Here's a working chat interface that renders a Markup+ fragment:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Live chatbot fragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="chatbot-iframe" data-mup-file="../mup-sources/chat-demo.mup" title="Chatbot preview" loading="lazy" style="width:100%;min-height:500px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-demo.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="response-types">Response types</h2>
+
+<p>Markup+ can render all these as chatbot responses:</p>
+
+<h3 id="response-text">Simple text</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Plain text response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-text.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="response-code">Code answer</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Code response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-code.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="response-list">List answer</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>List response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-list.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="response-alert">Alert answer</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Alert response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-alert.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="response-table">Table answer</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Table response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-table.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="javascript-integration">JavaScript integration</h2>
+
+<p>Full chatbot handler in JavaScript:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Chat handler</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-handler.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="python-integration">Python integration</h2>
+
+<p>For Python-based chatbots (Flask, FastAPI, etc.), use <code>to_html</code> and extract the body:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Python handler</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-python.mup"></code></pre>
+  </div>
+</div>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Fragment support</div>
+    <p><code>renderFragment</code> is currently <strong>only available in the JavaScript implementation</strong> (v0.6.4). The Python implementation produces full-page HTML via <code>to_html()</code>.</p>
+  </div>
+</div>
+
+<h2 id="llm-prompt">System prompt for LLMs</h2>
+
+<p>When using an LLM (OpenAI, Anthropic, etc.) to generate responses, give it a system prompt that teaches Markup+ syntax:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>System prompt</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Text</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-llm-prompt.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="streaming">Streaming responses</h2>
+
+<p>For streaming LLM output, you can render incrementally:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Streaming</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-streaming.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="styling">Styling the fragment</h2>
+
+<p>Override fragment styles with CSS:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom chat styles</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">CSS</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/chat-styles.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="best-practices">Best practices</h2>
+
+<ol>
+  <li><strong>Always use <code>scoped: true</code></strong> when embedding in existing pages</li>
+  <li><strong>Enable <code>includeScripts: true</code></strong> if responses contain tabs or collapsible sections</li>
+  <li><strong>Enable <code>includeCDNScripts: true</code></strong> if responses contain code blocks, math, or charts</li>
+  <li><strong>Cache the CDN scripts</strong> — don't reload Prism/KaTeX on every message</li>
+  <li><strong>Sanitize user input</strong> before passing to Markup+ (prevent injection)</li>
+  <li><strong>Test with real LLM output</strong> — it may generate unexpected syntax</li>
+  <li><strong>Limit fragment size</strong> — large responses can slow down the UI</li>
+  <li><strong>Use <code>theme</code> option</strong> to match your chat UI's colors</li>
+</ol>
+
+<h2 id="security">Security considerations</h2>
+
+<div class="callout warning">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Important</div>
+    <p>Markup+ does <strong>not</strong> sanitize user input. If you render user-generated MUP, you must sanitize it first to prevent XSS. Use a sanitizer like DOMPurify around the rendered output.</p>
+  </div>
+</div>
+
+<h2 id="common-issues">Common issues</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fragment breaks chat UI</td>
+      <td>Missing <code>scoped: true</code></td>
+      <td>Add <code>scoped: true</code> to options</td>
+    </tr>
+    <tr>
+      <td>Code blocks unformatted</td>
+      <td>Prism not loaded</td>
+      <td>Add <code>includeCDNScripts: true</code></td>
+    </tr>
+    <tr>
+      <td>Tabs don't work</td>
+      <td>Scripts not loaded</td>
+      <td>Add <code>includeScripts: true</code></td>
+    </tr>
+    <tr>
+      <td>Slow rendering</td>
+      <td>Large fragments or CDN reloads</td>
+      <td>Cache scripts, split responses</td>
+    </tr>
+    <tr>
+      <td>XSS vulnerability</td>
+      <td>Unsanitized user input</td>
+      <td>Sanitize before rendering</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Render a chat response</td>
+      <td><code>renderFragment(source, { scoped: true })</code></td>
+    </tr>
+    <tr>
+      <td>With code highlighting</td>
+      <td><code>renderFragment(src, { includeCDNScripts: true })</code></td>
+    </tr>
+    <tr>
+      <td>With interactive tabs</td>
+      <td><code>renderFragment(src, { includeScripts: true })</code></td>
+    </tr>
+    <tr>
+      <td>With specific theme</td>
+      <td><code>renderFragment(src, { theme: 'dark' })</code></td>
+    </tr>
+    <tr>
+      <td>Insert into chat</td>
+      <td><code>element.innerHTML = renderFragment(...)</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="migration.html">Migrating from Markdown</a>, or .</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="typescript.html" class="nav-prev"><span>← Previous</span><strong>TypeScript</strong></a>
+  <a href="migration.html" class="nav-next"><span>Next →</span><strong>Migrating from Markdown</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  // Load .mup sources into code blocks
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  // Render the chatbot preview using iframe + toHTML
+  async function renderChatbotPreview() {
+    if (!window.MarkupPlus) {
+      console.warn('MarkupPlus not loaded');
+      return;
+    }
+
+    var iframe = document.querySelector('.chatbot-iframe');
+    if (!iframe) return;
+
+    var url = iframe.getAttribute('data-mup-file');
+
+    try {
+      var res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var source = await res.text();
+
+      // Use toHTML instead of renderFragment for reliable iframe rendering
+      var html = window.MarkupPlus.toHTML(source, {
+        title: 'Chatbot Preview',
+        theme: 'light',
+        includeCDN: true,
+        includeScripts: true,
+        autoDarkMode: false
+      });
+
+      iframe.srcdoc = html;
+    } catch (err) {
+      console.error('Chatbot preview error:', err);
+      iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + ' — ' + err.message + '</pre>';
+    }
+  }
+
+  loadMupSources();
+
+  if (window.MarkupPlus) {
+    renderChatbotPreview();
+  } else {
+    window.addEventListener('load', renderChatbotPreview);
+  }
+});
+</script>
+
+</body>
+</html>

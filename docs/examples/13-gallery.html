@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Gallery — Markup+ JS</title>
+  <meta name="description" content="Image galleries with lightbox and keyboard navigation.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html" class="active">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Gallery</span></nav>
+
+<article class="article">
+
+<h1>Gallery</h1>
+<p class="lead">Group images into a responsive grid with an interactive lightbox. Click any image to open it full-size with keyboard navigation.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why galleries?</div>
+    <p>Showcase multiple images in a compact, responsive grid. The lightbox lets users zoom without leaving the page.</p>
+  </div>
+</div>
+
+<h2 id="simple">Simple gallery</h2>
+
+<p>Group images with <code>@gallery {columns=3} ... @end</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>3-column gallery</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="gallery-preview" data-mup-file="../mup-sources/13-simple.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/13-simple.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="captions">Gallery with captions</h2>
+
+<p>Add captions with <code>{caption="..."}</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>2-column gallery with captions</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="gallery-preview" data-mup-file="../mup-sources/13-captions.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/13-captions.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="photo-grid">Photo grid</h2>
+
+<p>4-column grid for many images:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>4-column photo grid</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="gallery-preview" data-mup-file="../mup-sources/13-grid.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/13-grid.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="single">Single image with caption</h2>
+
+<p>Individual images also support captions and descriptions:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Single image</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="gallery-preview" data-mup-file="../mup-sources/13-single.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/13-single.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="syntax">Gallery syntax</h2>
+
+<table>
+  <thead><tr><th>Part</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>@gallery {columns=N}</code></td><td>Start a gallery with N columns (1-6)</td></tr>
+    <tr><td><code>![alt](url)</code></td><td>Add an image</td></tr>
+    <tr><td><code>{caption="..."}</code></td><td>Optional caption</td></tr>
+    <tr><td><code>{desc="..."}</code></td><td>Optional description (shown in lightbox)</td></tr>
+    <tr><td><code>@end</code></td><td>Close the gallery</td></tr>
+  </tbody>
+</table>
+
+<h2 id="keyboard">Keyboard shortcuts</h2>
+
+<p>When the lightbox is open:</p>
+
+<table>
+  <thead><tr><th>Key</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Previous / next image</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Close lightbox</td></tr>
+    <tr><td>Click outside</td><td>Close lightbox</td></tr>
+  </tbody>
+</table>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>Missing <code>@end</code></td><td>Every <code>@gallery</code> must close with <code>@end</code></td></tr>
+    <tr><td>Columns not specified</td><td>Default is 3, but explicit is better: <code>{columns=3}</code></td></tr>
+    <tr><td>Images without <code>!</code></td><td>Use <code>![alt](url)</code> not <code>[alt](url)</code></td></tr>
+    <tr><td>Broken image URLs</td><td>Use absolute URLs or verify relative paths</td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>3-column gallery</td><td><code>@gallery {columns=3} ... @end</code></td></tr>
+    <tr><td>With caption</td><td><code>![alt](url){caption="..."}</code></td></tr>
+    <tr><td>4-column grid</td><td><code>@gallery {columns=4} ... @end</code></td></tr>
+    <tr><td>Single image</td><td><code>![alt](url)</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="14-rtl.html">RTL Support</a> for right-to-left content, or <a href="15-themes.html">Themes</a> for visual customization.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="12-charts.html" class="nav-prev"><span>← Previous</span><strong>12 · Charts</strong></a>
+  <a href="14-rtl.html" class="nav-next"><span>Next →</span><strong>14 · RTL</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  // Load .mup sources into code blocks
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  // Render gallery previews using Markup+ default rendering via iframe
+  async function renderGalleryPreviews() {
+    if (!window.MarkupPlus) return;
+
+    var previews = document.querySelectorAll('.gallery-preview');
+    await Promise.all(Array.from(previews).map(async function (el) {
+      var url = el.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+
+        // Generate full HTML with Markup+ default rendering
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Gallery Preview',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+
+        // Load into iframe
+        var iframe = document.createElement('iframe');
+        iframe.style.cssText = 'width:100%;min-height:500px;border:none;background:white;display:block;';
+        iframe.srcdoc = html;
+
+        el.innerHTML = '';
+        el.appendChild(iframe);
+      } catch (err) {
+        el.innerHTML = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + ' — ' + err.message + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderGalleryPreviews(); }
+  else { window.addEventListener('load', renderGalleryPreviews); }
+});
+</script>
+
+</body>
+</html>

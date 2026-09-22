@@ -1,0 +1,6 @@
+# Table Alignment
+
+| Left | Center | Right |
+|:-----|:------:|------:|
+| A    | B      | C     |
+| Long text | Mid | Short |

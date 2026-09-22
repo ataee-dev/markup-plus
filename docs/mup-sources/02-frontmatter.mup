@@ -1,0 +1,20 @@
+---
+title: My Article
+author: Hossein Ataee
+date: 2025-01-15
+version: 1.0
+---
+
+# {title}
+
+By **{author}** - {date}
+
+Version: `{version}`
+
+## Introduction
+
+This document uses front matter to define metadata variables.
+
+## Content
+
+The title, author, date, and version are all defined at the top between the `---` lines.

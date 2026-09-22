@@ -1,0 +1,13 @@
+# Components
+
+@def Card(title, body)
+### {title}
+
+{body}
+@end
+
+@Card(title="Hello", body="This is a card.")
+
+@Card(title="News", body="Breaking news here!")
+
+@Card(title="Info", body="More details in the docs.")

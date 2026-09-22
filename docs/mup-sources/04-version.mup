@@ -1,0 +1,15 @@
+@let version = "0.6.4"
+
+@if version == "0.6.4"
+@success
+You are on the latest version.
+@end
+@elif version == "0.6.3"
+@warning
+A minor update is available. Please upgrade.
+@end
+@else
+@danger
+An old version is in use. Please upgrade.
+@end
+@endif

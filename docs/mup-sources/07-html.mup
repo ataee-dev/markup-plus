@@ -1,0 +1,28 @@
+# HTML with Preview
+
+```html {title="card.html"}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+        }
+        h1 { color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Hello, Markup+!</h1>
+        <p>This HTML is rendered live.</p>
+    </div>
+</body>
+</html>
+```

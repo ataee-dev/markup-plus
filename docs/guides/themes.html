@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Themes — Markup+</title>
+  <meta name="description" content="12 built-in themes plus custom CSS support for Markup+ documents.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html" class="active">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>Themes</span></nav>
+
+<article class="article">
+
+<h1>Themes</h1>
+<p class="lead">Markup+ ships with 12 built-in themes. Each theme controls colors, fonts, shadows, and visual styling of the generated HTML. The same themes work across both JavaScript and Python implementations.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Language-agnostic</div>
+    <p>Themes are part of the Markup+ language, not a specific implementation. Use <code>theme: 'dracula'</code> in JavaScript, <code>theme="dracula"</code> in Python, or <code>--theme dracula</code> in the CLI — all produce identical output.</p>
+  </div>
+</div>
+
+<h2 id="gallery">Theme gallery</h2>
+
+<p>Each theme changes the entire look of the document. Click any preview below to see it in full size:</p>
+
+<h3 id="theme-light">Light (default)</h3>
+
+<p>Clean, minimal, suitable for most content:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Light theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="theme-preview" data-mup-file="../mup-sources/15-light.mup" data-theme="light"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/15-light.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="theme-dark">Dark</h3>
+
+<p>Easy on the eyes for dark environments and code-heavy documents:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Dark theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="theme-preview" data-mup-file="../mup-sources/15-dark.mup" data-theme="dark"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/15-dark.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="theme-dracula">Dracula</h3>
+
+<p>A popular dark theme loved by developers:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Dracula theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="theme-preview" data-mup-file="../mup-sources/15-dracula.mup" data-theme="dracula"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/15-dracula.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="theme-github">GitHub</h3>
+
+<p>Matches GitHub's documentation style:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>GitHub theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="theme-preview" data-mup-file="../mup-sources/15-github.mup" data-theme="github"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/15-github.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="list">All 12 themes</h2>
+
+<p>Complete list with descriptions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Theme</th>
+      <th>Type</th>
+      <th>Style</th>
+      <th>Best for</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>light</code></td>
+      <td>Light</td>
+      <td>Clean, minimal</td>
+      <td>Documentation, daytime reading</td>
+    </tr>
+    <tr>
+      <td><code>dark</code></td>
+      <td>Dark</td>
+      <td>Neutral dark</td>
+      <td>Code-heavy content, evening reading</td>
+    </tr>
+    <tr>
+      <td><code>minimal</code></td>
+      <td>Light</td>
+      <td>Bare, distraction-free</td>
+      <td>Long-form reading, articles</td>
+    </tr>
+    <tr>
+      <td><code>github</code></td>
+      <td>Light</td>
+      <td>GitHub-flavored</td>
+      <td>READMEs, API docs, GitHub Pages</td>
+    </tr>
+    <tr>
+      <td><code>dracula</code></td>
+      <td>Dark</td>
+      <td>High-contrast purple</td>
+      <td>Developer docs, code tutorials</td>
+    </tr>
+    <tr>
+      <td><code>nord</code></td>
+      <td>Dark</td>
+      <td>Cool blue-grey</td>
+      <td>Technical documentation</td>
+    </tr>
+    <tr>
+      <td><code>solarized</code></td>
+      <td>Both</td>
+      <td>Warm, reduced contrast</td>
+      <td>Long reading sessions</td>
+    </tr>
+    <tr>
+      <td><code>material</code></td>
+      <td>Dark</td>
+      <td>Material Design</td>
+      <td>Modern docs, dashboards</td>
+    </tr>
+    <tr>
+      <td><code>catppuccin</code></td>
+      <td>Dark</td>
+      <td>Pastel, cozy</td>
+      <td>Personal blogs, tutorials</td>
+    </tr>
+    <tr>
+      <td><code>tokyo-night</code></td>
+      <td>Dark</td>
+      <td>Deep blue, vibrant</td>
+      <td>Night coding, technical docs</td>
+    </tr>
+    <tr>
+      <td><code>one-dark</code></td>
+      <td>Dark</td>
+      <td>Atom editor style</td>
+      <td>Text editors, IDE-style docs</td>
+    </tr>
+    <tr>
+      <td><code>rose-pine</code></td>
+      <td>Dark</td>
+      <td>Soft, warm</td>
+      <td>Creative writing, blogs</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="usage-js">Using themes in JavaScript</h2>
+
+<p>Set the theme via the <code>theme</code> option in <code>toHTML</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic usage</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { toHTML } from 'markup-plus-js';
+
+const html = toHTML('# Hello', {
+  theme: 'dracula'
+});</code></pre>
+  </div>
+</div>
+
+<p>Or use a shortcut for common themes:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Shortcuts</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">CLI</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js file.mup --dark       # Short for --theme dark
+mup-js file.mup --light      # Short for --theme light
+mup-js file.mup -d           # Same as --dark
+mup-js file.mup -l           # Same as --light</code></pre>
+  </div>
+</div>
+
+<h2 id="usage-py">Using themes in Python</h2>
+
+<div class="example">
+  <div class="example-header">
+    <span>Python usage</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+html = to_html("# Hello", theme="dracula")</code></pre>
+  </div>
+</div>
+
+<h2 id="usage-cli">Using themes in the CLI</h2>
+
+<div class="example">
+  <div class="example-header">
+    <span>CLI usage</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># JavaScript
+mup-js file.mup --theme dracula
+
+# Python
+mup file.mup --theme dracula</code></pre>
+  </div>
+</div>
+
+<h2 id="programmatic">Programmatic theme API</h2>
+
+<p>The JavaScript implementation exposes additional theme utilities:</p>
+
+<h3 id="api-register">Register a custom theme</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>registerTheme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { registerTheme, toHTML } from 'markup-plus-js';
+
+registerTheme('my-brand', `
+  :root {
+    --mup-accent: #ff6b6b;
+    --mup-bg: #1a1a2e;
+    --mup-text: #eaeaea;
+  }
+`);
+
+const html = toHTML('# Hello', { theme: 'my-brand' });</code></pre>
+  </div>
+</div>
+
+<h3 id="api-list">List available themes</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>listThemes</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { listThemes, VALID_THEMES } from 'markup-plus-js';
+
+console.log(listThemes());
+// ['light', 'dark', 'minimal', 'github', ...]
+
+console.log(VALID_THEMES);
+// Same array, exported as constant</code></pre>
+  </div>
+</div>
+
+<h3 id="api-validate">Validate a theme name</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>isValidTheme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { isValidTheme } from 'markup-plus-js';
+
+isValidTheme('dracula');    // true
+isValidTheme('Dracula');    // false (case-sensitive)
+isValidTheme('unknown');    // false</code></pre>
+  </div>
+</div>
+
+<h3 id="api-get">Get theme CSS</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>getThemeCSS</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { getThemeCSS } from 'markup-plus-js';
+
+const css = getThemeCSS('dracula');
+console.log(css.length); // length in characters</code></pre>
+  </div>
+</div>
+
+<h2 id="auto-dark">Auto dark mode</h2>
+
+<p>JavaScript v0.6.4 supports automatic dark mode based on the user's OS preference:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Auto dark</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const html = toHTML(source, {
+  theme: 'light',
+  autoDarkMode: true,
+});</code></pre>
+  </div>
+</div>
+
+<p>When <code>autoDarkMode: true</code>, the output uses:</p>
+
+<ul>
+  <li><code>light</code> theme by default</li>
+  <li><code>dark</code> theme when the user's OS is in dark mode</li>
+  <li>Uses the CSS <code>prefers-color-scheme</code> media query</li>
+</ul>
+
+<h2 id="time-theme">Time-based themes</h2>
+
+<p>JavaScript v0.6.4 also supports switching themes based on the time of day:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Time-based theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const html = toHTML(source, {
+  timeBasedTheme: {
+    light: 'github',
+    dark: 'dracula',
+    dayStart: 6,     // 6 AM
+    nightStart: 18,  // 6 PM
+  }
+});</code></pre>
+  </div>
+</div>
+
+<h2 id="custom-css">Custom CSS</h2>
+
+<p>Every theme supports CSS variable overrides. Pass custom CSS to <code>toHTML</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom CSS (JS)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">const html = toHTML(source, {
+  theme: 'light',
+  customCSS: `
+    :root {
+      --mup-accent: #ff6b6b;
+      --mup-bg: #1a1a2e;
+      --mup-text: #eaeaea;
+    }
+  `
+});</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom CSS (Python)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-python">from markup_plus import to_html
+
+html = to_html(
+    source,
+    theme="light",
+    custom_css="""
+        :root {
+            --mup-accent: #ff6b6b;
+            --mup-bg: #1a1a2e;
+            --mup-text: #eaeaea;
+        }
+    """
+)</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom CSS (CLI)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># JavaScript
+mup-js file.mup --css custom.css
+
+# Python
+mup file.mup --css custom.css</code></pre>
+  </div>
+</div>
+
+<h2 id="css-variables">CSS variables reference</h2>
+
+<p>Common variables that can be overridden:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Purpose</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>--mup-accent</code></td><td>Primary color</td><td><code>#667eea</code></td></tr>
+    <tr><td><code>--mup-bg</code></td><td>Page background</td><td><code>#ffffff</code></td></tr>
+    <tr><td><code>--mup-bg-soft</code></td><td>Subtle background</td><td><code>#f8f9fc</code></td></tr>
+    <tr><td><code>--mup-text</code></td><td>Primary text color</td><td><code>#111827</code></td></tr>
+    <tr><td><code>--mup-text-soft</code></td><td>Secondary text</td><td><code>#4b5563</code></td></tr>
+    <tr><td><code>--mup-muted</code></td><td>Muted text</td><td><code>#6b7280</code></td></tr>
+    <tr><td><code>--mup-border</code></td><td>Border color</td><td><code>#e5e7eb</code></td></tr>
+    <tr><td><code>--mup-font</code></td><td>Font family</td><td><code>'Inter', sans-serif</code></td></tr>
+    <tr><td><code>--mup-font-size</code></td><td>Base font size</td><td><code>16px</code></td></tr>
+    <tr><td><code>--mup-max-width</code></td><td>Content max-width</td><td><code>900px</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="creating-theme">Creating a custom theme</h2>
+
+<p>A theme is just a CSS string. Create one with these conventions:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom theme example</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">CSS</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-css">/* my-theme.css */
+
+:root {
+  --mup-accent: #ff6b6b;
+  --mup-accent-hover: #e94a4a;
+  --mup-bg: #fdf6f0;
+  --mup-bg-soft: #f9ede4;
+  --mup-text: #2d1f1a;
+  --mup-text-soft: #5c4a42;
+  --mup-muted: #8b7a70;
+  --mup-border: #e8d8cc;
+  --mup-font: 'Inter', -apple-system, sans-serif;
+  --mup-font-size: 17px;
+  --mup-max-width: 800px;
+}
+
+/* Optional: element-specific styles */
+
+h1 {
+  color: var(--mup-accent);
+  font-weight: 900;
+}
+
+blockquote {
+  border-left: 4px solid var(--mup-accent);
+  background: var(--mup-bg-soft);
+  border-radius: 8px;
+  padding: 16px 20px;
+}</code></pre>
+  </div>
+</div>
+
+<p>Then use it in your document:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Use custom theme</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { readFileSync } from 'fs';
+import { toHTML } from 'markup-plus-js';
+
+const themeCSS = readFileSync('./my-theme.css', 'utf8');
+
+const html = toHTML(source, {
+  customCSS: themeCSS
+});</code></pre>
+  </div>
+</div>
+
+<h2 id="comparison">Theme support across implementations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>JavaScript v0.6.4</th>
+      <th>Python v0.6.1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>12 built-in themes</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Theme via option</td><td><code>theme: 'dark'</code></td><td><code>theme="dark"</code></td></tr>
+    <tr><td>Custom CSS</td><td><code>customCSS</code></td><td><code>custom_css</code></td></tr>
+    <tr><td>Auto dark mode</td><td>Yes</td><td>—</td></tr>
+    <tr><td>Time-based theme</td><td>Yes</td><td>—</td></tr>
+    <tr><td>registerTheme()</td><td>Yes</td><td>—</td></tr>
+    <tr><td>listThemes()</td><td>Yes</td><td>—</td></tr>
+    <tr><td>isValidTheme()</td><td>Yes</td><td>—</td></tr>
+    <tr><td>build_css()</td><td>Yes</td><td><code>themes.build_css()</code></td></tr>
+    <tr><td>CLI --theme flag</td><td>Yes</td><td>Yes</td></tr>
+  </tbody>
+</table>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Theme not applied</td>
+      <td>Theme name typo or wrong case</td>
+      <td>Use lowercase: <code>'dracula'</code> not <code>'Dracula'</code></td>
+    </tr>
+    <tr>
+      <td>Unknown theme</td>
+      <td>Invalid theme name</td>
+      <td>Check the list of 12 valid themes</td>
+    </tr>
+    <tr>
+      <td>Custom CSS not loading</td>
+      <td>Wrong option name</td>
+      <td>JS: <code>customCSS</code>, Python: <code>custom_css</code></td>
+    </tr>
+    <tr>
+      <td>Colors wrong after custom CSS</td>
+      <td>CSS variable name typo</td>
+      <td>Use <code>--mup-*</code> prefix, case-sensitive</td>
+    </tr>
+    <tr>
+      <td>Theme missing in Python</td>
+      <td>Older Python version</td>
+      <td>Update: <code>pip install --upgrade markup-plus</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>JavaScript</th>
+      <th>Python</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Use a theme</td>
+      <td><code>toHTML(src, { theme: 'dark' })</code></td>
+      <td><code>to_html(src, theme="dark")</code></td>
+    </tr>
+    <tr>
+      <td>Custom CSS</td>
+      <td><code>{ customCSS: '...' }</code></td>
+      <td><code>custom_css="..."</code></td>
+    </tr>
+    <tr>
+      <td>Auto dark mode</td>
+      <td><code>{ autoDarkMode: true }</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>List themes</td>
+      <td><code>listThemes()</code></td>
+      <td>See docs</td>
+    </tr>
+    <tr>
+      <td>Register theme</td>
+      <td><code>registerTheme(name, css)</code></td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="rtl.html">RTL Support</a> for right-to-left content, or <a href="chatbot.html">Building a Chatbot</a> for interactive use cases.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="python-api.html" class="nav-prev"><span>← Previous</span><strong>Python API</strong></a>
+  <a href="rtl.html" class="nav-next"><span>Next →</span><strong>RTL Support</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderThemePreviews() {
+    if (!window.MarkupPlus) return;
+
+    var previews = document.querySelectorAll('.theme-preview');
+    await Promise.all(Array.from(previews).map(async function (el) {
+      var url = el.getAttribute('data-mup-file');
+      var theme = el.getAttribute('data-theme') || 'light';
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Theme Preview',
+          theme: theme,
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+
+        var iframe = document.createElement('iframe');
+        iframe.style.cssText = 'width:100%;min-height:400px;border:none;background:white;display:block;';
+        iframe.srcdoc = html;
+
+        el.innerHTML = '';
+        el.appendChild(iframe);
+      } catch (err) {
+        el.innerHTML = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + ' — ' + err.message + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderThemePreviews(); }
+  else { window.addEventListener('load', renderThemePreviews); }
+});
+</script>
+
+</body>
+</html>

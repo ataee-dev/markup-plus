@@ -1,0 +1,9 @@
+@note
+This is a **note**. Use it for additional information that
+supplements the main content.
+@end
+
+@note
+Notes can contain **bold**, *italic*, `code`, and even
+[links](https://example.com).
+@end

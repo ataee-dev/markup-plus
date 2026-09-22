@@ -1,0 +1,19 @@
+# Welcome to the chatbot!
+
+This is a **live demo**. Type a message below to see how Markup+ renders responses.
+
+@tip
+Try asking about code, tables, or lists.
+@end
+
+## What I can do
+
+- Render **rich** text
+- Display `code` inline
+- Show tables
+- Create alerts
+- Format lists
+
+@note
+This is a static demo. In a real chatbot, responses come from an LLM.
+@end

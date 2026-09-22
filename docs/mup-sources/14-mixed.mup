@@ -1,0 +1,8 @@
+# راهنمای Markup+
+
+Markup+ یک زبان نشانه‌گذاری **مدرن** است.
+
+## نصب
+
+```bash
+npm install markup-plus-js

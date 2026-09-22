@@ -1,0 +1,20 @@
+# Alert with Rich Content
+
+@warning
+## Configuration Required
+
+Before running the project, you must configure these files:
+
+- `.env` - Environment variables
+- `config.json` - Application settings
+- `database.yml` - Database connection
+
+Example:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+**Do not skip this step** — the app will not start without it.
+@end

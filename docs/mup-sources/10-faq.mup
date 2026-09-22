@@ -1,0 +1,25 @@
+# Frequently Asked Questions
+
+@collapse
+@item "What is Markup+?"
+Markup+ is a modern markup language that extends Markdown with variables, conditionals, loops, components, charts, math, and RTL support.
+@end
+
+@item "Is it free?"
+Yes, for non-commercial use. Markup+ is released under the Markup+ Non-Commercial License.
+@end
+
+@item "How do I install it?"
+```bash
+npm install -g markup-plus-js
+```
+@end
+
+@item "Does it work with Persian?"
+Yes — Markup+ detects Persian, Arabic, Hebrew, and Urdu automatically and switches to RTL layout.
+@end
+
+@item "Can I use it in production?"
+Yes. The package is stable at v0.6.4 with 330 passing tests.
+@end
+@end

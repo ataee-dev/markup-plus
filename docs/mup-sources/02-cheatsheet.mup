@@ -1,0 +1,61 @@
+# Cheat Sheet
+
+## Headings
+
+# H1  ## H2  ### H3  #### H4  ##### H5  ###### H6
+
+## Text
+
+**bold**  *italic*  ***bold italic***  ~~strike~~  `code`
+
+## Lists
+
+- item
+1. item
+- [x] done
+- [ ] pending
+
+## Variables
+
+@let name = "World"
+@let count = 42
+
+Hello, {name}! Count: {count}
+Filter: {name|upper}
+
+## Conditionals
+
+@if count > 10
+Count is greater than 10
+@else
+Count is 10 or less
+@endif
+
+## Loops
+
+@let fruits = ["apple", "banana", "cherry"]
+
+@each fruit in fruits
+- {fruit}
+@end
+
+## Alerts
+
+@note
+This is a note.
+@end
+
+@tip
+This is a tip.
+@end
+
+## Math
+
+Inline: $E = mc^2$
+
+## Charts
+
+@chart(type="bar" title="Demo")
+data: [10, 25, 40, 30]
+labels: ["A", "B", "C", "D"]
+@end

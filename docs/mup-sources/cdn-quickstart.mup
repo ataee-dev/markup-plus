@@ -1,0 +1,26 @@
+# Hello from CDN
+
+This page was rendered entirely in the browser - no server-side processing, no build step.
+
+@note
+The script tag on the page pulls Markup+ from jsDelivr, then calls MarkupPlus.toHTML() with this source.
+@end
+
+## What this proves
+
+- Markup+ works in any modern browser
+- No npm, no bundler, no build step
+- Just a script tag and a few lines of JavaScript
+
+| Feature | Browser Support |
+|---------|:---------------:|
+| toHTML | Yes |
+| renderBody | Yes |
+| renderFragment | Yes |
+| Charts | Yes |
+| Math | Yes |
+| Syntax highlighting | Yes |
+
+@tip
+Open DevTools to see the runtime in action.
+@end

@@ -1,0 +1,21 @@
+# All Alert Types
+
+@note
+This is a note.
+@end
+
+@warning
+This is a warning.
+@end
+
+@tip
+This is a tip.
+@end
+
+@danger
+This is a danger alert.
+@end
+
+@success
+This is a success message.
+@end

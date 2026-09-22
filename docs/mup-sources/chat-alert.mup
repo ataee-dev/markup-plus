@@ -1,0 +1,17 @@
+# Important Notice
+
+@warning
+Your API key will expire in 3 days. Please renew it to avoid service interruption.
+@end
+
+@tip
+You can find your API key in the dashboard under **Settings -> API**.
+@end
+
+@danger
+Never share your API key publicly.
+@end
+
+@success
+Your last request was successful.
+@end

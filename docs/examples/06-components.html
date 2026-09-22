@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Components — Markup+ JS</title>
+  <meta name="description" content="Reusable components with @def and @Name(...).">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html" class="active">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Components</span></nav>
+
+<article class="article">
+
+<h1>Components</h1>
+<p class="lead">Define a block once with <code>@def</code>, then use it as many times as you want with <code>@Name(...)</code>. Perfect for repeated structures like cards, alerts, and user profiles.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why components?</div>
+    <p>Change the definition once, and every usage updates. Ideal for cards, callouts, user info blocks, and repeated UI patterns.</p>
+  </div>
+</div>
+
+<h2 id="basic">Basic component</h2>
+
+<p>Define a component with <code>@def Name(param1, param2) ... @end</code>. Call it with <code>@Name(param1="value", param2="value")</code>.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Simple card component</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/06-basic.mup" title="Basic component" loading="lazy" style="width:100%;min-height:320px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/06-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="advanced">Advanced component</h2>
+
+<p>Components can take multiple parameters and use inline formatting:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>User profile component</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/06-advanced.mup" title="Advanced component" loading="lazy" style="width:100%;min-height:340px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/06-advanced.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="with-condition">Component with logic</h2>
+
+<p>Components can contain <code>@if</code> and <code>@each</code> blocks:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Status component</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/06-with-condition.mup" title="Component with logic" loading="lazy" style="width:100%;min-height:240px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/06-with-condition.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="syntax">Syntax reference</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>Define component</td><td><code>@def Name(arg1, arg2) ... @end</code></td></tr>
+    <tr><td>Call component</td><td><code>@Name(arg1="value", arg2="value")</code></td></tr>
+    <tr><td>String argument</td><td><code>@Name(x="text")</code></td></tr>
+    <tr><td>Number argument</td><td><code>@Name(x=42)</code></td></tr>
+    <tr><td>Boolean argument</td><td><code>@Name(x=true)</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="rules">Naming rules</h2>
+
+<ul>
+  <li>Component names must start with an <strong>uppercase letter</strong> (PascalCase).</li>
+  <li>Argument names must be lowercase or camelCase.</li>
+  <li>Arguments are separated by commas.</li>
+  <li>Use <code>{arg}</code> inside the component body to reference arguments.</li>
+  <li>Components can call other components (nested components).</li>
+  <li>Component arguments can be values from outer variables.</li>
+</ul>
+
+<h2 id="practical">Practical example: info component</h2>
+
+<p>Build a reusable info block that displays key-value pairs:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Info component</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/06-info.mup" title="Info component" loading="lazy" style="width:100%;min-height:280px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/06-info.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td><code>@def card(...)</code></td><td>Component names must be PascalCase: <code>@def Card(...)</code></td></tr>
+    <tr><td>Missing <code>@end</code></td><td>Every <code>@def</code> must close with <code>@end</code></td></tr>
+    <tr><td><code>@Card(x="a" y="b")</code></td><td>Separate arguments with commas</td></tr>
+    <tr><td><code>@Card(param="x")</code> with <code>{Param}</code></td><td>Case-sensitive: parameter names must match exactly</td></tr>
+    <tr><td>Using component before definition</td><td>Define with <code>@def</code> before calling</td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>Define component</td><td><code>@def Name(args) ... @end</code></td></tr>
+    <tr><td>Use component</td><td><code>@Name(args)</code></td></tr>
+    <tr><td>Multiple arguments</td><td><code>@Name(a="x", b="y", c="z")</code></td></tr>
+    <tr><td>String value</td><td><code>@Name(x="text")</code></td></tr>
+    <tr><td>Number value</td><td><code>@Name(x=42)</code></td></tr>
+    <tr><td>Boolean value</td><td><code>@Name(x=true)</code></td></tr>
+    <tr><td>Logic inside</td><td><code>@if</code> / <code>@each</code> work inside components</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="07-code.html">Code Blocks</a> for syntax highlighting, or <a href="10-tabs-collapse.html">Tabs & Collapse</a> for interactive components.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="05-loops.html" class="nav-prev"><span>← Previous</span><strong>05 · Loops</strong></a>
+  <a href="07-code.html" class="nav-next"><span>Next →</span><strong>07 · Code Blocks</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+# Dark Theme
+
+This document uses the **dark** theme.
+
+## Features
+
+- Dark background
+- Light text
+- Reduced eye strain
+- Better for evening reading
+
+| Feature | Status |
+|---------|:------:|
+| Dark mode | Yes |
+| Auto dark | Yes |
+
+```python
+def hello():
+    print("Dark theme")
+```
+
+@tip
+Dark theme is best for code-heavy documents.
+@end

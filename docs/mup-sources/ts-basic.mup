@@ -1,0 +1,7 @@
+import { toHTML, Theme, RenderOptions } from 'markup-plus-js';
+
+const theme: Theme = 'dracula';
+const options: RenderOptions = { theme };
+
+const html: string = toHTML('# Hello', options);
+console.log(html);

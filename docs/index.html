@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Markup+ — A language in motion</title>
+<meta name="description" content="Markup, but programmable. A modern language for documents." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════════════════════
+   MARKUP+ — MOTION EXPERIENCE v4 · 3D DEEP
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --ink:      #050505;
+  --paper:    #FAFAF8;
+  --accent:   #FF4D2E;
+  --accent-2: #6C5CE7;
+  --mute:     #8A8A8A;
+  --line:     rgba(255,255,255,.08);
+
+  --font-display: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --font-fa:      "Vazirmatn", system-ui, sans-serif;
+
+  --ease-cinema: cubic-bezier(.16,1,.3,1);
+  --ease-swift:  cubic-bezier(.4,0,.2,1);
+  --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+
+  --gutter: clamp(20px, 5vw, 80px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--ink);
+  color: var(--paper);
+  overflow-x: hidden;
+  line-height: 1.4;
+  perspective: 2000px;
+  perspective-origin: 50% 30%;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+/* ─────────── NOISE + GRID ─────────── */
+.noise {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.grid-overlay {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  transform: translateZ(-200px) scale(1.2);
+}
+
+/* ─────────── AURORA ─────────── */
+.aurora {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: .35;
+  transform-style: preserve-3d;
+}
+.aurora__blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.aurora__blob--1 {
+  width: 40vw; height: 40vw;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 65%);
+  top: 10%; left: 5%;
+  animation: float1 22s ease-in-out infinite;
+  transform: translateZ(-300px);
+}
+.aurora__blob--2 {
+  width: 35vw; height: 35vw;
+  background: radial-gradient(circle, var(--accent-2) 0%, transparent 65%);
+  top: 40%; right: 10%;
+  animation: float2 26s ease-in-out infinite;
+  transform: translateZ(-500px);
+}
+.aurora__blob--3 {
+  width: 30vw; height: 30vw;
+  background: radial-gradient(circle, #FF9B7A 0%, transparent 65%);
+  bottom: 10%; left: 30%;
+  animation: float3 30s ease-in-out infinite;
+  transform: translateZ(-400px);
+}
+@keyframes float1 {
+  0%, 100% { transform: translate(0,0) scale(1) translateZ(-300px); }
+  33%      { transform: translate(15vw, 10vh) scale(1.15) translateZ(-300px); }
+  66%      { transform: translate(8vw, -8vh) scale(.9) translateZ(-300px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0,0) scale(1) translateZ(-500px); }
+  33%      { transform: translate(-12vw, 8vh) scale(1.1) translateZ(-500px); }
+  66%      { transform: translate(-6vw, -12vh) scale(.95) translateZ(-500px); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translate(0,0) scale(1) translateZ(-400px); }
+  50%      { transform: translate(10vw, -10vh) scale(1.2) translateZ(-400px); }
+}
+
+/* ─────────── CURSOR ─────────── */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .3s var(--ease-cinema),
+              height .3s var(--ease-cinema),
+              background .3s var(--ease-cinema);
+  mix-blend-mode: difference;
+}
+.cursor.is-hover { width: 48px; height: 48px; background: var(--paper); }
+.cursor-follow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,77,46,.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width .4s var(--ease-cinema),
+              height .4s var(--ease-cinema),
+              border-color .4s var(--ease-cinema);
+}
+.cursor-follow.is-hover { width: 80px; height: 80px; border-color: var(--accent); }
+@media (hover: none) { .cursor, .cursor-follow { display: none; } }
+
+/* ─────────── SCROLL PROGRESS ─────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  z-index: 200;
+  box-shadow: 0 0 20px var(--accent);
+}
+
+/* ─────────── NAV ─────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 24px var(--gutter);
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 90;
+  mix-blend-mode: difference;
+}
+.nav__logo {
+  font-size: 28px; font-weight: 800;
+  letter-spacing: -.04em;
+  transition: font-size .6s var(--ease-cinema);
+}
+.nav__mark { color: var(--paper); }
+.nav__links { display: flex; gap: 32px; align-items: center; font-size: 14px; }
+.nav__links a {
+  color: var(--paper); text-decoration: none;
+  opacity: .7; transition: opacity .3s var(--ease-swift);
+  position: relative;
+}
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--paper);
+  transition: width .3s var(--ease-cinema);
+}
+.nav__links a:hover::after { width: 100%; }
+.nav__links a:hover { opacity: 1; }
+.nav__cta {
+  padding: 8px 16px;
+  border: 1px solid var(--paper);
+  border-radius: 999px;
+  opacity: 1 !important;
+}
+.nav__cta::after { display: none; }
+
+/* ─────────── 01 HERO ─────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  padding: 0 var(--gutter);
+  z-index: 2;
+  transform-style: preserve-3d;
+  perspective: 1500px;
+}
+.hero__inner {
+  text-align: center;
+  max-width: 1200px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.hero__headline {
+  font-size: clamp(48px, 11vw, 180px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: .95;
+  margin-bottom: 40px;
+  transform-style: preserve-3d;
+}
+.hero__headline .line {
+  display: block;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.hero__headline .line span { display: inline-block; will-change: transform; }
+.hero__headline .line--accent span {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.hero__sub {
+  font-size: clamp(14px, 1.6vw, 20px);
+  color: var(--mute);
+  display: flex; gap: 32px; justify-content: center;
+  letter-spacing: .02em;
+  flex-wrap: wrap;
+  transform: translateZ(40px);
+}
+.hero__sub span { display: inline-block; }
+.hero__hint {
+  position: absolute; bottom: 48px; left: 50%;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--mute);
+  animation: breathe 2.5s ease-in-out infinite;
+  transform: translateZ(80px);
+}
+@keyframes breathe {
+  0%, 100% { opacity: .4; transform: translateX(-50%) translateY(0) translateZ(80px); }
+  50%      { opacity: 1;  transform: translateX(-50%) translateY(6px) translateZ(80px); }
+}
+
+/* ─────────── 02 TRANSFORM ─────────── */
+.transform { position: relative; min-height: 400vh; z-index: 2; }
+.transform__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+.transform__stage {
+  position: relative;
+  width: min(720px, 90vw);
+  height: 460px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.stage {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0;
+  transform: translateY(80px) translateZ(-200px) rotateX(-15deg) scale(.9);
+  transition:
+    opacity .9s var(--ease-cinema),
+    transform .9s var(--ease-cinema);
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+.stage.is-active {
+  opacity: 1;
+  transform: translateY(0) translateZ(0) rotateX(0deg) scale(1);
+}
+.stage.is-past {
+  opacity: 0;
+  transform: translateY(-80px) translateZ(-200px) rotateX(15deg) scale(.9);
+}
+.stage__label {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: .3em;
+  color: var(--accent);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  transform: translateZ(30px);
+}
+.stage__code {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px 32px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--paper);
+  white-space: pre;
+  min-width: 320px;
+  box-shadow:
+    0 20px 80px rgba(0,0,0,.4),
+    0 40px 120px rgba(255,77,46,.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: translateZ(60px);
+  transform-style: preserve-3d;
+}
+.stage__code--ast { font-size: 13px; color: #9AE6B4; }
+.stage__preview {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 40px 48px;
+  border-radius: 16px;
+  box-shadow:
+    0 20px 80px rgba(255,77,46,.15),
+    0 60px 150px rgba(0,0,0,.5);
+  min-width: 320px;
+  transform: translateZ(60px);
+}
+.stage__preview h1 { font-size: 32px; margin-bottom: 12px; letter-spacing: -.03em; }
+.stage__preview p  { font-size: 16px; color: #333; }
+
+.transform__progress {
+  position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 12px;
+  transform-style: preserve-3d;
+}
+.progress__dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--line);
+  transition: background .5s var(--ease-swift), transform .5s var(--ease-bounce), box-shadow .5s;
+}
+.progress__dot.is-active {
+  background: var(--accent);
+  transform: scale(1.6);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ─────────── 03 FAMILIAR ─────────── */
+.familiar { position: relative; min-height: 300vh; z-index: 2; }
+.familiar__sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 var(--gutter);
+  gap: 80px;
+  perspective: 1200px;
+}
+.familiar__code {
+  font-family: var(--font-mono);
+  font-size: clamp(16px, 2vw, 26px);
+  line-height: 2.2;
+  transform-style: preserve-3d;
+}
+.code-line {
+  opacity: 0;
+  transform: translateX(-40px) translateZ(-100px) rotateY(-15deg);
+  filter: blur(8px);
+  transition:
+    opacity .8s var(--ease-cinema),
+    transform .8s var(--ease-cinema),
+    filter .8s var(--ease-cinema);
+  will-change: transform, opacity, filter;
+  transform-origin: left center;
+}
+.code-line.is-active {
+  opacity: 1;
+  transform: translateX(0) translateZ(0) rotateY(0);
+  filter: blur(0);
+}
+
+.tok-h { color: #FFD580; font-weight: 700; }
+.tok-b { color: #FF9B7A; font-weight: 700; }
+.tok-k { color: var(--accent); }
+.tok-v { color: #8AB4F8; }
+.tok-s { color: #9AE6B4; }
+.tok-p { color: var(--mute); }
+
+.familiar__equation {
+  display: flex; flex-direction: column; gap: 14px;
+  transform-style: preserve-3d;
+}
+.eq-line {
+  font-size: clamp(20px, 2.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  opacity: 0;
+  transform: translateY(40px) translateZ(-100px) rotateX(-15deg);
+  filter: blur(6px);
+  transition:
+    opacity .8s var(--ease-cinema),
+    transform .8s var(--ease-cinema),
+    filter .8s var(--ease-cinema);
+  will-change: transform, opacity, filter;
+}
+.eq-line.is-active {
+  opacity: 1;
+  transform: translateY(0) translateZ(0) rotateX(0);
+  filter: blur(0);
+}
+.eq-line--result {
+  font-size: clamp(32px, 4vw, 56px);
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  animation: gradientShift 4s ease infinite;
+}
+
+/* ─────────── SCENES ─────────── */
+.scene { position: relative; min-height: 220vh; z-index: 2; }
+.scene__sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 40px;
+  padding: 0 var(--gutter);
+  perspective: 1200px;
+}
+.scene__label {
+  font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: .4em;
+  color: var(--accent);
+  text-transform: uppercase;
+  transform: translateZ(40px);
+}
+
+/* ─────────── LOGIC ─────────── */
+.logic__code {
+  font-family: var(--font-mono);
+  font-size: clamp(20px, 3vw, 42px);
+  line-height: 2;
+  text-align: center;
+  transform-style: preserve-3d;
+}
+.logic__line { transform: translateZ(30px); }
+.logic__counter {
+  color: var(--accent);
+  font-weight: 700;
+  display: inline-block;
+  min-width: 1ch;
+  text-shadow: 0 0 20px rgba(255,77,46,.5);
+}
+.logic__result {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  transform: translateZ(-100px) scale(.6) rotateX(-20deg);
+  filter: blur(12px);
+  transition:
+    opacity 1s var(--ease-cinema),
+    transform 1s var(--ease-cinema),
+    filter 1s var(--ease-cinema);
+  animation: gradientShift 3s ease infinite;
+}
+.logic__result.is-active {
+  opacity: 1;
+  transform: translateZ(60px) scale(1) rotateX(0);
+  filter: blur(0);
+}
+
+/* ─────────── DATA ─────────── */
+.data__chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  height: 340px;
+  margin-bottom: 40px;
+  transform-style: preserve-3d;
+  transform: rotateX(-8deg);
+  perspective: 800px;
+}
+.bar {
+  width: 48px;
+  height: 0;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 -10px 40px rgba(255,77,46,.3);
+  transition: height 1.2s var(--ease-cinema);
+  position: relative;
+  transform-style: preserve-3d;
+}
+.bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.3), transparent 60%);
+}
+.data__caption {
+  text-align: center;
+  transform: translateZ(50px);
+}
+.data__caption code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent);
+  padding: 6px 14px;
+  border: 1px solid rgba(255,77,46,.3);
+  border-radius: 999px;
+}
+.data__caption h3 {
+  font-size: clamp(28px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  margin-top: 24px;
+}
+
+/* ─────────── RTL ─────────── */
+.rtl__stage {
+  width: min(900px, 90vw);
+  padding: clamp(30px, 5vw, 60px);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255,255,255,.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: rotateY(-5deg) rotateX(3deg);
+  transform-style: preserve-3d;
+  box-shadow:
+    0 40px 100px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  will-change: transform;
+}
+.rtl__nav {
+  display: flex; justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 60px;
+  font-size: 14px;
+  color: var(--mute);
+  transition: direction .4s var(--ease-cinema);
+}
+.rtl__brand { font-weight: 700; color: var(--paper); }
+.rtl__navlinks { display: flex; gap: 24px; }
+.rtl__navlinks a { color: var(--mute); cursor: pointer; text-decoration: none; }
+.rtl__text {
+  font-size: clamp(36px, 7vw, 96px);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  text-align: left;
+  transition:
+    text-align .4s var(--ease-cinema),
+    font-family .4s var(--ease-cinema);
+}
+.rtl__stage.is-rtl .rtl__text {
+  text-align: right;
+  direction: rtl;
+  font-family: var(--font-fa);
+}
+.rtl__stage.is-rtl .rtl__nav { direction: rtl; }
+.rtl__caption {
+  margin-top: 60px;
+  color: var(--mute);
+  font-size: 15px;
+  transition: text-align .4s var(--ease-cinema);
+}
+.rtl__stage.is-rtl .rtl__caption { text-align: right; }
+
+/* ─────────── THEMES ─────────── */
+.theme__preview {
+  width: min(720px, 90vw);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--t-bg, #FAFAF8);
+  color: var(--t-fg, #050505);
+  border: 1px solid var(--t-border, rgba(0,0,0,.08));
+  box-shadow:
+    0 40px 120px var(--t-shadow, rgba(0,0,0,.15)),
+    0 80px 180px rgba(0,0,0,.35);
+  transform: rotateX(6deg) rotateY(3deg) translateZ(40px);
+  transition:
+    background .7s var(--ease-cinema),
+    color .7s var(--ease-cinema),
+    border-color .7s var(--ease-cinema),
+    box-shadow .7s var(--ease-cinema),
+    transform .8s var(--ease-cinema);
+  will-change: background, color, transform;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+.theme__header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--t-border, rgba(0,0,0,.08));
+  display: flex; justify-content: space-between;
+  font-size: 13px;
+  transition: border-color .7s var(--ease-cinema);
+  transform: translateZ(20px);
+}
+.theme__brand { font-weight: 700; }
+.theme__menu { color: var(--t-mute, var(--mute)); letter-spacing: .3em; font-size: 10px; }
+.theme__body {
+  padding: clamp(30px, 5vw, 60px) clamp(24px, 4vw, 48px);
+  transform: translateZ(30px);
+}
+.theme__body h3 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800; letter-spacing: -.04em;
+  margin-bottom: 14px;
+}
+.theme__body p { margin-bottom: 32px; opacity: .7; }
+.theme__btn {
+  padding: 12px 24px;
+  background: var(--t-accent, var(--accent));
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition:
+    background .7s var(--ease-cinema),
+    transform .3s var(--ease-bounce);
+}
+.theme__btn:hover { transform: translateY(-3px) scale(1.05); }
+
+/* ─────────── CORE ─────────── */
+.core {
+  position: relative; min-height: 250vh;
+  background: #000;
+  z-index: 2;
+}
+.core__sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 60px;
+  overflow: hidden;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+.core__orb {
+  position: relative;
+  width: 240px; height: 240px;
+  display: flex; align-items: center; justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.core__inner {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FF7A5C, var(--accent) 40%, #7A2A18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; font-weight: 800;
+  letter-spacing: -.05em;
+  box-shadow:
+    0 0 80px rgba(255,77,46,.5),
+    0 0 160px rgba(255,77,46,.25),
+    inset 0 0 40px rgba(255,255,255,.15);
+  animation: pulse 4s ease-in-out infinite;
+  transform: translateZ(40px);
+  transform-style: preserve-3d;
+}
+@keyframes pulse {
+  0%, 100% { transform: translateZ(40px) scale(1); }
+  50%      { transform: translateZ(40px) scale(1.06); }
+}
+.core__ring {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(255,77,46,.3);
+  border-radius: 50%;
+  animation: spin 20s linear infinite;
+  transform: translateZ(20px) rotateX(75deg);
+  transform-style: preserve-3d;
+}
+.core__ring--2 {
+  inset: -40px;
+  border-color: rgba(108,92,231,.25);
+  animation-duration: 30s;
+  animation-direction: reverse;
+  transform: translateZ(10px) rotateX(60deg) rotateZ(30deg);
+}
+.core__ring--3 {
+  inset: -80px;
+  border-color: rgba(255,255,255,.08);
+  animation-duration: 45s;
+  transform: translateZ(0) rotateX(45deg) rotateZ(-30deg);
+}
+@keyframes spin {
+  to { transform: translateZ(20px) rotateX(75deg) rotateZ(360deg); }
+}
+
+.core__labels { position: absolute; inset: 0; pointer-events: none; transform-style: preserve-3d; }
+.core__labels span {
+  position: absolute;
+  top: 50%; left: 50%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--mute);
+  text-transform: uppercase;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--a))
+    translateY(-240px)
+    rotate(calc(-1 * var(--a)))
+    translateZ(20px);
+}
+.core__caption {
+  text-align: center;
+  font-size: clamp(24px, 3vw, 42px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+  opacity: 0;
+  transform: translateY(30px) translateZ(60px);
+  transition:
+    opacity 1s var(--ease-cinema),
+    transform 1s var(--ease-cinema);
+}
+.core__caption.is-active {
+  opacity: 1;
+  transform: translateY(0) translateZ(60px);
+}
+.core__caption h2 {
+  background: linear-gradient(120deg, #fff, #888);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ─────────── WHITE ─────────── */
+.white {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 200px var(--gutter);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  z-index: 3;
+  perspective: 1500px;
+}
+.white__inner { max-width: 1200px; text-align: center; transform-style: preserve-3d; }
+.white__brand {
+  font-size: 14px; letter-spacing: .4em;
+  color: var(--accent);
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  transform: translateZ(30px);
+}
+.white__headline {
+  font-size: clamp(32px, 6vw, 96px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: 1.05;
+  transform-style: preserve-3d;
+}
+.white__headline span {
+  display: block;
+  opacity: 0;
+  transform: translateY(60px) translateZ(-100px) rotateX(-15deg);
+  filter: blur(10px);
+  transition:
+    opacity 1s var(--ease-cinema),
+    transform 1s var(--ease-cinema),
+    filter 1s var(--ease-cinema);
+  transform-style: preserve-3d;
+}
+.white__headline span.is-active {
+  opacity: 1;
+  transform: translateY(0) translateZ(0) rotateX(0);
+  filter: blur(0);
+}
+.white__headline span:first-child { color: #999; }
+
+/* ─────────── WHY ─────────── */
+.why { position: relative; min-height: 400vh; z-index: 2; }
+.why__sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 var(--gutter);
+  gap: 80px;
+  perspective: 1200px;
+}
+.why__left h2 {
+  font-size: clamp(48px, 7vw, 120px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: .95;
+  transform: translateZ(40px);
+}
+.why__right {
+  position: relative;
+  height: 60vh;
+  transform-style: preserve-3d;
+}
+.why__step {
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  transform: translateY(-50%) translateZ(-200px) rotateX(-15deg);
+  opacity: 0;
+  transition:
+    opacity .8s var(--ease-cinema),
+    transform .8s var(--ease-cinema);
+  will-change: transform, opacity;
+}
+.why__step.is-active {
+  opacity: 1;
+  transform: translateY(-50%) translateZ(0) rotateX(0);
+}
+.why__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .3em;
+  color: var(--accent);
+}
+.why__step h3 {
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  margin: 12px 0 20px;
+}
+.why__step p { color: var(--mute); font-size: 16px; max-width: 380px; }
+
+/* ─────────── FINAL ─────────── */
+.final {
+  padding: 240px var(--gutter);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  perspective: 1500px;
+}
+.final__lead {
+  font-size: 16px;
+  color: var(--mute);
+  margin-bottom: 24px;
+  transform: translateZ(20px);
+}
+.final__headline {
+  font-size: clamp(48px, 8vw, 140px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: 1;
+  margin-bottom: 60px;
+  background: linear-gradient(120deg, #fff 0%, #666 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: translateZ(40px);
+}
+.final__actions {
+  display: flex; gap: 16px;
+  justify-content: center; flex-wrap: wrap;
+  transform: translateZ(60px);
+}
+.btn {
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform .3s var(--ease-bounce),
+    background .3s var(--ease-cinema),
+    border-color .3s var(--ease-cinema),
+    box-shadow .3s var(--ease-cinema);
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(255,77,46,.3);
+}
+.btn--primary:hover {
+  transform: translateY(-4px) scale(1.04);
+  background: #FF6849;
+  box-shadow: 0 25px 60px rgba(255,77,46,.5);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--line);
+}
+.btn--ghost:hover {
+  border-color: var(--paper);
+  transform: translateY(-4px) scale(1.04);
+}
+
+/* ─────────── PLAYGROUND ─────────── */
+.playground {
+  padding: 120px var(--gutter) 180px;
+  border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 2;
+  perspective: 1400px;
+}
+.playground__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1300px;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+}
+.pg__editor, .pg__preview {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255,255,255,.02);
+  overflow: hidden;
+  min-height: 480px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition:
+    border-color .3s var(--ease-cinema),
+    transform .5s var(--ease-cinema),
+    box-shadow .5s var(--ease-cinema);
+  transform-style: preserve-3d;
+}
+.pg__editor {
+  transform: rotateY(3deg) translateZ(20px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+}
+.pg__editor:focus-within {
+  border-color: rgba(255,77,46,.5);
+  transform: rotateY(0deg) translateZ(40px);
+  box-shadow: 0 40px 100px rgba(255,77,46,.2);
+}
+.pg__preview {
+  transform: rotateY(-3deg) translateZ(20px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+}
+.pg__bar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+.pg__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  transition: background .3s var(--ease-cinema);
+}
+.pg__editor:hover .pg__dot:nth-child(1) { background: #FF5F57; }
+.pg__editor:hover .pg__dot:nth-child(2) { background: #FEBC2E; }
+.pg__editor:hover .pg__dot:nth-child(3) { background: #28C840; }
+.pg__file { margin-left: auto; }
+#pgInput {
+  width: 100%;
+  min-height: 430px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 24px;
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.pg__preview { padding: 40px; color: var(--paper); }
+.pg__preview h1 { font-size: 32px; margin-bottom: 16px; letter-spacing: -.03em; }
+.pg__preview p { line-height: 1.7; margin-bottom: 16px; }
+.pg__preview .note {
+  padding: 16px 20px;
+  border-left: 3px solid var(--accent);
+  background: rgba(255,77,46,.08);
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+}
+.playground__hint {
+  text-align: center;
+  margin-top: 32px;
+  font-size: 13px;
+  color: var(--mute);
+  letter-spacing: .05em;
+}
+.playground__hint a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,77,46,.4);
+  padding-bottom: 1px;
+  transition: border-color .3s;
+}
+.playground__hint a:hover { border-color: var(--accent); }
+
+/* ─────────── FOOTER ─────────── */
+.footer {
+  padding: 60px var(--gutter);
+  border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: var(--mute);
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer__brand {
+  font-size: 28px; font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--paper);
+}
+.footer__links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer__links a {
+  color: var(--mute);
+  text-decoration: none;
+  transition: color .3s;
+}
+.footer__links a:hover { color: var(--paper); }
+
+/* ─────────── 3D PARTICLES ─────────── */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.particle {
+  position: absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(255,77,46,.6);
+  box-shadow: 0 0 8px rgba(255,77,46,.8);
+  animation: rise linear infinite;
+  will-change: transform;
+}
+@keyframes rise {
+  0% {
+    transform: translateY(110vh) translateZ(0) scale(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-10vh) translateZ(200px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ─────────── 3D CODE STAGE ─────────── */
+.code-stage-3d {
+  position: relative;
+  width: min(1000px, 88vw);
+  height: 560px;
+  margin-top: 60px;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+.code-stage-3d .window {
+  position: absolute;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.5);
+  transition: transform 1s var(--ease-cinema);
+  will-change: transform;
+  transform-style: preserve-3d;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.code-stage-3d .code-window {
+  width: 62%;
+  left: 0;
+  top: 60px;
+  background: #0c0c10;
+  transform: rotateY(8deg) rotateX(3deg) translateZ(0);
+  z-index: 2;
+}
+.code-stage-3d .preview-window {
+  width: 55%;
+  right: 0;
+  top: 20px;
+  background: var(--paper);
+  color: var(--ink);
+  transform: rotateY(-8deg) rotateX(3deg) translateZ(40px);
+  z-index: 3;
+}
+.code-stage-3d .window__bar {
+  height: 40px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 15px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #888;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+.code-stage-3d .preview-window .window__bar { border-color: rgba(0,0,0,.1); color: #666; }
+.code-stage-3d .win-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+}
+.code-stage-3d .preview-window .win-dot { background: rgba(0,0,0,.12); }
+.code-stage-3d .window__title {
+  margin-left: auto; margin-right: auto;
+  opacity: .7;
+}
+.code-stage-3d pre {
+  margin: 0;
+  padding: 26px;
+  min-height: 400px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.9;
+  white-space: pre;
+}
+.code-stage-3d .preview-content {
+  min-height: 400px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.code-stage-3d .preview-content h3 {
+  font-size: 40px;
+  letter-spacing: -.06em;
+  margin-bottom: 12px;
+}
+.code-stage-3d .preview-content p {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.code-stage-3d .preview-card {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 15px 40px rgba(0,0,0,.08);
+}
+.code-stage-3d .preview-card strong { display: block; font-size: 22px; margin-bottom: 6px; }
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width: 860px) {
+  .familiar__sticky,
+  .why__sticky { grid-template-columns: 1fr; gap: 40px; }
+  .familiar__code { font-size: 15px; }
+  .playground__inner { grid-template-columns: 1fr; }
+  .nav__links a:not(.nav__cta) { display: none; }
+  .core__labels span {
+    transform: translate(-50%, -50%) rotate(var(--a)) translateY(-160px) rotate(calc(-1 * var(--a)));
+  }
+  .bar { width: 28px; }
+  .data__chart { gap: 10px; }
+  .code-stage-3d {
+    height: 620px;
+  }
+  .code-stage-3d .code-window {
+    width: 92%;
+    top: 60px;
+  }
+  .code-stage-3d .preview-window {
+    width: 82%;
+    top: 320px;
+    right: 0;
+  }
+  .footer { flex-direction: column; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .2s !important;
+    scroll-behavior: auto !important;
+  }
+  .stage { transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follow" id="cursorFollow"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- 3D PARTICLES -->
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<!-- AURORA -->
+<div class="aurora" aria-hidden="true">
+  <div class="aurora__blob aurora__blob--1"></div>
+  <div class="aurora__blob aurora__blob--2"></div>
+  <div class="aurora__blob aurora__blob--3"></div>
+</div>
+
+<div class="noise" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav__logo" id="navLogo"><span class="nav__mark">M+</span></div>
+  <div class="nav__links">
+    <a href="guides/getting-started.html">Docs</a>
+    <a href="playground/index.html">Playground</a>
+    <a href="#why">Why</a>
+    <a href="playground/index.html" class="nav__cta">Start →</a>
+  </div>
+</nav>
+
+<!-- 01 HERO -->
+<section class="hero" id="hero">
+  <div class="hero__inner">
+    <h1 class="hero__headline">
+      <span class="line" data-split>Markup,</span>
+      <span class="line line--accent" data-split>but programmable.</span>
+    </h1>
+    <p class="hero__sub">
+      <span data-fade>Write it.</span>
+      <span data-fade>Shape it.</span>
+      <span data-fade>Render it.</span>
+    </p>
+    <div class="hero__hint" data-fade>
+      <span>Scroll</span>
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+        <path d="M7 1v18M1 13l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 02 TRANSFORM (with 3D code stage) -->
+<section class="transform" id="transform">
+  <div class="transform__sticky">
+
+    <div class="code-stage-3d" id="codeStage3D">
+      <!-- CODE -->
+      <div class="window code-window">
+        <div class="window__bar">
+          <span class="win-dot"></span>
+          <span class="win-dot"></span>
+          <span class="win-dot"></span>
+          <span class="window__title">document.mup</span>
+        </div>
+        <pre><span class="tok-k">#</span> Hello Markup+
+
+<span class="tok-k">@let</span> <span class="tok-v">name</span> = <span class="tok-s">"World"</span>
+
+Hello, {name}!
+
+<span class="tok-k">@if</span> users &gt; 1000
+
+<span class="tok-k">@success</span>
+Growing fast.
+<span class="tok-k">@end</span>
+
+<span class="tok-k">@chart</span>(type=<span class="tok-s">"bar"</span>)
+
+data: [10, 25, 40, 30]
+labels: [<span class="tok-s">"A"</span>, <span class="tok-s">"B"</span>, <span class="tok-s">"C"</span>, <span class="tok-s">"D"</span>]
+
+<span class="tok-k">@end</span></pre>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="window preview-window">
+        <div class="window__bar">
+          <span class="win-dot"></span>
+          <span class="win-dot"></span>
+          <span class="win-dot"></span>
+          <span class="window__title">Preview</span>
+        </div>
+        <div class="preview-content">
+          <h3>Hello World.</h3>
+          <p>A document can contain logic, data and rich content.</p>
+          <div class="preview-card">
+            <strong>Growing fast.</strong>
+            <span>1,248 active users</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="transform__progress">
+      <span class="progress__dot" data-step="1"></span>
+      <span class="progress__dot" data-step="2"></span>
+      <span class="progress__dot" data-step="3"></span>
+      <span class="progress__dot" data-step="4"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 03 FAMILIAR -->
+<section class="familiar" id="familiar">
+  <div class="familiar__sticky">
+    <div class="familiar__code">
+      <div class="code-line" data-line="1"><span class="tok-h"># Hello</span></div>
+      <div class="code-line" data-line="2"><span class="tok-b">**World**</span></div>
+      <div class="code-line" data-line="3"><span class="tok-k">@let</span> <span class="tok-v">name</span> = <span class="tok-s">"World"</span></div>
+      <div class="code-line" data-line="4"><span class="tok-k">@if</span> <span class="tok-v">loggedIn</span></div>
+      <div class="code-line" data-line="5"><span class="tok-k">@each</span> <span class="tok-v">users</span></div>
+      <div class="code-line" data-line="6"><span class="tok-k">@chart</span><span class="tok-p">(</span>data<span class="tok-p">)</span></div>
+    </div>
+    <div class="familiar__equation">
+      <div class="eq-line" data-eq="0">Markdown</div>
+      <div class="eq-line" data-eq="1">+ Logic</div>
+      <div class="eq-line" data-eq="2">+ Components</div>
+      <div class="eq-line" data-eq="3">+ Rich content</div>
+      <div class="eq-line eq-line--result" data-eq="4">MARKUP+</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 LOGIC -->
+<section class="scene scene--logic" id="logic">
+  <div class="scene__sticky">
+    <div class="scene__label">Programmable</div>
+    <div class="logic__code">
+      <div class="logic__line"><span class="tok-k">@let</span> users = <span class="logic__counter" id="counter">0</span></div>
+      <div class="logic__line"><span class="tok-k">@if</span> users &gt; 5000</div>
+      <div class="logic__line logic__result" id="growing">Growing</div>
+      <div class="logic__line"><span class="tok-k">@end</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DATA -->
+<section class="scene scene--data" id="data">
+  <div class="scene__sticky">
+    <div class="data__chart" id="chart">
+      <div class="bar" data-h="20"></div>
+      <div class="bar" data-h="40"></div>
+      <div class="bar" data-h="60"></div>
+      <div class="bar" data-h="80"></div>
+      <div class="bar" data-h="100"></div>
+      <div class="bar" data-h="140"></div>
+      <div class="bar" data-h="180"></div>
+    </div>
+    <div class="data__caption">
+      <code>@chart(users)</code>
+      <h3>Turn data into documents.</h3>
+    </div>
+  </div>
+</section>
+
+<!-- 06 RTL -->
+<section class="scene scene--rtl" id="rtl">
+  <div class="scene__sticky">
+    <div class="rtl__stage" id="rtlStage">
+      <div class="rtl__nav">
+        <span class="rtl__brand">Markup+</span>
+        <span class="rtl__navlinks">
+          <a>Docs</a><a>Blog</a><a>Start</a>
+        </span>
+      </div>
+      <h2 class="rtl__text" data-ltr="Hello, World!" data-rtl="سلام دنیا!">Hello, World!</h2>
+      <p class="rtl__caption">RTL is part of the language experience.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 THEMES -->
+<section class="scene scene--themes" id="themes">
+  <div class="scene__sticky">
+    <div class="theme__preview" id="themePreview">
+      <div class="theme__header">
+        <span class="theme__brand">Markup+</span>
+        <span class="theme__menu">● ● ●</span>
+      </div>
+      <div class="theme__body">
+        <h3>Hello World</h3>
+        <p>Current theme: <strong id="themeName">Light</strong></p>
+        <button class="theme__btn">Get started</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CORE -->
+<section class="core" id="core">
+  <div class="core__sticky">
+    <div class="core__orb" id="coreOrb">
+      <div class="core__inner">M+</div>
+      <div class="core__ring core__ring--1"></div>
+      <div class="core__ring core__ring--2"></div>
+      <div class="core__ring core__ring--3"></div>
+    </div>
+    <div class="core__labels">
+      <span style="--a:0deg">Markdown</span>
+      <span style="--a:60deg">Logic</span>
+      <span style="--a:120deg">Charts</span>
+      <span style="--a:180deg">RTL</span>
+      <span style="--a:240deg">Themes</span>
+      <span style="--a:300deg">Math</span>
+    </div>
+    <div class="core__caption" id="coreCaption">
+      <h2>One language.<br/>Many capabilities.</h2>
+    </div>
+  </div>
+</section>
+
+<!-- 09 WHITE -->
+<section class="white" id="white">
+  <div class="white__inner">
+    <div class="white__brand">Markup+</div>
+    <h2 class="white__headline">
+      <span data-white-line>Simple enough for Markdown.</span>
+      <span data-white-line>Powerful enough for more.</span>
+    </h2>
+  </div>
+</section>
+
+<!-- 10 WHY -->
+<section class="why" id="why">
+  <div class="why__sticky">
+    <div class="why__left"><h2>Why<br/>Markup+?</h2></div>
+    <div class="why__right">
+      <div class="why__step" data-step="0">
+        <span class="why__num">01</span>
+        <h3>Write</h3>
+        <p>Plain text. No lock-in. Just like Markdown.</p>
+      </div>
+      <div class="why__step" data-step="1">
+        <span class="why__num">02</span>
+        <h3>Program</h3>
+        <p>Variables, conditions, loops — inside the document.</p>
+      </div>
+      <div class="why__step" data-step="2">
+        <span class="why__num">03</span>
+        <h3>Visualize</h3>
+        <p>Charts, math, and components, without leaving the file.</p>
+      </div>
+      <div class="why__step" data-step="3">
+        <span class="why__num">04</span>
+        <h3>Publish</h3>
+        <p>One file. Anywhere. Static or dynamic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 FINAL -->
+<section class="final" id="start">
+  <div class="final__inner">
+    <p class="final__lead">You've seen what Markup+ can do.</p>
+    <h2 class="final__headline">Now make something.</h2>
+    <div class="final__actions">
+      <a href="playground/index.html" class="btn btn--primary">Start Writing</a>
+      <a href="guides/getting-started.html" class="btn btn--ghost">Read the Docs</a>
+    </div>
+  </div>
+</section>
+
+<!-- 12 PLAYGROUND (preview on homepage) -->
+<section class="playground" id="playground">
+  <div class="playground__inner">
+    <div class="pg__editor">
+      <div class="pg__bar">
+        <span class="pg__dot"></span>
+        <span class="pg__dot"></span>
+        <span class="pg__dot"></span>
+        <span class="pg__file">document.mup</span>
+      </div>
+      <textarea id="pgInput" spellcheck="false"># Your document
+
+@let title = "My first Markup+ page"
+
+**{title}**
+
+@note
+Hello from Markup+
+@end</textarea>
+    </div>
+    <div class="pg__preview" id="pgPreview"></div>
+  </div>
+  <div class="playground__hint">
+    <span>Live preview — </span>
+    <a href="playground/index.html">open the full playground →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__brand">M+</div>
+  <div class="footer__links">
+    <a href="guides/getting-started.html">Docs</a>
+    <a href="playground/index.html">Playground</a>
+    <a href="examples/01-basics.html">Examples</a>
+    <a href="api/js.html">JS API</a>
+    <a href="api/python.html">Python API</a>
+  </div>
+  <div class="footer__meta">Markup+ · A language in motion · 2026</div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   MARKUP+ — MOTION ENGINE v4 · 3D DEEP
+   ═══════════════════════════════════════════════════════════ */
+
+(() => {
+  'use strict';
+
+  const $  = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = (v, min = 0, max = 1) => Math.max(min, Math.min(max, v));
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ─────────── SCROLL SUBSCRIPTION ─────────── */
+  const subscribers = new Set();
+  let ticking = false;
+
+  function emit() {
+    const y = window.scrollY;
+    subscribers.forEach(fn => fn(y));
+  }
+  function onScroll(fn) {
+    subscribers.add(fn);
+    fn(window.scrollY);
+  }
+  function rafScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        emit();
+        ticking = false;
+      });
+    }
+  }
+  window.addEventListener('scroll', rafScroll, { passive: true });
+  window.addEventListener('resize', rafScroll);
+
+  /* ─────────── HELPERS ─────────── */
+  function progressOf(el) {
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = rect.height - vh;
+    if (total <= 0) return clamp(-rect.top / vh);
+    return clamp(-rect.top / total);
+  }
+  function inView(el, margin = 0.75) {
+    const rect = el.getBoundingClientRect();
+    return rect.top < window.innerHeight * margin && rect.bottom > 0;
+  }
+
+  /* ─────────── CURSOR ─────────── */
+  function initCursor() {
+    if (prefersReduced || window.matchMedia('(hover: none)').matches) return;
+    const dot = $('#cursor');
+    const follow = $('#cursorFollow');
+    let mx = innerWidth / 2, my = innerHeight / 2;
+    let fx = mx, fy = my;
+
+    document.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+    });
+
+    (function loop() {
+      fx = lerp(fx, mx, 0.15);
+      fy = lerp(fy, my, 0.15);
+      follow.style.transform = `translate(${fx}px, ${fy}px) translate(-50%,-50%)`;
+      requestAnimationFrame(loop);
+    })();
+
+    const hoverables = 'a, button, [data-hover], input, textarea, .theme__btn, .btn, .code-line';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hoverables)) {
+        dot.classList.add('is-hover');
+        follow.classList.add('is-hover');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(hoverables)) {
+        dot.classList.remove('is-hover');
+        follow.classList.remove('is-hover');
+      }
+    });
+  }
+
+  /* ─────────── SCROLL PROGRESS ─────────── */
+  function initScrollProgress() {
+    const bar = $('#scrollProgress');
+    onScroll((y) => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = `${clamp(y / max) * 100}%`;
+    });
+  }
+
+  /* ─────────── 3D PARTICLES ─────────── */
+  function initParticles() {
+    if (prefersReduced) return;
+    const container = $('#particles');
+    const COUNT = 25;
+    for (let i = 0; i < COUNT; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.animationDuration = `${12 + Math.random() * 18}s`;
+      p.style.animationDelay = `${-Math.random() * 20}s`;
+      p.style.opacity = `${0.3 + Math.random() * 0.5}`;
+      p.style.width = p.style.height = `${2 + Math.random() * 4}px`;
+      container.appendChild(p);
+    }
+  }
+
+  /* ─────────── HERO ─────────── */
+  function initHero() {
+    const navLogo = $('#navLogo');
+    const headline = $('.hero__headline');
+    const sub = $('.hero__sub');
+    const hint = $('.hero__hint');
+    const heroInner = $('.hero__inner');
+
+    $$('[data-split]').forEach(line => {
+      const text = line.textContent;
+      line.textContent = '';
+      [...text].forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.textContent = ch === ' ' ? '\u00A0' : ch;
+        span.style.transform = 'translateY(120%)';
+        span.style.opacity = '0';
+        span.style.transition = `transform 1.2s ${.02 * i}s var(--ease-cinema), opacity .8s ${.02 * i}s var(--ease-cinema)`;
+        line.appendChild(span);
+      });
+    });
+
+    setTimeout(() => {
+      $$('[data-split] span').forEach(span => {
+        span.style.transform = 'translateY(0)';
+        span.style.opacity = '1';
+      });
+      $$('[data-fade]').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = `opacity .9s ${.6 + i * .15}s var(--ease-cinema), transform .9s ${.6 + i * .15}s var(--ease-cinema)`;
+        requestAnimationFrame(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      });
+    }, 200);
+
+    if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+      let mx = 0.5, my = 0.5;
+      let cx = 0.5, cy = 0.5;
+      document.addEventListener('mousemove', (e) => {
+        mx = e.clientX / innerWidth;
+        my = e.clientY / innerHeight;
+      });
+      (function loop() {
+        cx = lerp(cx, mx, 0.06);
+        cy = lerp(cy, my, 0.06);
+        const rx = (cy - 0.5) * -8;
+        const ry = (cx - 0.5) * 8;
+        if (heroInner) {
+          heroInner.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        }
+        requestAnimationFrame(loop);
+      })();
+    }
+
+    onScroll((y) => {
+      const p = clamp(y / innerHeight);
+      headline.style.transform = `translateY(${-p * 80}px) scale(${1 - p * 0.06}) translateZ(${-p * 200}px)`;
+      headline.style.opacity = String(1 - p * 1.1);
+      sub.style.transform = `translateY(${-p * 60}px)`;
+      sub.style.opacity = String(1 - p * 1.4);
+      hint.style.opacity = String(1 - p * 2.5);
+      navLogo.style.fontSize = `${28 - p * 10}px`;
+    });
+  }
+
+  /* ─────────── 3D CODE STAGE ─────────── */
+  function initCodeStage3D() {
+    const stage = $('#codeStage3D');
+    if (!stage) return;
+    const codeWin = $('.code-window', stage);
+    const previewWin = $('.preview-window', stage);
+
+    let mx = 0.5, my = 0.5;
+    let cx = 0.5, cy = 0.5;
+    let isHover = false;
+
+    if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+      stage.addEventListener('pointermove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        mx = (e.clientX - rect.left) / rect.width;
+        my = (e.clientY - rect.top) / rect.height;
+        isHover = true;
+      });
+      stage.addEventListener('pointerleave', () => {
+        isHover = false;
+        mx = 0.5; my = 0.5;
+      });
+
+      (function loop() {
+        cx = lerp(cx, mx, 0.08);
+        cy = lerp(cy, my, 0.08);
+        const x = cx - 0.5;
+        const y = cy - 0.5;
+        codeWin.style.transform =
+          `rotateY(${8 + x * 10}deg) rotateX(${3 - y * 6}deg) translateZ(10px)`;
+        previewWin.style.transform =
+          `rotateY(${-8 + x * 10}deg) rotateX(${3 - y * 6}deg) translateZ(60px)`;
+        requestAnimationFrame(loop);
+      })();
+    }
+
+    onScroll(() => {
+      const p = progressOf($('#transform'));
+      const flatten = Math.sin(p * Math.PI);
+      const rot = (1 - flatten) * 1;
+      if (!isHover) {
+        codeWin.style.transform =
+          `rotateY(${8 * rot}deg) rotateX(${3 * rot}deg) translateZ(${p * 30}px)`;
+        previewWin.style.transform =
+          `rotateY(${-8 * rot}deg) rotateX(${3 * rot}deg) translateZ(${40 + p * 40}px)`;
+      }
+    });
+  }
+
+  /* ─────────── TRANSFORM DOTS ─────────── */
+  function initTransformDots() {
+    const section = $('#transform');
+    const dots = $$('.progress__dot', section);
+    let last = -1;
+    onScroll(() => {
+      const p = progressOf(section);
+      const idx = Math.min(dots.length - 1, Math.floor(p * dots.length + 0.12));
+      if (idx === last) return;
+      last = idx;
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+    });
+  }
+
+  /* ─────────── FAMILIAR ─────────── */
+  function initFamiliar() {
+    const section = $('#familiar');
+    const lines = $$('.code-line', section);
+    const eqs = $$('.eq-line', section);
+    onScroll(() => {
+      const p = progressOf(section);
+      const codeP = clamp(p / 0.6);
+      lines.forEach((l, i) => {
+        const t = (i + 1) / lines.length;
+        l.classList.toggle('is-active', codeP >= t - 0.06);
+      });
+      const eqP = clamp((p - 0.4) / 0.6);
+      eqs.forEach((l, i) => {
+        const t = (i + 1) / eqs.length;
+        l.classList.toggle('is-active', eqP >= t - 0.06);
+      });
+    });
+  }
+
+  /* ─────────── LOGIC ─────────── */
+  function initLogic() {
+    const section = $('#logic');
+    const counter = $('#counter');
+    const growing = $('#growing');
+    onScroll(() => {
+      const p = progressOf(section);
+      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const v = Math.round(lerp(0, 5830, clamp(eased * 1.15)));
+      counter.textContent = v.toLocaleString('en-US');
+      growing.classList.toggle('is-active', p > 0.65);
+    });
+  }
+
+  /* ─────────── DATA ─────────── */
+  function initData() {
+    const section = $('#data');
+    const bars = $$('.bar', section);
+    onScroll(() => {
+      const p = progressOf(section);
+      const local = clamp(p * 1.4);
+      bars.forEach((b, i) => {
+        const h = parseInt(b.dataset.h, 10);
+        const t = clamp((local - i * 0.07) / 0.5);
+        const eased = 1 - Math.pow(1 - t, 3);
+        b.style.height = `${h * eased}px`;
+      });
+    });
+  }
+
+  /* ─────────── RTL ─────────── */
+  function initRTL() {
+    const section = $('#rtl');
+    const stage = $('#rtlStage');
+    const text = $('.rtl__text', stage);
+    let switched = null;
+
+    onScroll(() => {
+      const p = progressOf(section);
+      const should = p > 0.5;
+      if (should === switched) return;
+      switched = should;
+      stage.classList.toggle('is-rtl', switched);
+      text.setAttribute('dir', switched ? 'rtl' : 'ltr');
+      text.textContent = switched ? text.dataset.rtl : text.dataset.ltr;
+    });
+
+    if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+      let mx = 0.5, my = 0.5;
+      let cx = 0.5, cy = 0.5;
+      stage.addEventListener('pointermove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        mx = (e.clientX - rect.left) / rect.width;
+        my = (e.clientY - rect.top) / rect.height;
+      });
+      stage.addEventListener('pointerleave', () => { mx = 0.5; my = 0.5; });
+
+      (function loop() {
+        cx = lerp(cx, mx, 0.08);
+        cy = lerp(cy, my, 0.08);
+        const rx = (cy - 0.5) * -10;
+        const ry = (cx - 0.5) * 10;
+        stage.style.transform = `rotateX(${3 + rx}deg) rotateY(${-5 + ry}deg) translateZ(20px)`;
+        requestAnimationFrame(loop);
+      })();
+    }
+  }
+
+  /* ─────────── THEMES ─────────── */
+  const THEMES = [
+    { name: 'Light',      bg: '#FAFAF8', fg: '#050505', border: 'rgba(0,0,0,.08)',       shadow: 'rgba(0,0,0,.15)', accent: '#FF4D2E', mute: '#8A8A8A' },
+    { name: 'Dark',       bg: '#0A0A0A', fg: '#FAFAF8', border: 'rgba(255,255,255,.08)', shadow: 'rgba(0,0,0,.6)',   accent: '#FF4D2E', mute: '#8A8A8A' },
+    { name: 'Nord',       bg: '#2E3440', fg: '#ECEFF4', border: 'rgba(255,255,255,.1)',  shadow: 'rgba(0,0,0,.5)',   accent: '#88C0D0', mute: '#7B88A1' },
+    { name: 'Dracula',    bg: '#282A36', fg: '#F8F8F2', border: 'rgba(255,255,255,.1)',  shadow: 'rgba(0,0,0,.5)',   accent: '#BD93F9', mute: '#6272A4' },
+    { name: 'Catppuccin', bg: '#1E1E2E', fg: '#CDD6F4', border: 'rgba(255,255,255,.1)',  shadow: 'rgba(0,0,0,.5)',   accent: '#F5A97F', mute: '#7F849C' }
+  ];
+
+  function initThemes() {
+    const section = $('#themes');
+    const preview = $('#themePreview');
+    const nameEl = $('#themeName');
+    let current = -1;
+
+    onScroll(() => {
+      const p = progressOf(section);
+      const idx = Math.min(THEMES.length - 1, Math.floor(clamp(p * 1.05) * THEMES.length));
+      if (idx === current) return;
+      current = idx;
+      const t = THEMES[idx];
+      preview.style.setProperty('--t-bg', t.bg);
+      preview.style.setProperty('--t-fg', t.fg);
+      preview.style.setProperty('--t-border', t.border);
+      preview.style.setProperty('--t-shadow', t.shadow);
+      preview.style.setProperty('--t-accent', t.accent);
+      preview.style.setProperty('--t-mute', t.mute);
+      nameEl.textContent = t.name;
+    });
+  }
+
+  /* ─────────── CORE ─────────── */
+  function initCore() {
+    const section = $('#core');
+    const orb = $('#coreOrb');
+    const caption = $('#coreCaption');
+    let captionOn = false;
+
+    onScroll(() => {
+      const p = progressOf(section);
+      const rotY = p * 360;
+      const rotX = Math.sin(p * Math.PI) * 20 - 10;
+      const s = 0.85 + Math.sin(p * Math.PI) * 0.25;
+      orb.style.transform =
+        `rotateY(${rotY}deg) rotateX(${rotX}deg) scale(${s}) translateZ(${Math.sin(p * Math.PI) * 60}px)`;
+
+      const shouldOn = p > 0.4;
+      if (shouldOn !== captionOn) {
+        captionOn = shouldOn;
+        caption.classList.toggle('is-active', captionOn);
+      }
+    });
+  }
+
+  /* ─────────── WHITE ─────────── */
+  function initWhite() {
+    const section = $('#white');
+    const lines = $$('[data-white-line]', section);
+    let on = null;
+    onScroll(() => {
+      const should = inView(section, 0.6);
+      if (should === on) return;
+      on = should;
+      lines.forEach((l, i) => {
+        setTimeout(() => l.classList.toggle('is-active', on), i * 180);
+      });
+    });
+  }
+
+  /* ─────────── WHY ─────────── */
+  function initWhy() {
+    const section = $('#why');
+    const steps = $$('.why__step', section);
+    onScroll(() => {
+      const p = progressOf(section);
+      const idx = Math.min(steps.length - 1, Math.floor(p * steps.length * 0.99));
+      steps.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+    });
+  }
+
+  /* ─────────── PLAYGROUND (inline preview) ─────────── */
+  function compile(src) {
+    let html = src;
+    const vars = {};
+    html = html.replace(/@let\s+(\w+)\s*=\s*"([^"]*)"/g, (_, k, v) => {
+      vars[k] = v;
+      return '';
+    });
+    html = html.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+    html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    html = html.replace(/@note\n([\s\S]*?)\n@end/g, '<div class="note">$1</div>');
+    html = html.split(/\n{2,}/).map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (/^<(h\d|div|ul|ol|pre)/.test(trimmed)) return trimmed;
+      return `<p>${trimmed.replace(/\n/g, '<br/>')}</p>`;
+    }).join('\n');
+    return html;
+  }
+
+  function initPlayground() {
+    const input = $('#pgInput');
+    const preview = $('#pgPreview');
+    if (!input || !preview) return;
+    let raf;
+    const render = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        preview.innerHTML = compile(input.value);
+      });
+    };
+    input.addEventListener('input', render);
+    render();
+  }
+
+  /* ─────────── ANCHORS ─────────── */
+  function initAnchors() {
+    $$('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id === '#') return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        const y = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      });
+    });
+  }
+
+  /* ─────────── BOOT ─────────── */
+  document.addEventListener('DOMContentLoaded', () => {
+    initCursor();
+    initScrollProgress();
+    initParticles();
+    initHero();
+    initCodeStage3D();
+    initTransformDots();
+    initFamiliar();
+    initLogic();
+    initData();
+    initRTL();
+    initThemes();
+    initCore();
+    initWhite();
+    initWhy();
+    initPlayground();
+    initAnchors();
+  });
+})();
+</script>
+
+</body>
+</html>

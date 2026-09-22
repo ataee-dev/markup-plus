@@ -1,0 +1,13 @@
+@let score = 85
+
+@if score >= 90
+Grade: **A** - Excellent
+@elif score >= 80
+Grade: **B** - Good
+@elif score >= 70
+Grade: **C** - Fair
+@elif score >= 60
+Grade: **D** - Passing
+@else
+Grade: **F** - Needs improvement
+@endif

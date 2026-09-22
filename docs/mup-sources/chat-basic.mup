@@ -1,0 +1,18 @@
+import { renderFragment } from 'markup-plus-js';
+
+const botResponse = `
+# Answer
+
+Here is a **formatted** answer.
+
+- Point one
+- Point two
+- Point three
+`;
+
+document.getElementById('chat').innerHTML =
+  renderFragment(botResponse, {
+    scoped: true,
+    includeScripts: true,
+    includeCDNScripts: true
+  });

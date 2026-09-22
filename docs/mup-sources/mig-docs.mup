@@ -1,0 +1,42 @@
+---
+title: API Reference
+version: 2.1.0
+---
+
+# {title}
+
+Version: **{version}**
+
+@toc
+
+## Getting Started
+
+Welcome to the API reference for version **{version}**.
+
+@note
+This documentation is generated from a single .mup file.
+@end
+
+## Authentication
+
+All requests require an API key:
+
+curl -H "Authorization: Bearer YOUR_KEY" https://api.example.com
+
+## Endpoints
+
+### GET /users
+
+Returns a list of users.
+
+### POST /users
+
+Creates a new user.
+
+## Changelog
+
+@timeline
+2.0.0: Initial release
+2.0.5: Bug fixes
+2.1.0: New endpoints
+@end

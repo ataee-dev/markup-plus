@@ -1,0 +1,17 @@
+# Interactive Fragment
+
+@tabs
+@tab "Code"
+```python
+print("Hello")
+```
+@end
+
+@tab "Output"
+Hello
+@end
+@end
+
+@tip
+Tabs work in fragments too.
+@end

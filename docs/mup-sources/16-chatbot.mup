@@ -1,0 +1,20 @@
+## Answer
+
+Here is a **formatted** answer from the assistant.
+
+**Bold text** and *italic text* work as expected.
+
+@tip
+This is a tip block.
+@end
+
+```javascript
+const greeting = 'Hello, World!';
+console.log(greeting);
+```
+
+- Point one
+- Point two
+- Point three
+
+---

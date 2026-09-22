@@ -1,0 +1,6 @@
+# Bar Chart
+
+@chart(type="bar" title="Monthly Sales")
+data: [100, 250, 180, 320]
+labels: ["Jan", "Feb", "Mar", "Apr"]
+@end

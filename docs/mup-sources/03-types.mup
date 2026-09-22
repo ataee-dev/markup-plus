@@ -1,0 +1,15 @@
+# Variable Types
+
+@let text = "Hello"
+@let number = 42
+@let decimal = 3.14
+@let flag = true
+@let items = ["a", "b", "c"]
+
+## Values
+
+- text: {text}
+- number: {number}
+- decimal: {decimal}
+- flag: {flag}
+- items: {items}

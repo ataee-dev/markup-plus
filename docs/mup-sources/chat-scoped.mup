@@ -1,0 +1,5 @@
+// Scoped (recommended) — CSS won't leak
+renderFragment(source, { scoped: true });
+
+// Unscoped — full control, but may conflict
+renderFragment(source, { scoped: false });

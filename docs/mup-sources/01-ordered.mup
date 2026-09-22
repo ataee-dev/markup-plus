@@ -1,0 +1,5 @@
+1. Install Python
+2. Install Markup+
+3. Write a `.mup` file
+4. Run `mup file.mup`
+5. Open the HTML output

@@ -1,0 +1,18 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { toHTMLAsync, Theme } from 'markup-plus-js';
+
+async function build(inputPath: string, outputPath: string): Promise<void> {
+  const source = await readFile(inputPath, 'utf8');
+  const theme: Theme = 'dracula';
+
+  const html = await toHTMLAsync(source, {
+    title: 'Generated Page',
+    theme,
+    baseDir: './docs',
+  });
+
+  await writeFile(outputPath, html, 'utf8');
+  console.log('Built:', outputPath);
+}
+
+build('docs/index.mup', 'build/index.html');

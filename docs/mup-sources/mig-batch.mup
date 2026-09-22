@@ -1,0 +1,17 @@
+# Batch convert Markdown to HTML
+
+## Windows
+
+Use this command in CMD:
+
+for %f in (docs\*.md) do mup-js "%f" -o "build\%~nf.html"
+
+## macOS / Linux
+
+Use this command in Terminal:
+
+for f in docs/*.md; do mup-js "$f" -o "build/$(basename "$f" .md).html"; done
+
+@tip
+Both commands convert all .md files in the docs folder to HTML in the build folder.
+@end

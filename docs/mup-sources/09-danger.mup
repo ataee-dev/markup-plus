@@ -1,0 +1,15 @@
+# Danger Alert
+
+@danger
+**Never run this command on production:**
+
+```bash
+rm -rf /
+```
+
+It will delete every file on your system. Use with extreme caution.
+@end
+
+@tip
+Always test destructive commands in a sandbox environment first.
+@end

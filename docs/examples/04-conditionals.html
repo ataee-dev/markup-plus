@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Conditionals — Markup+ JS</title>
+  <meta name="description" content="Conditional content with @if, @elif, @else, @endif.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html" class="active">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Conditionals</span></nav>
+
+<article class="article">
+
+<h1>Conditionals</h1>
+<p class="lead">Show or hide content based on conditions. Use <code>@if</code>, <code>@elif</code>, <code>@else</code>, and <code>@endif</code> to build dynamic documents.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why conditionals?</div>
+    <p>Build one document that adapts to different environments, versions, or user roles — without duplicating content.</p>
+  </div>
+</div>
+
+<h2 id="basic">Basic if</h2>
+
+<p>The simplest form: show content only if a condition is true.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic conditional</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-basic.mup" title="Basic conditional" loading="lazy" style="width:100%;min-height:200px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="else">If / Else</h2>
+
+<p>Provide an alternative when the condition is false.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>If / Else</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-else.mup" title="If / Else" loading="lazy" style="width:100%;min-height:200px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-else.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="elif">If / Elif / Else</h2>
+
+<p>Chain multiple conditions with <code>@elif</code>. The first matching branch is rendered.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>If / Elif / Else</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-elif.mup" title="If / Elif / Else" loading="lazy" style="width:100%;min-height:220px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-elif.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="operators">Operators</h2>
+
+<p>Markup+ supports the following comparison operators inside <code>@if</code> and <code>@elif</code>:</p>
+
+<table>
+  <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>==</code></td><td>Equal</td><td><code>@if version == "0.6.4"</code></td></tr>
+    <tr><td><code>!=</code></td><td>Not equal</td><td><code>@if status != "done"</code></td></tr>
+    <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>@if count &gt; 10</code></td></tr>
+    <tr><td><code>&lt;</code></td><td>Less than</td><td><code>@if count &lt; 5</code></td></tr>
+    <tr><td><code>&gt;=</code></td><td>Greater or equal</td><td><code>@if score &gt;= 90</code></td></tr>
+    <tr><td><code>&lt;=</code></td><td>Less or equal</td><td><code>@if score &lt;= 50</code></td></tr>
+  </tbody>
+</table>
+
+<h3 id="booleans">Boolean conditions</h3>
+
+<p>If the variable itself is boolean, use it directly:</p>
+
+<table>
+  <thead><tr><th>Syntax</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>@if is_active</code></td><td>True if <code>is_active</code> is <code>true</code></td></tr>
+    <tr><td><code>@if not_done</code></td><td>True if <code>not_done</code> is <code>true</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="nesting">Nesting</h2>
+
+<p>Conditionals can be nested inside each other, or inside loops:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Nested conditionals</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-nested.mup" title="Nested conditionals" loading="lazy" style="width:100%;min-height:240px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-nested.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="practical">Practical examples</h2>
+
+<h3 id="practical-version">Version-based content</h3>
+
+<p>Use version checks to show different messages based on installed version:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Version check</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-version.mup" title="Version check" loading="lazy" style="width:100%;min-height:220px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-version.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="practical-role">Role-based content</h3>
+
+<p>Show different permissions based on user role:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Role check</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-role.mup" title="Role check" loading="lazy" style="width:100%;min-height:200px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-role.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="practical-threshold">Score thresholds</h3>
+
+<p>Grade scores with cascading conditions:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Score grading</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/04-score.mup" title="Score grading" loading="lazy" style="width:100%;min-height:200px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/04-score.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>Missing <code>@endif</code></td><td>Every <code>@if</code> must close with <code>@endif</code></td></tr>
+    <tr><td><code>@if x = 5</code></td><td>Use <code>==</code> for comparison, not <code>=</code></td></tr>
+    <tr><td><code>@if x == 5 ... @end</code></td><td>Use <code>@endif</code>, not <code>@end</code></td></tr>
+    <tr><td><code>@if Name == "x"</code></td><td>Case-sensitive: use the exact variable name</td></tr>
+    <tr><td>Comparing string to number</td><td><code>"5"</code> and <code>5</code> are different types</td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>Basic if</td><td><code>@if cond ... @endif</code></td></tr>
+    <tr><td>If / else</td><td><code>@if cond ... @else ... @endif</code></td></tr>
+    <tr><td>If / elif / else</td><td><code>@if c1 ... @elif c2 ... @else ... @endif</code></td></tr>
+    <tr><td>Equality</td><td><code>@if x == y</code></td></tr>
+    <tr><td>Inequality</td><td><code>@if x != y</code></td></tr>
+    <tr><td>Greater / less</td><td><code>@if x &gt; y</code> / <code>@if x &lt; y</code></td></tr>
+    <tr><td>Boolean</td><td><code>@if flag</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Combine conditionals with <a href="05-loops.html">Loops</a> to build dynamic lists, or explore <a href="06-components.html">Components</a> for reusable blocks.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="03-variables.html" class="nav-prev"><span>← Previous</span><strong>03 · Variables</strong></a>
+  <a href="05-loops.html" class="nav-next"><span>Next →</span><strong>05 · Loops</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  <!-- {{TITLE}} — Description -->
+  <title>{{TITLE}} — Markup+ JS</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="author" content="Hossein Ataee">
+  <meta name="keywords" content="markup, markdown, markup-plus, javascript, nodejs, {{KEYWORDS}}">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{TITLE}} — Markup+ JS">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ataee-dev.github.io/markup-plus-js/{{PATH}}">
+  <meta property="og:image" content="https://ataee-dev.github.io/markup-plus-js/assets/images/mup-logo.png">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{TITLE}} — Markup+ JS">
+  <meta name="twitter:description" content="{{DESCRIPTION}}">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/markup-plus-js/assets/images/mup-logo.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Markup+ JS Runtime (pinned version) -->
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  
+  <!-- Docs CSS -->
+  <link rel="stylesheet" href="/markup-plus-js/assets/css/docs.css">
+  <link rel="stylesheet" href="/markup-plus-js/assets/css/code.css">
+  
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup-templating.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       MOBILE MENU BUTTON
+       ============================================================ -->
+  <button class="menu-button" id="menuButton" aria-label="Toggle menu">
+    <svg viewBox="0 0 24 24">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <!-- Mobile overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ============================================================
+       THEME TOGGLE
+       ============================================================ -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+  <!-- ============================================================
+       LAYOUT
+       ============================================================ -->
+  <div class="layout">
+
+    <!-- ==========================================================
+         SIDEBAR
+         ========================================================== -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Brand -->
+      <div class="sidebar-header">
+        <a href="/markup-plus-js/index.html" class="brand">
+          <span class="brand-logo">M+</span>
+          <span class="brand-name">Markup+ JS</span>
+        </a>
+        <span class="version-badge">v0.6.4</span>
+      </div>
+
+      <!-- Search hint -->
+      <div style="padding: 0 20px 12px;">
+        <button
+          id="searchTrigger"
+          style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+          "
+          onmouseover="this.style.borderColor='var(--primary)'"
+          onmouseout="this.style.borderColor='var(--border)'"
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="16" y1="16" x2="21" y2="21"/>
+          </svg>
+          <span style="flex:1;text-align:left;">Search...</span>
+          <kbd style="
+            padding: 2px 6px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+          ">⌘K</kbd>
+        </button>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="nav-section">
+        <h4>Getting Started</h4>
+        <a href="/markup-plus-js/guides/getting-started.html">Introduction</a>
+        <a href="/markup-plus-js/guides/installation.html">Installation</a>
+        <a href="/markup-plus-js/guides/cdn-usage.html">CDN Usage</a>
+      </nav>
+
+      <nav class="nav-section">
+        <h4>Examples</h4>
+        <a href="/markup-plus-js/examples/01-basics.html">01 · Basics</a>
+        <a href="/markup-plus-js/examples/02-syntax.html">02 · Syntax</a>
+        <a href="/markup-plus-js/examples/03-variables.html">03 · Variables</a>
+        <a href="/markup-plus-js/examples/04-conditionals.html">04 · Conditionals</a>
+        <a href="/markup-plus-js/examples/05-loops.html">05 · Loops</a>
+        <a href="/markup-plus-js/examples/06-components.html">06 · Components</a>
+        <a href="/markup-plus-js/examples/07-code.html">07 · Code Blocks</a>
+        <a href="/markup-plus-js/examples/08-tables.html">08 · Tables</a>
+        <a href="/markup-plus-js/examples/09-alerts.html">09 · Alerts</a>
+        <a href="/markup-plus-js/examples/10-tabs-collapse.html">10 · Tabs & Collapse</a>
+        <a href="/markup-plus-js/examples/11-math.html">11 · Math</a>
+        <a href="/markup-plus-js/examples/12-charts.html">12 · Charts</a>
+        <a href="/markup-plus-js/examples/13-gallery.html">13 · Gallery</a>
+        <a href="/markup-plus-js/examples/14-rtl.html">14 · RTL</a>
+        <a href="/markup-plus-js/examples/15-themes.html">15 · Themes</a>
+        <a href="/markup-plus-js/examples/16-fragment.html">16 · Fragment</a>
+        <a href="/markup-plus-js/examples/17-typescript.html">17 · TypeScript</a>
+        <a href="/markup-plus-js/examples/18-cli.html">18 · CLI</a>
+      </nav>
+
+      <nav class="nav-section">
+        <h4>Guides</h4>
+        <a href="/markup-plus-js/guides/cli-reference.html">CLI Reference</a>
+        <a href="/markup-plus-js/guides/javascript-api.html">JavaScript API</a>
+        <a href="/markup-plus-js/guides/python-api.html">Python API</a>
+        <a href="/markup-plus-js/guides/themes.html">Themes</a>
+        <a href="/markup-plus-js/guides/rtl.html">RTL Support</a>
+        <a href="/markup-plus-js/guides/typescript.html">TypeScript</a>
+        <a href="/markup-plus-js/guides/chatbot.html">Building a Chatbot</a>
+        <a href="/markup-plus-js/guides/migration.html">Migrating from Markdown</a>
+        <a href="/markup-plus-js/guides/vs-code.html">VS Code Setup</a>
+      </nav>
+
+      <nav class="nav-section">
+        <h4>API Reference</h4>
+        <a href="/markup-plus-js/api/js.html">JavaScript API</a>
+        <a href="/markup-plus-js/api/python.html">Python API</a>
+      </nav>
+
+      <nav class="nav-section">
+        <h4>Tools</h4>
+        <a href="/markup-plus-js/playground/index.html">Playground</a>
+        <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+        <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+      </nav>
+
+    </aside>
+
+    <!-- ==========================================================
+         MAIN CONTENT
+         ========================================================== -->
+    <main class="content">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/markup-plus-js/index.html">Docs</a>
+        <span>/</span>
+        <span>{{CATEGORY}}</span>
+        <span>/</span>
+        <span>{{TITLE}}</span>
+      </nav>
+
+      <!-- Article -->
+      <article class="article">
+        <h1>{{TITLE}}</h1>
+        <p class="lead">{{DESCRIPTION}}</p>
+
+        {{CONTENT}}
+
+      </article>
+
+      <!-- Prev / Next Navigation -->
+      <nav class="page-nav" aria-label="Page navigation">
+        <a href="{{PREV_URL}}" class="nav-prev">
+          <span>← Previous</span>
+          <strong>{{PREV_TITLE}}</strong>
+        </a>
+        <a href="{{NEXT_URL}}" class="nav-next">
+          <span>Next →</span>
+          <strong>{{NEXT_TITLE}}</strong>
+        </a>
+      </nav>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>
+          <strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee
+        </p>
+        <p style="margin-top: 8px;">
+          <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+          <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+          <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+          <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+        </p>
+      </footer>
+
+    </main>
+
+    <!-- ==========================================================
+         TABLE OF CONTENTS (Right Sidebar)
+         ========================================================== -->
+    <aside class="toc" id="toc" aria-label="Table of contents">
+      <h4>On this page</h4>
+      <ul id="toc-list"></ul>
+    </aside>
+
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="/markup-plus-js/assets/js/search.js"></script>
+  <script src="/markup-plus-js/assets/js/docs.js"></script>
+  
+  <!-- Wire up search trigger -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const trigger = document.getElementById('searchTrigger');
+      if (trigger && window.MarkupSearch) {
+        trigger.addEventListener('click', function() {
+          window.MarkupSearch.open();
+        });
+      }
+    });
+  </script>
+
+  <!-- Page-specific scripts -->
+  {{SCRIPTS}}
+
+</body>
+</html>

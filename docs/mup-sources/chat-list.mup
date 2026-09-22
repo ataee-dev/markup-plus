@@ -1,0 +1,17 @@
+# Steps to install
+
+1. Open your terminal
+2. Run `npm install`
+3. Create a `.mup` file
+4. Run `mup file.mup`
+
+## Checklist
+
+- [x] Node.js installed
+- [x] Package downloaded
+- [ ] First document written
+- [ ] HTML generated
+
+@note
+The full process takes about 2 minutes.
+@end

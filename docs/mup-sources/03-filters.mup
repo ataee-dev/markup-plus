@@ -1,0 +1,11 @@
+# Filters
+
+@let name = "markup plus"
+
+- Original: {name}
+- Upper: {name|upper}
+- Lower: {name|lower}
+- Capitalize: {name|capitalize}
+- Title: {name|title}
+- Reverse: {name|reverse}
+- Length: {name|length}

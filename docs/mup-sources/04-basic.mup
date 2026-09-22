@@ -1,0 +1,7 @@
+# Conditionals
+
+@let version = "0.6.4"
+
+@if version == "0.6.4"
+You are on the latest version.
+@endif

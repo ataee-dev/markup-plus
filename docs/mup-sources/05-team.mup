@@ -1,0 +1,11 @@
+# Team Members
+
+@let team = ["Ali", "Sara", "Reza", "Maryam"]
+
+## Team Members
+
+@each member in team
+- **{member}** - Active
+@end
+
+**Total:** {team|length} members

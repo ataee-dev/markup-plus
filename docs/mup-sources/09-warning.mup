@@ -1,0 +1,8 @@
+@warning
+This is a **warning**. Use it to alert readers about
+potential issues or important precautions.
+@end
+
+@tip
+This is a **tip**. Use it for helpful hints and shortcuts.
+@end

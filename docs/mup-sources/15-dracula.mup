@@ -1,0 +1,14 @@
+# Dracula Theme
+
+A popular dark theme for developers.
+
+## Code
+
+```javascript
+const theme = "dracula";
+console.log(theme);
+```
+
+@tip
+Dracula is one of 12 built-in themes.
+@end

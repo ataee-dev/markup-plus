@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>CLI — Markup+ JS</title>
+  <meta name="description" content="Command-line interface: convert, watch, init, check.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html" class="active">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>CLI</span></nav>
+
+<article class="article">
+
+<h1>CLI</h1>
+<p class="lead">The <code>mup-js</code> command-line tool converts <code>.mup</code> files to HTML, validates documents, initializes projects, and watches files for changes.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why CLI?</div>
+    <p>Convert documents, build sites, and integrate Markup+ into build pipelines. No JavaScript required.</p>
+  </div>
+</div>
+
+<h2 id="install">Installation</h2>
+
+<p>Install globally to use <code>mup-js</code> from anywhere:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Global install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npm install -g markup-plus-js</code></pre>
+  </div>
+</div>
+
+<p>Or run it once without installing:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>One-off run</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npx markup-plus-js hello.mup</code></pre>
+  </div>
+</div>
+
+<p>Verify the installation:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Verify</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js --version
+# Markup+ JS v0.6.4</code></pre>
+  </div>
+</div>
+
+<h2 id="commands">Commands</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>mup-js &lt;file&gt;</code></td><td>Convert <code>.mup</code> file to HTML</td></tr>
+    <tr><td><code>mup-js watch &lt;file&gt;</code></td><td>Watch file and rebuild on change</td></tr>
+    <tr><td><code>mup-js new &lt;name&gt;</code></td><td>Create a new <code>.mup</code> file</td></tr>
+    <tr><td><code>mup-js open &lt;file&gt;</code></td><td>View file in terminal</td></tr>
+    <tr><td><code>mup-js check &lt;file&gt;</code></td><td>Validate file for errors</td></tr>
+    <tr><td><code>mup-js init [name]</code></td><td>Create a new project</td></tr>
+    <tr><td><code>mup-js --help</code></td><td>Show help</td></tr>
+    <tr><td><code>mup-js --version</code></td><td>Show version</td></tr>
+  </tbody>
+</table>
+
+<h2 id="convert">Convert a document</h2>
+
+<p>The most common operation — convert a <code>.mup</code> file to HTML:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic convert</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js hello.mup
+# Creates hello.html in the same folder</code></pre>
+  </div>
+</div>
+
+<h2 id="watch">Watch mode</h2>
+
+<p>Automatically rebuild on every file save:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Watch mode</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js watch hello.mup
+
+# Output:
+# Watching for changes...
+# Input:  hello.mup
+# Output: hello.html
+# Press Ctrl+C to stop.
+
+# On each save:
+# [time] Change detected, rebuilding...
+# Rebuilt -> hello.html</code></pre>
+  </div>
+</div>
+
+<h2 id="new">Create a new document</h2>
+
+<p>Generate a starter <code>.mup</code> file:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>New document</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js new my-doc
+# Creates my-doc.mup with starter content
+
+mup-js new my-doc.mup
+# Same result — extension is added automatically</code></pre>
+  </div>
+</div>
+
+<h2 id="check">Validate a document</h2>
+
+<p>Check for errors before building:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Validate</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js check hello.mup
+
+# Checks for:
+# - Undefined variables
+# - Unbalanced blocks (@if without @endif)
+# - Empty documents</code></pre>
+  </div>
+</div>
+
+<h2 id="init">Initialize a project</h2>
+
+<p>Create a project structure with folders and starter files:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Init project</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js init my-project
+# Creates:
+# my-project/
+# ├── docs/
+# ├── assets/
+# └── index.mup</code></pre>
+  </div>
+</div>
+
+<h2 id="open">View in terminal</h2>
+
+<p>Preview a <code>.mup</code> file directly in your terminal with syntax highlighting:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Open in terminal</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">mup-js open hello.mup</code></pre>
+  </div>
+</div>
+
+<h2 id="options">Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>-d</code>, <code>--dark</code></td><td>Use dark theme</td></tr>
+    <tr><td><code>-l</code>, <code>--light</code></td><td>Use light theme (default)</td></tr>
+    <tr><td><code>--theme &lt;name&gt;</code></td><td>Use a specific theme</td></tr>
+    <tr><td><code>-r</code>, <code>--rtl</code></td><td>Force right-to-left layout</td></tr>
+    <tr><td><code>--ltr</code></td><td>Force left-to-right layout</td></tr>
+    <tr><td><code>-o</code>, <code>--output &lt;file&gt;</code></td><td>Custom output path</td></tr>
+    <tr><td><code>--css &lt;file&gt;</code></td><td>Apply custom CSS file</td></tr>
+    <tr><td><code>--inline</code></td><td>Output a fragment for chatbots</td></tr>
+    <tr><td><code>--with-scripts</code></td><td>Include interactive scripts in fragment</td></tr>
+    <tr><td><code>--with-cdn</code></td><td>Include CDN scripts in fragment</td></tr>
+    <tr><td><code>--debug</code></td><td>Show debug info</td></tr>
+    <tr><td><code>-h</code>, <code>--help</code></td><td>Show help</td></tr>
+    <tr><td><code>-v</code>, <code>--version</code></td><td>Show version</td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Examples</h2>
+
+<p>Combined usage:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Combined options</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash"># Dark theme
+mup-js report.mup --dark
+
+# With specific theme
+mup-js report.mup --theme dracula
+
+# Force RTL
+mup-js persian.mup --rtl
+
+# Custom output path
+mup-js input.mup -o build/index.html
+
+# Custom CSS
+mup-js document.mup --css my-style.css
+
+# Fragment for chatbot
+mup-js response.mup --inline --with-scripts --with-cdn
+
+# Debug mode
+mup-js complex.mup --debug</code></pre>
+  </div>
+</div>
+
+<h2 id="scripting">Scripting</h2>
+
+<p>Use the CLI in build pipelines:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>package.json scripts</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-json">{
+  "scripts": {
+    "docs:build": "mup-js docs/index.mup -o build/index.html",
+    "docs:watch": "mup-js watch docs/index.mup -o build/index.html",
+    "docs:check": "mup-js check docs/index.mup"
+  }
+}</code></pre>
+  </div>
+</div>
+
+<p>Then run:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Run scripts</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">npm run docs:build
+npm run docs:watch</code></pre>
+  </div>
+</div>
+
+<h2 id="batch">Batch conversion</h2>
+
+<p>Convert all <code>.mup</code> files in a folder:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Batch (Windows)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">CMD</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">for %f in (docs\*.mup) do mup-js "%f" -o "build\%~nf.html"</code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>Batch (macOS/Linux)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Bash</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-bash">for f in docs/*.mup; do
+  mup-js "$f" -o "build/$(basename "$f" .mup).html"
+done</code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Error</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td><code>mup-js: command not found</code></td><td>Add npm global bin to PATH, or use <code>npx</code></td></tr>
+    <tr><td><code>File not found</code></td><td>Check that the file path is correct</td></tr>
+    <tr><td><code>Cannot find module</code></td><td>Reinstall: <code>npm install -g markup-plus-js</code></td></tr>
+    <tr><td>Watch mode doesn't rebuild</td><td>Some editors save atomically — try saving again</td></tr>
+    <tr><td>Output is empty</td><td>Input file may be empty — run <code>mup-js check</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Command</th></tr></thead>
+  <tbody>
+    <tr><td>Convert file</td><td><code>mup-js hello.mup</code></td></tr>
+    <tr><td>Watch file</td><td><code>mup-js watch hello.mup</code></td></tr>
+    <tr><td>Create new</td><td><code>mup-js new my-doc</code></td></tr>
+    <tr><td>Validate</td><td><code>mup-js check hello.mup</code></td></tr>
+    <tr><td>Init project</td><td><code>mup-js init my-project</code></td></tr>
+    <tr><td>Custom output</td><td><code>mup-js file.mup -o out.html</code></td></tr>
+    <tr><td>Custom theme</td><td><code>mup-js file.mup --theme dracula</code></td></tr>
+    <tr><td>Fragment</td><td><code>mup-js file.mup --inline --with-scripts</code></td></tr>
+    <tr><td>Debug</td><td><code>mup-js file.mup --debug</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">You've completed all examples</div>
+    <p>Go back to <a href="01-basics.html">Basics</a> to review, or explore the <a href="../guides/cli-reference.html">CLI Reference</a> for detailed command documentation.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="17-typescript.html" class="nav-prev"><span>← Previous</span><strong>17 · TypeScript</strong></a>
+  <a href="../index.html" class="nav-next"><span>Next →</span><strong>Home</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Python API — Markup+</title>
+  <meta name="description" content="Complete Python API reference for Markup+ — all exported functions and classes.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API Guide</a>
+    <a href="../guides/python-api.html">Python API Guide</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="js.html">JavaScript API</a>
+    <a href="python.html" class="active">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>API Reference</span><span>/</span><span>Python</span></nav>
+
+<article class="article">
+
+<h1>Python API</h1>
+<p class="lead">Complete reference for the <code>markup-plus</code> Python package. Includes all exported functions, classes, and metadata.</p>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Version note</div>
+    <p>The Python implementation is currently at <code>0.6.1</code>. Some features available in the JavaScript version (<code>0.6.4</code>) are not yet in Python — see the comparison table below.</p>
+  </div>
+</div>
+
+<h2 id="main-import">Main Import</h2>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-import.mup"></code></pre>
+
+<h2 id="top-level">Top-Level Functions</h2>
+
+<p>The package exposes these functions at the top level:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Returns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>to_html</code></td><td><code>(text, title, theme, direction, base_dir, custom_css)</code></td><td>str</td></tr>
+    <tr><td><code>parse_text</code></td><td><code>(text)</code></td><td>Document</td></tr>
+  </tbody>
+</table>
+
+<h2 id="to-html">to_html()</h2>
+
+<p>Convert Markup+ source to a complete HTML document.</p>
+
+<h3 id="to-html-signature">Signature</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-tohtml-sig.mup"></code></pre>
+
+<h3 id="to-html-params">Parameters</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>text</code></td><td>str</td><td>required</td><td>Markup+ source</td></tr>
+    <tr><td><code>title</code></td><td>str</td><td><code>'Markup+ Document'</code></td><td>HTML title</td></tr>
+    <tr><td><code>theme</code></td><td>str</td><td><code>'light'</code></td><td>Theme name</td></tr>
+    <tr><td><code>direction</code></td><td>str | None</td><td><code>None</code></td><td><code>"ltr"</code>, <code>"rtl"</code>, or auto</td></tr>
+    <tr><td><code>base_dir</code></td><td>str | None</td><td><code>None</code></td><td>Base directory for <code>@import</code></td></tr>
+    <tr><td><code>custom_css</code></td><td>str | None</td><td><code>None</code></td><td>Raw CSS string</td></tr>
+  </tbody>
+</table>
+
+<h3 id="to-html-examples">Examples</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-tohtml-ex.mup"></code></pre>
+
+<h2 id="parse-text">parse_text()</h2>
+
+<p>Parse Markup+ source into an AST <code>Document</code>.</p>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-parsetext.mup"></code></pre>
+
+<h2 id="modules">Sub-Modules</h2>
+
+<p>Additional functionality is available through sub-modules:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>markup_plus.ast</code></td><td>All AST node classes</td></tr>
+    <tr><td><code>markup_plus.lexer</code></td><td>Tokenization</td></tr>
+    <tr><td><code>markup_plus.parser</code></td><td>Parsing</td></tr>
+    <tr><td><code>markup_plus.renderer</code></td><td>HTML rendering internals</td></tr>
+    <tr><td><code>markup_plus.themes</code></td><td>CSS and theme utilities</td></tr>
+  </tbody>
+</table>
+
+<h2 id="themes-module">markup_plus.themes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>build_css(theme, custom_css)</code></td><td>Build final CSS string</td></tr>
+    <tr><td><code>load_base_css()</code></td><td>Load base CSS only</td></tr>
+    <tr><td><code>load_custom_css(path)</code></td><td>Load a CSS file from disk</td></tr>
+  </tbody>
+</table>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-themes.mup"></code></pre>
+
+<h2 id="renderer-module">markup_plus.renderer</h2>
+
+<p>Lower-level rendering functions. Most users don't need these.</p>
+
+<h3 id="renderer-render">Rendering functions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>render_ast(doc)</code></td><td>Render a full Document to HTML</td></tr>
+    <tr><td><code>render_node(node)</code></td><td>Render a single AST node</td></tr>
+    <tr><td><code>render_inline(text)</code></td><td>Render inline formatting</td></tr>
+    <tr><td><code>render_alert(node)</code></td><td>Render an alert block</td></tr>
+    <tr><td><code>render_chart(node)</code></td><td>Render a chart</td></tr>
+    <tr><td><code>render_code_block(node)</code></td><td>Render a code block</td></tr>
+    <tr><td><code>render_collapse(node)</code></td><td>Render a collapse group</td></tr>
+    <tr><td><code>render_component_call(node)</code></td><td>Render a component usage</td></tr>
+    <tr><td><code>render_component_def(node)</code></td><td>Render a component definition</td></tr>
+    <tr><td><code>render_each_block(node)</code></td><td>Render a loop</td></tr>
+    <tr><td><code>render_footnotes(doc)</code></td><td>Render footnotes section</td></tr>
+    <tr><td><code>render_gallery(node)</code></td><td>Render an image gallery</td></tr>
+    <tr><td><code>render_if_block(node)</code></td><td>Render a conditional</td></tr>
+    <tr><td><code>render_image(node)</code></td><td>Render an image</td></tr>
+    <tr><td><code>render_math(node)</code></td><td>Render a math formula</td></tr>
+    <tr><td><code>render_quote(node)</code></td><td>Render a rich quote</td></tr>
+    <tr><td><code>render_table(node)</code></td><td>Render a table</td></tr>
+    <tr><td><code>render_tabs(node)</code></td><td>Render a tab group</td></tr>
+    <tr><td><code>render_timeline(node)</code></td><td>Render a timeline</td></tr>
+    <tr><td><code>render_toc(node)</code></td><td>Render a table of contents</td></tr>
+    <tr><td><code>resolve_imports(doc)</code></td><td>Resolve <code>@import</code> directives</td></tr>
+  </tbody>
+</table>
+
+<h3 id="renderer-eval">Evaluator functions</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>apply_filters(value, filters)</code></td><td>Apply filter chain</td></tr>
+    <tr><td><code>evaluate_condition(expr, vars)</code></td><td>Evaluate <code>@if</code> condition</td></tr>
+    <tr><td><code>evaluate_iterable(expr, vars)</code></td><td>Evaluate <code>@each</code> iterable</td></tr>
+    <tr><td><code>substitute_variables(text, vars)</code></td><td>Replace <code>{var}</code></td></tr>
+    <tr><td><code>is_rtl_text(text)</code></td><td>Check RTL text</td></tr>
+  </tbody>
+</table>
+
+<h2 id="ast-module">markup_plus.ast</h2>
+
+<p>All AST node classes are exported here:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Classes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Base</td><td><code>Node</code>, <code>Document</code></td></tr>
+    <tr><td>Text blocks</td><td><code>Heading</code>, <code>Paragraph</code>, <code>BlockQuote</code>, <code>HorizontalRule</code></td></tr>
+    <tr><td>Lists</td><td><code>ListBlock</code></td></tr>
+    <tr><td>Code</td><td><code>CodeBlock</code></td></tr>
+    <tr><td>Images</td><td><code>ImageBlock</code>, <code>GalleryBlock</code></td></tr>
+    <tr><td>Tables</td><td><code>TableBlock</code></td></tr>
+    <tr><td>Navigation</td><td><code>TOCBlock</code></td></tr>
+    <tr><td>Logic</td><td><code>IfBlock</code>, <code>EachBlock</code>, <code>VariableDef</code></td></tr>
+    <tr><td>Components</td><td><code>ComponentDef</code>, <code>ComponentCall</code></td></tr>
+    <tr><td>Rich content</td><td><code>ChartBlock</code>, <code>MathBlock</code>, <code>TabsBlock</code>, <code>CollapseBlock</code>, <code>AlertBlock</code>, <code>QuoteBlock</code>, <code>TimelineBlock</code></td></tr>
+    <tr><td>Imports</td><td><code>ImportBlock</code></td></tr>
+    <tr><td>Inline</td><td><code>Text</code>, <code>Bold</code>, <code>Italic</code>, <code>InlineCode</code>, <code>Strikethrough</code>, <code>Link</code>, <code>AutoLink</code></td></tr>
+  </tbody>
+</table>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-ast.mup"></code></pre>
+
+<h2 id="metadata">Metadata</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>markup_plus.__version__</code></td><td><code>"0.6.1"</code></td></tr>
+    <tr><td><code>markup_plus.__author__</code></td><td><code>"Hossein Ataee"</code></td></tr>
+    <tr><td><code>markup_plus.__license__</code></td><td>License string</td></tr>
+  </tbody>
+</table>
+
+<h2 id="comparison">JavaScript vs Python</h2>
+
+<p>Not all features are available in both implementations:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>JavaScript</th>
+      <th>Python</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Version</td><td>0.6.4</td><td>0.6.1</td></tr>
+    <tr><td>Full HTML render</td><td><code>toHTML</code></td><td><code>to_html</code></td></tr>
+    <tr><td>Body-only render</td><td><code>renderBody</code></td><td>—</td></tr>
+    <tr><td>Fragment render</td><td><code>renderFragment</code></td><td>—</td></tr>
+    <tr><td>Async render</td><td><code>toHTMLAsync</code></td><td>—</td></tr>
+    <tr><td>Parse AST</td><td><code>parse</code></td><td><code>parse_text</code></td></tr>
+    <tr><td>Theme registration</td><td><code>registerTheme</code></td><td>—</td></tr>
+    <tr><td>List themes</td><td><code>listThemes</code></td><td>—</td></tr>
+    <tr><td>Build CSS</td><td><code>buildCSS</code></td><td><code>themes.build_css</code></td></tr>
+    <tr><td>RTL detection</td><td><code>isRTLText</code></td><td><code>renderer.is_rtl_text</code></td></tr>
+    <tr><td>TypeScript types</td><td>Bundled</td><td>—</td></tr>
+    <tr><td>Standalone .exe</td><td>—</td><td>Windows installer</td></tr>
+    <tr><td>Output HTML</td><td colspan="2">Identical</td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Quick Examples</h2>
+
+<h3 id="example-basic">Basic render</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-ex-basic.mup"></code></pre>
+
+<h3 id="example-file">Render a file</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-ex-file.mup"></code></pre>
+
+<h3 id="example-ast">Extract headings</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-ex-ast.mup"></code></pre>
+
+<h3 id="example-flask">Flask server</h3>
+
+<pre class="example-code"><code class="language-markup" data-src="../mup-sources/api-py-ex-flask.mup"></code></pre>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>See <a href="js.html">JavaScript API</a> for the full-featured implementation, or <a href="../guides/python-api.html">Python API Guide</a> for detailed examples.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="js.html" class="nav-prev"><span>← Previous</span><strong>JavaScript API</strong></a>
+  <a href="../guides/getting-started.html" class="nav-next"><span>Next →</span><strong>Getting Started</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  loadMupSources();
+});
+</script>
+
+</body>
+</html>

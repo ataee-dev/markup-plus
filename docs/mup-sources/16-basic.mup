@@ -1,0 +1,11 @@
+# Chatbot Response
+
+This is a fragment that would appear in a chat interface.
+
+@note
+Fragment rendering excludes the full HTML wrapper.
+@end
+
+- Item one
+- Item two
+- Item three

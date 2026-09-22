@@ -1,0 +1,13 @@
+# Info Component
+
+@def Info(label, value)
+**{label}:** {value}
+@end
+
+@Info(label="Version", value="0.6.4")
+
+@Info(label="Author", value="Hossein Ataee")
+
+@Info(label="License", value="Non-Commercial")
+
+@Info(label="Repository", value="github.com/ataee-dev/markup-plus-js")

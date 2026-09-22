@@ -1,0 +1,11 @@
+# Convert an existing Markdown file
+
+Run this command in your terminal:
+
+mup-js README.md
+
+Or with the Python CLI:
+
+mup README.md
+
+The output is README.html in the same folder.

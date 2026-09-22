@@ -1,0 +1,32 @@
+/* The scoped fragment uses a class prefix
+   that you can target in your chat UI. */
+
+/* Adjust fonts */
+.mup-fragment {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Tighten headings inside chat */
+.mup-fragment h1 {
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.mup-fragment h2 {
+  font-size: 16px;
+  margin: 6px 0;
+}
+
+/* Compact code blocks */
+.mup-fragment pre {
+  font-size: 13px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* Match chat colors */
+.mup-fragment .mup-note {
+  background: #f0f9ff;
+  border-color: #0ea5e9;
+}

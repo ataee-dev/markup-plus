@@ -1,0 +1,6 @@
+# Doughnut Chart
+
+@chart(type="doughnut" title="OS Distribution")
+data: [65, 20, 10, 5]
+labels: ["Windows", "macOS", "Linux", "Other"]
+@end

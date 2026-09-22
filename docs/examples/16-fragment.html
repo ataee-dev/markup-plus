@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Fragment — Markup+ JS</title>
+  <meta name="description" content="renderFragment for chatbots and embedded contexts.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html" class="active">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Fragment</span></nav>
+
+<article class="article">
+
+<h1>Fragment</h1>
+<p class="lead"><code>renderFragment</code> produces an inline HTML fragment without the full page wrapper. Perfect for chatbots, widgets, and embedding Markup+ content in existing pages.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Fragment vs full page</div>
+    <p><strong>toHTML</strong> produces a complete page (<code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>). <strong>renderFragment</strong> produces only the body content, scoped with custom classes so it does not interfere with the host page.</p>
+  </div>
+</div>
+
+<h2 id="basic">Basic fragment</h2>
+
+<p>Render only the content, no wrapper:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic fragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="fragment-preview" data-mup-file="../mup-sources/16-basic.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/16-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="chatbot">Chatbot response</h2>
+
+<p>Typical use case: rendering a Markup+ response inside a chat interface:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Chatbot response</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="fragment-preview" data-mup-file="../mup-sources/16-chatbot.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/16-chatbot.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="interactive">Interactive fragment</h2>
+
+<p>Fragments support interactive content like tabs:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Interactive fragment</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="fragment-preview" data-mup-file="../mup-sources/16-interactive.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/16-interactive.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="scoped">Scoped styling</h2>
+
+<p>Fragments are scoped — no interference with the host page:</p>
+
+<table>
+  <thead><tr><th>Option</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><code>scoped: true</code></td><td>All CSS is prefixed with a unique class (default)</td></tr>
+    <tr><td><code>scoped: false</code></td><td>CSS is included as-is (may conflict with host)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="options">Fragment options</h2>
+
+<table>
+  <thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>theme</code></td><td>string</td><td>Theme name for styling</td></tr>
+    <tr><td><code>scoped</code></td><td>boolean</td><td>Isolate CSS (default: <code>true</code>)</td></tr>
+    <tr><td><code>includeScripts</code></td><td>boolean</td><td>Include interactive scripts (tabs, collapse)</td></tr>
+    <tr><td><code>includeCDNScripts</code></td><td>boolean</td><td>Include Prism, KaTeX, Chart.js from CDN</td></tr>
+  </tbody>
+</table>
+
+<h2 id="api">API example</h2>
+
+<p>Usage in JavaScript:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>renderFragment API</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-javascript">import { renderFragment } from 'markup-plus-js';
+
+const response = `
+# Answer
+
+Here is a **formatted** response.
+
+@tip
+This is a tip block.
+@end
+`;
+
+document.getElementById('chat').innerHTML = renderFragment(response, {
+  theme: 'light',
+  scoped: true,
+  includeScripts: true,
+  includeCDNScripts: true
+});</code></pre>
+  </div>
+</div>
+
+<h2 id="compare">toHTML vs renderFragment</h2>
+
+<table>
+  <thead><tr><th>Feature</th><th>toHTML</th><th>renderFragment</th></tr></thead>
+  <tbody>
+    <tr><td>Full HTML document</td><td>Yes</td><td>No</td></tr>
+    <tr><td>Includes <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code></td><td>Yes</td><td>No</td></tr>
+    <tr><td>Scoped CSS</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Safe to embed</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Best for</td><td>Static sites</td><td>Chatbots, widgets</td></tr>
+  </tbody>
+</table>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>Missing <code>scoped</code></td><td>Set <code>scoped: true</code> for embedded use</td></tr>
+    <tr><td>Styles not loading</td><td>Set <code>includeScripts: true</code></td></tr>
+    <tr><td>Tabs don't work</td><td>Set <code>includeScripts: true</code></td></tr>
+    <tr><td>CDN resources missing</td><td>Set <code>includeCDNScripts: true</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Code</th></tr></thead>
+  <tbody>
+    <tr><td>Basic fragment</td><td><code>renderFragment(source)</code></td></tr>
+    <tr><td>With theme</td><td><code>renderFragment(source, { theme: 'dark' })</code></td></tr>
+    <tr><td>With scripts</td><td><code>renderFragment(source, { includeScripts: true })</code></td></tr>
+    <tr><td>With CDN</td><td><code>renderFragment(source, { includeCDNScripts: true })</code></td></tr>
+    <tr><td>Unscoped</td><td><code>renderFragment(source, { scoped: false })</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="17-typescript.html">TypeScript</a> for type safety, or <a href="18-cli.html">CLI</a> for command-line usage.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="15-themes.html" class="nav-prev"><span>← Previous</span><strong>15 · Themes</strong></a>
+  <a href="17-typescript.html" class="nav-next"><span>Next →</span><strong>17 · TypeScript</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  // Render fragment previews using renderFragment + iframe wrapper
+  async function renderFragmentPreviews() {
+    if (!window.MarkupPlus) return;
+
+    var previews = document.querySelectorAll('.fragment-preview');
+    await Promise.all(Array.from(previews).map(async function (el) {
+      var url = el.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+
+        // Generate fragment (scoped)
+        var fragment = window.MarkupPlus.renderFragment(source, {
+          theme: 'light',
+          scoped: true,
+          includeScripts: true,
+          includeCDNScripts: true
+        });
+
+        // Wrap in a minimal HTML shell to avoid host interference
+        var wrapped =
+          '<!DOCTYPE html>' +
+          '<html><head>' +
+          '<meta charset="UTF-8">' +
+          '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">' +
+          '<style>body{margin:0;padding:16px;font-family:Inter,sans-serif;line-height:1.6;color:#111;background:#fff;}' +
+          'h1{font-size:24px;color:#667eea;margin:0 0 12px;}' +
+          'h2{font-size:18px;margin:16px 0 8px;}' +
+          'pre{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;overflow-x:auto;}' +
+          'code{font-family:monospace;}' +
+          'table{border-collapse:collapse;width:100%;margin:12px 0;}' +
+          'th,td{border:1px solid #e5e7eb;padding:8px;text-align:left;}' +
+          'th{background:#f8f9fc;}' +
+          '</style></head><body>' +
+          fragment +
+          '</body></html>';
+
+        // Load into iframe
+        var iframe = document.createElement('iframe');
+        iframe.style.cssText = 'width:100%;min-height:350px;border:none;background:white;display:block;';
+        iframe.srcdoc = wrapped;
+
+        el.innerHTML = '';
+        el.appendChild(iframe);
+      } catch (err) {
+        el.innerHTML = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + ' — ' + err.message + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderFragmentPreviews(); }
+  else { window.addEventListener('load', renderFragmentPreviews); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Loop with Condition
+
+@let numbers = [1, 2, 3, 4, 5, 6]
+
+@each num in numbers
+@if num > 3
+- {num} is greater than 3
+@endif
+@end

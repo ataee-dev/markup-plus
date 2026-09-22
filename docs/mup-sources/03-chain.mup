@@ -1,0 +1,7 @@
+# Chained Filters
+
+@let text = "hello world"
+
+- Original: {text}
+- Upper + Reverse: {text|upper|reverse}
+- Title + Reverse: {text|title|reverse}

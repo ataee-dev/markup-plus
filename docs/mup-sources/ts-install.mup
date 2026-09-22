@@ -1,0 +1,5 @@
+# JavaScript
+npm install markup-plus-js
+
+# Verify
+node -e "import('markup-plus-js').then(m => console.log('v' + m.version))"

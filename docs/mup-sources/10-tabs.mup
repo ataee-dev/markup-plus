@@ -1,0 +1,21 @@
+# Tabs
+
+@tabs
+@tab "Python"
+```python
+print("Hello")
+```
+@end
+
+@tab "JavaScript"
+```javascript
+console.log("Hello");
+```
+@end
+
+@tab "Bash"
+```bash
+echo "Hello"
+```
+@end
+@end

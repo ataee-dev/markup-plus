@@ -1,0 +1,7 @@
+# Basic Loops
+
+@let fruits = ["apple", "banana", "cherry"]
+
+@each fruit in fruits
+- {fruit}
+@end

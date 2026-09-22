@@ -1,0 +1,40 @@
+# Nested Components
+
+@collapse
+@item "Installation"
+
+@tabs
+@tab "Windows"
+```bash
+npm install -g markup-plus-js
+```
+@end
+
+@tab "macOS"
+```bash
+brew install markup-plus-js
+```
+@end
+
+@tab "Linux"
+```bash
+sudo npm install -g markup-plus-js
+```
+@end
+@end
+
+@end
+@item "Configuration"
+
+@tabs
+@tab "Default"
+The default configuration works for most cases.
+@end
+
+@tab "Custom"
+Create a `.env` file to override defaults.
+@end
+@end
+
+@end
+@end

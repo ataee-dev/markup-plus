@@ -1,0 +1,23 @@
+# Light Theme
+
+This document uses the **light** theme (default).
+
+## Features
+
+- Clean, minimal design
+- White background
+- Dark text
+- Blue accents
+
+| Feature | Status |
+|---------|:------:|
+| Light mode | Yes |
+| Auto dark | Yes |
+
+```python
+def hello():
+    print("Light theme")
+```
+@note
+Light theme is best for documentation and daytime reading.
+@end

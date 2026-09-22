@@ -1,0 +1,30 @@
+import { renderFragment } from 'markup-plus-js';
+
+let buffer = '';
+const messageEl = document.createElement('div');
+
+async function streamResponse(url) {
+  const response = await fetch(url);
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+
+    // Re-render on each chunk
+    messageEl.innerHTML = renderFragment(buffer, {
+      scoped: true,
+      includeScripts: false
+    });
+  }
+
+  // Final render with scripts enabled
+  messageEl.innerHTML = renderFragment(buffer, {
+    scoped: true,
+    includeScripts: true,
+    includeCDNScripts: true
+  });
+}

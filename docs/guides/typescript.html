@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>TypeScript — Markup+</title>
+  <meta name="description" content="Full TypeScript definitions for the public API of Markup+ JS.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html" class="active">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>TypeScript</span></nav>
+
+<article class="article">
+
+<h1>TypeScript</h1>
+<p class="lead">The JavaScript implementation of Markup+ ships with complete TypeScript definitions. No <code>@types/</code> package needed — types are bundled with the package.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why TypeScript?</div>
+    <p>Full IntelliSense, autocomplete, and compile-time error checking. Catch mistakes before they reach production.</p>
+  </div>
+</div>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">JavaScript only</div>
+    <p>TypeScript definitions are available <strong>only in the JavaScript implementation</strong> (<code>markup-plus-js</code>). The Python implementation uses native type hints instead.</p>
+  </div>
+</div>
+
+<h2 id="installation">Installation</h2>
+
+<p>Install the package — types are included automatically:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Install</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-install.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="basic">Basic usage</h2>
+
+<p>Import functions and types together. Full type safety out of the box:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Basic TypeScript</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="types">Available types</h2>
+
+<p>All exported types are organized by category:</p>
+
+<h3 id="types-rendering">Rendering functions</h3>
+
+<table>
+  <thead><tr><th>Function</th><th>Signature</th></tr></thead>
+  <tbody>
+    <tr><td><code>toHTML</code></td><td><code>(source: string, options?: RenderOptions) =&gt; string</code></td></tr>
+    <tr><td><code>toHTMLAsync</code></td><td><code>(source: string, options?: RenderOptions) =&gt; Promise&lt;string&gt;</code></td></tr>
+    <tr><td><code>renderBody</code></td><td><code>(source: string, options?: RenderOptions) =&gt; string</code></td></tr>
+    <tr><td><code>renderFragment</code></td><td><code>(source: string, options?: RenderOptions) =&gt; string</code></td></tr>
+    <tr><td><code>parse</code></td><td><code>(source: string) =&gt; Document</code></td></tr>
+  </tbody>
+</table>
+
+<h3 id="types-options">Options types</h3>
+
+<table>
+  <thead><tr><th>Type</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>RenderOptions</code></td><td>Full rendering options interface</td></tr>
+    <tr><td><code>Theme</code></td><td>Union of 12 valid theme names</td></tr>
+    <tr><td><code>WrapperTag</code></td><td>Container tag: <code>div</code>, <code>section</code>, etc.</td></tr>
+    <tr><td><code>Direction</code></td><td><code>"ltr"</code>, <code>"rtl"</code>, or <code>null</code></td></tr>
+    <tr><td><code>AnimationName</code></td><td>Animation preset names</td></tr>
+    <tr><td><code>TimeBasedTheme</code></td><td>Day/night theme configuration</td></tr>
+  </tbody>
+</table>
+
+<h3 id="types-ast">AST classes</h3>
+
+<table>
+  <thead><tr><th>Class</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>Node</code></td><td>Base AST class</td></tr>
+    <tr><td><code>Document</code></td><td>Root document node</td></tr>
+    <tr><td><code>Heading</code></td><td>H1–H6 heading</td></tr>
+    <tr><td><code>Paragraph</code></td><td>Paragraph</td></tr>
+    <tr><td><code>CodeBlock</code></td><td>Fenced code block</td></tr>
+    <tr><td><code>TableBlock</code></td><td>Table</td></tr>
+    <tr><td><code>IfBlock</code></td><td>Conditional block</td></tr>
+    <tr><td><code>EachBlock</code></td><td>Loop block</td></tr>
+    <tr><td><code>ComponentDef</code></td><td>Component definition</td></tr>
+    <tr><td>... and 30+ more</td><td>Full AST coverage</td></tr>
+  </tbody>
+</table>
+
+<h2 id="theme-type">Using the Theme type</h2>
+
+<p>The <code>Theme</code> type restricts values to valid theme names, catching typos at compile time:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Theme type</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-theme-type.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="render-options">RenderOptions in detail</h2>
+
+<p>The complete options interface:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>RenderOptions interface</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-render-options.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="ast-types">Working with AST</h2>
+
+<p>Parse a document and traverse the tree with full type narrowing:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>AST traversal</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-ast.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="subpath-imports">Subpath imports</h2>
+
+<p>Import from dedicated entry points for more control:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Subpaths</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-subpaths.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="tsconfig">Recommended tsconfig</h2>
+
+<p>For best results with Markup+ JS, use these settings:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>tsconfig.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-tsconfig.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="package-json">Package.json setup</h2>
+
+<p>For a project using Markup+ JS with TypeScript:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>package.json</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JSON</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-package-json.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="examples">Complete examples</h2>
+
+<h3 id="example-node">Node.js project</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Node.js</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-node.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="example-express">Express server</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Express</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-express.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="example-react">React component</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>React</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">TypeScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/ts-react.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="comparison">JavaScript vs TypeScript</h2>
+
+<table>
+  <thead><tr><th>Feature</th><th>JavaScript</th><th>TypeScript</th></tr></thead>
+  <tbody>
+    <tr><td>Autocomplete</td><td>Basic</td><td>Full IntelliSense</td></tr>
+    <tr><td>Type checking</td><td>Runtime only</td><td>Compile-time</td></tr>
+    <tr><td>Refactoring</td><td>Manual</td><td>Automatic</td></tr>
+    <tr><td>Documentation</td><td>JSDoc comments</td><td>Inline types</td></tr>
+    <tr><td>Setup</td><td>None</td><td><code>tsconfig.json</code></td></tr>
+    <tr><td>Build step</td><td>Optional</td><td>Required</td></tr>
+    <tr><td>Bundle size</td><td>Same</td><td>Same (types are stripped)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>Cannot find module 'markup-plus-js'</code></td>
+      <td>Not installed</td>
+      <td><code>npm install markup-plus-js</code></td>
+    </tr>
+    <tr>
+      <td><code>Type 'string' is not assignable to type 'Theme'</code></td>
+      <td>Invalid theme name</td>
+      <td>Use one of the 12 valid themes</td>
+    </tr>
+    <tr>
+      <td><code>Property 'X' does not exist on type 'RenderOptions'</code></td>
+      <td>Invalid option</td>
+      <td>Check the <code>RenderOptions</code> interface</td>
+    </tr>
+    <tr>
+      <td><code>Cannot find name 'Document'</code></td>
+      <td>Missing import</td>
+      <td>Import from <code>markup-plus-js</code> or <code>markup-plus-js/ast</code></td>
+    </tr>
+    <tr>
+      <td>tsconfig issues</td>
+      <td>Wrong module resolution</td>
+      <td>Use <code>moduleResolution: "bundler"</code> or <code>"node16"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>TypeScript code</th></tr></thead>
+  <tbody>
+    <tr><td>Import functions</td><td><code>import { toHTML } from 'markup-plus-js'</code></td></tr>
+    <tr><td>Import types</td><td><code>import { Theme, RenderOptions } from 'markup-plus-js'</code></td></tr>
+    <tr><td>Type a theme</td><td><code>const t: Theme = 'dracula'</code></td></tr>
+    <tr><td>Type options</td><td><code>const opts: RenderOptions = { ... }</code></td></tr>
+    <tr><td>Type AST</td><td><code>const doc: Document = parse(source)</code></td></tr>
+    <tr><td>Subpath import</td><td><code>import { parse } from 'markup-plus-js/parser'</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="chatbot.html">Building a Chatbot</a> for interactive use cases, or <a href="migration.html">Migrating from Markdown</a>.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="rtl.html" class="nav-prev"><span>← Previous</span><strong>RTL Support</strong></a>
+  <a href="chatbot.html" class="nav-next"><span>Next →</span><strong>Building a Chatbot</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  loadMupSources();
+});
+</script>
+
+</body>
+</html>

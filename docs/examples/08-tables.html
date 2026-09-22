@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Tables — Markup+ JS</title>
+  <meta name="description" content="Markdown-style tables with left, center, and right alignment.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+ JS</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="../guides/getting-started.html">Introduction</a>
+    <a href="../guides/installation.html">Installation</a>
+    <a href="../guides/cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="01-basics.html">01 · Basics</a>
+    <a href="02-syntax.html">02 · Syntax</a>
+    <a href="03-variables.html">03 · Variables</a>
+    <a href="04-conditionals.html">04 · Conditionals</a>
+    <a href="05-loops.html">05 · Loops</a>
+    <a href="06-components.html">06 · Components</a>
+    <a href="07-code.html">07 · Code Blocks</a>
+    <a href="08-tables.html" class="active">08 · Tables</a>
+    <a href="09-alerts.html">09 · Alerts</a>
+    <a href="10-tabs-collapse.html">10 · Tabs & Collapse</a>
+    <a href="11-math.html">11 · Math</a>
+    <a href="12-charts.html">12 · Charts</a>
+    <a href="13-gallery.html">13 · Gallery</a>
+    <a href="14-rtl.html">14 · RTL</a>
+    <a href="15-themes.html">15 · Themes</a>
+    <a href="16-fragment.html">16 · Fragment</a>
+    <a href="17-typescript.html">17 · TypeScript</a>
+    <a href="18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="../guides/cli-reference.html">CLI Reference</a>
+    <a href="../guides/javascript-api.html">JavaScript API</a>
+    <a href="../guides/python-api.html">Python API</a>
+    <a href="../guides/themes.html">Themes</a>
+    <a href="../guides/rtl.html">RTL Support</a>
+    <a href="../guides/typescript.html">TypeScript</a>
+    <a href="../guides/chatbot.html">Building a Chatbot</a>
+    <a href="../guides/migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Examples</span><span>/</span><span>Tables</span></nav>
+
+<article class="article">
+
+<h1>Tables</h1>
+<p class="lead">Markdown-style tables with left, center, and right alignment. Tables support inline formatting, links, and code.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Why tables?</div>
+    <p>Present structured data clearly. Markup+ tables support alignment, formatting, and links — all with Markdown-compatible syntax.</p>
+  </div>
+</div>
+
+<h2 id="basic">Basic table</h2>
+
+<p>Use pipes <code>|</code> to separate columns, and dashes <code>---</code> for the header separator:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Simple table</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/08-basic.mup" title="Basic table" loading="lazy" style="width:100%;min-height:280px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/08-basic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="alignment">Column alignment</h2>
+
+<p>Control alignment with colons in the separator row:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Left, center, right</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/08-alignment.mup" title="Alignment" loading="lazy" style="width:100%;min-height:280px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/08-alignment.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="alignment-syntax">Alignment syntax</h3>
+
+<table>
+  <thead><tr><th>Alignment</th><th>Separator</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>Left (default)</td><td><code>:---</code> or <code>---</code></td><td>Text starts at left edge</td></tr>
+    <tr><td>Center</td><td><code>:---:</code></td><td>Text centered in cell</td></tr>
+    <tr><td>Right</td><td><code>---:</code></td><td>Text ends at right edge</td></tr>
+  </tbody>
+</table>
+
+<h2 id="formatting">Formatting in tables</h2>
+
+<p>All inline formatting works inside table cells: bold, italic, code, links, and strikethrough.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Formatted cells</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/08-formatting.mup" title="Formatted cells" loading="lazy" style="width:100%;min-height:300px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/08-formatting.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="practical">Practical example: comparison table</h2>
+
+<p>A common use case: comparing features side by side.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Feature comparison</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/08-compare.mup" title="Comparison table" loading="lazy" style="width:100%;min-height:340px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/08-compare.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="numbers">Numeric tables</h2>
+
+<p>Right-align numbers for readability. Use <code>---:</code> in the separator row.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Numbers right-aligned</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/08-numbers.mup" title="Numeric table" loading="lazy" style="width:100%;min-height:260px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/08-numbers.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="errors">Common errors</h2>
+
+<table>
+  <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>Missing separator row</td><td>Every table needs a <code>---</code> row after the header</td></tr>
+    <tr><td>Uneven columns</td><td>All rows should have the same number of pipes</td></tr>
+    <tr><td>Pipes in cell content</td><td>Escape with <code>\\|</code> or use inline code</td></tr>
+    <tr><td>No leading/trailing pipe</td><td>Recommended for clarity, though not required</td></tr>
+    <tr><td>Empty cell</td><td>Leave two pipes together: <code>||</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="limitations">Limitations in v0.6.4</h2>
+
+<div class="callout warning">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Known limitations</div>
+    <p>Markup+ JS v0.6.4 does not support <code>@each</code> or <code>@if</code> inside tables. For dynamic tables, generate content outside the table or build HTML directly.</p>
+  </div>
+</div>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead><tr><th>Task</th><th>Syntax</th></tr></thead>
+  <tbody>
+    <tr><td>Basic table</td><td><code>\| A \| B \|</code></td></tr>
+    <tr><td>Header separator</td><td><code>\|---|---\|</code></td></tr>
+    <tr><td>Left align</td><td><code>\|:---\|</code></td></tr>
+    <tr><td>Center align</td><td><code>\|:---:\|</code></td></tr>
+    <tr><td>Right align</td><td><code>\|---:\|</code></td></tr>
+    <tr><td>Bold in cell</td><td><code>\| **text** \|</code></td></tr>
+    <tr><td>Code in cell</td><td><code>\| `code` \|</code></td></tr>
+    <tr><td>Link in cell</td><td><code>\| [text](url) \|</code></td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="09-alerts.html">Alerts</a> for callout boxes, or jump to <a href="12-charts.html">Charts</a> for data visualization.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="07-code.html" class="nav-prev"><span>← Previous</span><strong>07 · Code Blocks</strong></a>
+  <a href="09-alerts.html" class="nav-next"><span>Next →</span><strong>09 · Alerts</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+ JS</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">Python</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

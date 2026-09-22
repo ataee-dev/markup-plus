@@ -1,0 +1,7 @@
+# Loop with Index
+
+@let items = ["first", "second", "third"]
+
+@each i, item in items
+{i}. {item}
+@end

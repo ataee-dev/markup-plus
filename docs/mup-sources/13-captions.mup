@@ -1,0 +1,8 @@
+# Gallery with Captions
+
+@gallery {columns=2}
+![Sunset](https://picsum.photos/500/350?random=10){caption="Golden Sunset"}
+![Forest](https://picsum.photos/500/350?random=11){caption="Misty Forest"}
+![Ocean](https://picsum.photos/500/350?random=12){caption="Calm Ocean"}
+![Mountain](https://picsum.photos/500/350?random=13){caption="Snowy Peak"}
+@end

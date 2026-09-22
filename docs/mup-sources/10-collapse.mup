@@ -1,0 +1,15 @@
+# Collapse
+
+@collapse
+@item "What is Markup+?"
+A modern markup language that extends Markdown with variables, logic, and rich content.
+@end
+
+@item "Is it free?"
+Yes, for non-commercial use.
+@end
+
+@item "Where can I learn more?"
+See the [documentation](https://github.com/ataee-dev/markup-plus-js).
+@end
+@end

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>RTL Support — Markup+</title>
+  <meta name="description" content="Automatic right-to-left detection for Persian, Arabic, Hebrew, and Urdu.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html" class="active">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>RTL Support</span></nav>
+
+<article class="article">
+
+<h1>RTL Support</h1>
+<p class="lead">Markup+ automatically detects right-to-left languages and adjusts the entire document layout. No special syntax required — write Persian, Arabic, Hebrew, or Urdu normally and Markup+ handles the rest.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Language-agnostic</div>
+    <p>RTL detection is part of the Markup+ language itself, not a specific implementation. It works identically in JavaScript, Python, and the CLI.</p>
+  </div>
+</div>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>When rendering a document, Markup+ scans the text for RTL characters. Based on the ratio of RTL to LTR characters, it decides the document direction:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>RTL characters</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Less than 30%</td><td>LTR (left-to-right)</td></tr>
+    <tr><td>30% or more</td><td>RTL (right-to-left)</td></tr>
+  </tbody>
+</table>
+
+<p>The 30% threshold handles mixed content where a mostly-English document has a Persian title, or vice versa.</p>
+
+<h2 id="auto-detect">Automatic detection</h2>
+
+<p>Write Persian content normally — Markup+ handles the layout:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Persian (فارسی)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/14-persian.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/14-persian.mup"></code></pre>
+  </div>
+</div>
+
+<p>Arabic works the same way:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Arabic (العربية)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/14-arabic.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/14-arabic.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="supported">Supported languages</h2>
+
+<p>Any language written in a right-to-left script is automatically detected:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th>Native name</th>
+      <th>Script</th>
+      <th>Regions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Persian</td><td>فارسی</td><td>Arabic</td><td>Iran, Afghanistan, Tajikistan</td></tr>
+    <tr><td>Arabic</td><td>العربية</td><td>Arabic</td><td>Middle East, North Africa</td></tr>
+    <tr><td>Hebrew</td><td>עברית</td><td>Hebrew</td><td>Israel</td></tr>
+    <tr><td>Urdu</td><td>اردو</td><td>Arabic</td><td>Pakistan, India</td></tr>
+    <tr><td>Pashto</td><td>پښتو</td><td>Arabic</td><td>Afghanistan, Pakistan</td></tr>
+    <tr><td>Kurdish</td><td>کوردی</td><td>Arabic</td><td>Iraq, Turkey, Syria, Iran</td></tr>
+    <tr><td>Syriac</td><td>ܣܘܪܝܝܐ</td><td>Syriac</td><td>Middle East</td></tr>
+  </tbody>
+</table>
+
+<p>The detection uses Unicode bidirectional properties, so it works for <strong>any</strong> RTL script — not just these languages.</p>
+
+<h2 id="manual">Manual direction control</h2>
+
+<p>Override auto-detection when needed:</p>
+
+<h3 id="manual-js">JavaScript</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Force direction (JS)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-force-js.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="manual-py">Python</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Force direction (Python)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-force-py.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="manual-cli">CLI</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Force direction (CLI)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-force-cli.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="when-to-force">When to force direction</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Persian document with English code examples</td>
+      <td>Auto-detect usually works — code stays LTR</td>
+    </tr>
+    <tr>
+      <td>English document with Persian title</td>
+      <td>Auto-detect may fail — use <code>--ltr</code></td>
+    </tr>
+    <tr>
+      <td>Persian content under 30% threshold</td>
+      <td>Force with <code>--rtl</code></td>
+    </tr>
+    <tr>
+      <td>Bilingual document (equal mix)</td>
+      <td>Force based on primary audience</td>
+    </tr>
+    <tr>
+      <td>Persian document with no Latin characters</td>
+      <td>Auto-detect works perfectly</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="mixed-content">Mixed content</h2>
+
+<p>When Persian and English appear in the same document, Markup+ keeps code blocks LTR:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Persian + English</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/14-mixed.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/14-mixed.mup"></code></pre>
+  </div>
+</div>
+
+<p>Notice how:</p>
+
+<ul>
+  <li>Paragraphs and lists are right-aligned</li>
+  <li>Code blocks stay left-aligned (LTR)</li>
+  <li>URLs and emails stay LTR</li>
+  <li>Numbers display correctly</li>
+  <li>Latin words inline with Persian text render naturally</li>
+</ul>
+
+<h2 id="css-changes">What changes in RTL mode</h2>
+
+<p>When RTL is detected, these CSS properties change automatically:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Element</th>
+      <th>LTR</th>
+      <th>RTL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Text direction</td>
+      <td><code>direction: ltr</code></td>
+      <td><code>direction: rtl</code></td>
+    </tr>
+    <tr>
+      <td>Text alignment</td>
+      <td><code>text-align: left</code></td>
+      <td><code>text-align: right</code></td>
+    </tr>
+    <tr>
+      <td>List bullets</td>
+      <td>Left side</td>
+      <td>Right side</td>
+    </tr>
+    <tr>
+      <td>Blockquote border</td>
+      <td><code>border-left</code></td>
+      <td><code>border-right</code></td>
+    </tr>
+    <tr>
+      <td>Table alignment</td>
+      <td>Left-aligned cells</td>
+      <td>Right-aligned cells</td>
+    </tr>
+    <tr>
+      <td>Code blocks</td>
+      <td><code>direction: ltr</code></td>
+      <td><code>direction: ltr</code> (unchanged)</td>
+    </tr>
+    <tr>
+      <td>Font family</td>
+      <td>Inter, system</td>
+      <td>Vazirmatn, Tahoma, system</td>
+    </tr>
+    <tr>
+      <td>HTML attribute</td>
+      <td><code>dir="ltr"</code></td>
+      <td><code>dir="rtl"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="fonts">RTL fonts</h2>
+
+<p>When RTL is detected, Markup+ uses a Persian-friendly font stack:</p>
+
+<ol>
+  <li><strong>Vazirmatn</strong> — modern Persian font</li>
+  <li><strong>Tahoma</strong> — widely available on Windows</li>
+  <li><strong>Arial</strong> — universal fallback</li>
+  <li>System default sans-serif</li>
+</ol>
+
+<p>To use a custom RTL font, override the CSS variable:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Custom RTL font</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-custom-font.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="utilities">RTL utilities</h2>
+
+<h3 id="utilities-js">JavaScript</h3>
+
+<p>The JavaScript API exposes RTL helper functions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Signature</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>isRTLText</code></td>
+      <td><code>(text: string) =&gt; boolean</code></td>
+      <td>Check if text contains RTL characters</td>
+    </tr>
+    <tr>
+      <td><code>isRTLChar</code></td>
+      <td><code>(ch: string) =&gt; boolean</code></td>
+      <td>Check if a single character is RTL</td>
+    </tr>
+    <tr>
+      <td><code>isLTRChar</code></td>
+      <td><code>(ch: string) =&gt; boolean</code></td>
+      <td>Check if a single character is LTR</td>
+    </tr>
+    <tr>
+      <td><code>detectDirection</code></td>
+      <td><code>(title, body, explicit?) =&gt; "ltr" | "rtl"</code></td>
+      <td>Detect document direction</td>
+    </tr>
+    <tr>
+      <td><code>directionToLang</code></td>
+      <td><code>(dir) =&gt; string</code></td>
+      <td>Map direction to lang attribute</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="example">
+  <div class="example-header">
+    <span>RTL detection examples</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">JavaScript</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-utilities-js.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="utilities-py">Python</h3>
+
+<p>In Python, RTL detection is available via <code>markup_plus.renderer</code>:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Python RTL check</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Python</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-utilities-py.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="example-persian">Persian blog post</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Persian blog</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/rtl-persian-blog.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-persian-blog.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="example-arabic">Arabic documentation</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Arabic docs</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/rtl-arabic-docs.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-arabic-docs.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="example-hebrew">Hebrew content</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Hebrew</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <div class="rtl-preview" data-mup-file="../mup-sources/rtl-hebrew.mup"></div>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/rtl-hebrew.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="common-issues">Common issues</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RTL not activating</td>
+      <td>Less than 30% RTL characters</td>
+      <td>Force with <code>direction: 'rtl'</code></td>
+    </tr>
+    <tr>
+      <td>Code blocks appear RTL</td>
+      <td>Wrong CSS override</td>
+      <td>Don't override <code>pre</code> or <code>code</code> direction</td>
+    </tr>
+    <tr>
+      <td>Numbers render wrong</td>
+      <td>Mixed Arabic-Indic vs Latin digits</td>
+      <td>Use one digit system consistently</td>
+    </tr>
+    <tr>
+      <td>Punctuation misplaced</td>
+      <td>Bidirectional text edge case</td>
+      <td>Force direction explicitly</td>
+    </tr>
+    <tr>
+      <td>URLs appear reversed</td>
+      <td>Rare browser issue</td>
+      <td>Wrap in <code>&lt;span dir="ltr"&gt;</code></td>
+    </tr>
+    <tr>
+      <td>Fonts not Persian</td>
+      <td>Vazirmatn not loaded</td>
+      <td>Include font from Google Fonts</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="best-practices">Best practices</h2>
+
+<ol>
+  <li><strong>Let auto-detect work</strong> for pure Persian/Arabic/Hebrew content</li>
+  <li><strong>Force direction</strong> for mixed or ambiguous documents</li>
+  <li><strong>Test with real content</strong>, not just "سلام"</li>
+  <li><strong>Use consistent digit system</strong> — either <code>۱۲۳</code> or <code>123</code></li>
+  <li><strong>Don't override code block direction</strong> — it should always be LTR</li>
+  <li><strong>Load Vazirmatn font</strong> for professional Persian typography</li>
+  <li><strong>Check URLs and emails</strong> after RTL rendering</li>
+</ol>
+
+<div class="callout note">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Unicode-based detection</div>
+    <p>Markup+ uses Python's <code>unicodedata.bidirectional()</code> and its JS equivalent to classify characters. It recognizes <code>R</code>, <code>AL</code>, and <code>AN</code> bidirectional classes as RTL. This means it works for <strong>any</strong> RTL script, not just the common ones.</p>
+  </div>
+</div>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>JavaScript</th>
+      <th>Python</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Auto-detect</td>
+      <td><code>toHTML(source)</code></td>
+      <td><code>to_html(source)</code></td>
+    </tr>
+    <tr>
+      <td>Force RTL</td>
+      <td><code>toHTML(src, { direction: 'rtl' })</code></td>
+      <td><code>to_html(src, direction="rtl")</code></td>
+    </tr>
+    <tr>
+      <td>Force LTR</td>
+      <td><code>toHTML(src, { direction: 'ltr' })</code></td>
+      <td><code>to_html(src, direction="ltr")</code></td>
+    </tr>
+    <tr>
+      <td>CLI force</td>
+      <td><code>mup-js --rtl</code> / <code>--ltr</code></td>
+      <td><code>mup --rtl</code> / <code>--ltr</code></td>
+    </tr>
+    <tr>
+      <td>Check text</td>
+      <td><code>isRTLText(str)</code></td>
+      <td><code>renderer.is_rtl_text(str)</code></td>
+    </tr>
+    <tr>
+      <td>Detect direction</td>
+      <td><code>detectDirection(title, body)</code></td>
+      <td>Use <code>to_html</code> auto-detect</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore <a href="typescript.html">TypeScript</a> for type safety, or <a href="chatbot.html">Building a Chatbot</a> for interactive use cases.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="themes.html" class="nav-prev"><span>← Previous</span><strong>Themes</strong></a>
+  <a href="typescript.html" class="nav-next"><span>Next →</span><strong>TypeScript</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderRTLPreviews() {
+    if (!window.MarkupPlus) return;
+
+    var previews = document.querySelectorAll('.rtl-preview');
+    await Promise.all(Array.from(previews).map(async function (el) {
+      var url = el.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'RTL Preview',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+
+        var iframe = document.createElement('iframe');
+        iframe.style.cssText = 'width:100%;min-height:400px;border:none;background:white;display:block;';
+        iframe.srcdoc = html;
+
+        el.innerHTML = '';
+        el.appendChild(iframe);
+      } catch (err) {
+        el.innerHTML = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + ' — ' + err.message + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderRTLPreviews(); }
+  else { window.addEventListener('load', renderRTLPreviews); }
+});
+</script>
+
+</body>
+</html>

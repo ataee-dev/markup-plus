@@ -1,0 +1,15 @@
+# Components with Logic
+
+@def Status(label, available)
+**{label}:** @if available
+Available
+@else
+Unavailable
+@endif
+@end
+
+@Status(label="Server", available=true)
+
+@Status(label="Database", available=false)
+
+@Status(label="Cache", available=true)

@@ -1,0 +1,14 @@
+# TypeScript Support
+
+Markup+ JS ships with complete TypeScript definitions.
+
+```typescript
+import { toHTML, Theme } from 'markup-plus-js';
+
+const theme: Theme = 'dracula';
+const html: string = toHTML('# Hello', { theme });
+```
+
+@note
+No @types/ package needed.
+@end

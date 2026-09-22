@@ -1,0 +1,12 @@
+import { parse, Document, Heading, Paragraph } from 'markup-plus-js';
+
+const doc: Document = parse('# Hello\n\nWorld');
+
+for (const node of doc.children) {
+  if (node instanceof Heading) {
+    console.log('Heading level:', node.level);
+    console.log('Text:', node.text);
+  } else if (node instanceof Paragraph) {
+    console.log('Paragraph:', node.text);
+  }
+}

@@ -1,0 +1,9 @@
+# CLI Convert
+
+Convert a .mup file to HTML:
+
+```bash
+mup-js hello.mup
+```
+
+Creates hello.html in the same directory.

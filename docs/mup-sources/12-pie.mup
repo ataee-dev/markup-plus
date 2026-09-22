@@ -1,0 +1,6 @@
+# Pie Chart
+
+@chart(type="pie" title="Browser Share")
+data: [55, 20, 15, 10]
+labels: ["Chrome", "Firefox", "Safari", "Others"]
+@end

@@ -1,0 +1,10 @@
+# {name} v{version}
+
+@let name = "Markup+ JS"
+@let version = "0.6.4"
+
+Welcome to **{name} v{version}**.
+
+{name} v{version} supports variables, conditionals, and loops.
+
+Read the docs for **{name} v{version}** to learn more.

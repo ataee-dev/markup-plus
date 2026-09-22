@@ -1,0 +1,8 @@
+# Formatting in Tables
+
+| Feature | Status | Notes |
+|---------|:------:|-------|
+| **Bold** | Yes | Works |
+| *Italic* | Yes | Works |
+| `Code` | Yes | Works |
+| [Link](https://example.com) | Yes | Works |

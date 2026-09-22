@@ -1,0 +1,12 @@
+# Advanced Components
+
+@def User(name, email, role)
+### {name}
+
+- **Email:** {email}
+- **Role:** {role}
+@end
+
+@User(name="Ali", email="ali@example.com", role="Admin")
+
+@User(name="Sara", email="sara@example.com", role="Editor")

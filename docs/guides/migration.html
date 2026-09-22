@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Migrating from Markdown — Markup+</title>
+  <meta name="description" content="Switch from Markdown to Markup+ incrementally — every .md file works as a .mup file.">
+  <link rel="icon" type="image/png" href="../assets/images/mup-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/markup-plus-js@0.6.4/dist/markup-plus.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/docs.css">
+  <link rel="stylesheet" href="../assets/css/code.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+
+<button class="menu-button" id="menuButton" aria-label="Toggle menu">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/mup-logo.png" alt="Markup+" class="brand-logo-img">
+      <span class="brand-name">Markup+</span>
+    </a>
+    <span class="version-badge">v0.6.4</span>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <button id="searchTrigger" class="search-trigger">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      <span style="flex:1;text-align:left;">Search...</span>
+      <kbd>⌘K</kbd>
+    </button>
+  </div>
+  <nav class="nav-section">
+    <h4>Getting Started</h4>
+    <a href="getting-started.html">Introduction</a>
+    <a href="installation.html">Installation</a>
+    <a href="cdn-usage.html">CDN Usage</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Examples</h4>
+    <a href="../examples/01-basics.html">01 · Basics</a>
+    <a href="../examples/02-syntax.html">02 · Syntax</a>
+    <a href="../examples/03-variables.html">03 · Variables</a>
+    <a href="../examples/04-conditionals.html">04 · Conditionals</a>
+    <a href="../examples/05-loops.html">05 · Loops</a>
+    <a href="../examples/06-components.html">06 · Components</a>
+    <a href="../examples/07-code.html">07 · Code Blocks</a>
+    <a href="../examples/08-tables.html">08 · Tables</a>
+    <a href="../examples/09-alerts.html">09 · Alerts</a>
+    <a href="../examples/10-tabs-collapse.html">10 · Tabs &amp; Collapse</a>
+    <a href="../examples/11-math.html">11 · Math</a>
+    <a href="../examples/12-charts.html">12 · Charts</a>
+    <a href="../examples/13-gallery.html">13 · Gallery</a>
+    <a href="../examples/14-rtl.html">14 · RTL</a>
+    <a href="../examples/15-themes.html">15 · Themes</a>
+    <a href="../examples/16-fragment.html">16 · Fragment</a>
+    <a href="../examples/17-typescript.html">17 · TypeScript</a>
+    <a href="../examples/18-cli.html">18 · CLI</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Guides</h4>
+    <a href="cli-reference.html">CLI Reference</a>
+    <a href="javascript-api.html">JavaScript API</a>
+    <a href="python-api.html">Python API</a>
+    <a href="themes.html">Themes</a>
+    <a href="rtl.html">RTL Support</a>
+    <a href="typescript.html">TypeScript</a>
+    <a href="chatbot.html">Building a Chatbot</a>
+    <a href="migration.html" class="active">Migrating from Markdown</a>
+    </nav>
+  <nav class="nav-section">
+    <h4>API Reference</h4>
+    <a href="../api/js.html">JavaScript API</a>
+    <a href="../api/python.html">Python API</a>
+  </nav>
+  <nav class="nav-section">
+    <h4>Tools</h4>
+    <a href="../playground/index.html">Playground</a>
+    <a href="https://github.com/ataee-dev/markup-plus-js" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.npmjs.com/package/markup-plus-js" target="_blank" rel="noopener">npm ↗</a>
+    <a href="https://pypi.org/project/markup-plus/" target="_blank" rel="noopener">PyPI ↗</a>
+  </nav>
+</aside>
+
+<main class="content">
+
+<nav class="breadcrumb"><a href="../index.html">Docs</a><span>/</span><span>Guides</span><span>/</span><span>Migrating from Markdown</span></nav>
+
+<article class="article">
+
+<h1>Migrating from Markdown</h1>
+<p class="lead">Markup+ is a strict superset of Markdown. Every <code>.md</code> file works as a <code>.mup</code> file — you can migrate incrementally, one feature at a time, without rewriting anything.</p>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">No rewrite required</div>
+    <p>You don't need to convert your existing Markdown files. Just run them through Markup+ — they'll work exactly as before, with the option to add new features over time.</p>
+  </div>
+</div>
+
+<h2 id="what-works">What works out of the box</h2>
+
+<p>Everything in standard Markdown works identically in Markup+:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Markdown</th>
+      <th>Markup+</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Headings (H1–H6)</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Bold, italic</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Inline code</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Code blocks (fenced)</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Links</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Images</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Unordered lists</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Ordered lists</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Blockquotes</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Horizontal rules</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Tables (basic)</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Strikethrough</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Autolinks</td><td>Yes</td><td>Yes</td></tr>
+  </tbody>
+</table>
+
+<h2 id="step-1">Step 1: Just try it</h2>
+
+<p>Take any existing <code>.md</code> file and run it through Markup+:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Convert existing Markdown</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-step1.mup"></code></pre>
+  </div>
+</div>
+
+<p>That's it. No file conversion, no syntax changes, no setup. The output HTML looks just like your previous Markdown renderer, but with Markup+ styling (12 themes, RTL support, etc.).</p>
+
+<h2 id="step-2">Step 2: Rename to .mup (optional)</h2>
+
+<p>You don't have to rename files. <code>.md</code> works fine. But if you want to use Markup+ features later, <code>.mup</code> is the recommended extension.</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Rename gradually</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-step2.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="step-3">Step 3: Add features incrementally</h2>
+
+<p>Once your file is working with Markup+, you can start using new features <em>without removing any existing Markdown</em>. Here are the most common additions:</p>
+
+<h3 id="add-variables">Add variables</h3>
+
+<p>Replace repeated values with a variable:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Before (Markdown)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Markdown</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-before-vars.mup"></code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>After (Markup+)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/mig-after-vars.mup" title="Variables migration" loading="lazy" style="width:100%;min-height:400px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-after-vars.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="add-alerts">Add alerts instead of blockquotes</h3>
+
+<p>Blockquotes still work, but alerts are more expressive:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Before (Markdown blockquote)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Markdown</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-before-alert.mup"></code></pre>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header">
+    <span>After (Markup+ alert)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/mig-after-alert.mup" title="Alert migration" loading="lazy" style="width:100%;min-height:300px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-after-alert.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="add-tabs">Replace duplicate code blocks with tabs</h3>
+
+<p>If you have multiple versions of the same code (Python/JavaScript/Bash), tabs are cleaner:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>After (Markup+ tabs)</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/mig-after-tabs.mup" title="Tabs migration" loading="lazy" style="width:100%;min-height:400px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-after-tabs.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="markdown-features">Markdown features that differ</h2>
+
+<p>Most Markdown works identically. A few features are enhanced in Markup+:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Markdown</th>
+      <th>Markup+</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Tables</td>
+      <td>Basic</td>
+      <td>Same syntax + alignment + formatting</td>
+    </tr>
+    <tr>
+      <td>Images</td>
+      <td>Basic</td>
+      <td>Same syntax + captions, width, alignment, gallery, lightbox</td>
+    </tr>
+    <tr>
+      <td>Code blocks</td>
+      <td>Basic</td>
+      <td>Same syntax + titles, line numbers, line highlighting, run button</td>
+    </tr>
+    <tr>
+      <td>Links</td>
+      <td>Basic</td>
+      <td>Same syntax + `target="_blank"` automatically</td>
+    </tr>
+    <tr>
+      <td>Task lists</td>
+      <td>Extension</td>
+      <td>Native support</td>
+    </tr>
+    <tr>
+      <td>Footnotes</td>
+      <td>Extension</td>
+      <td>Native support</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="new-features">New features not in Markdown</h2>
+
+<p>When you're ready, you can add these Markup+ features:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Syntax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Variables</td><td><code>@let name = "value"</code></td></tr>
+    <tr><td>Conditionals</td><td><code>@if ... @endif</code></td></tr>
+    <tr><td>Loops</td><td><code>@each item in list ... @end</code></td></tr>
+    <tr><td>Components</td><td><code>@def Name(...) ... @end</code></td></tr>
+    <tr><td>Alerts</td><td><code>@note ... @end</code></td></tr>
+    <tr><td>Tabs</td><td><code>@tabs @tab "T" ... @end @end</code></td></tr>
+    <tr><td>Collapse</td><td><code>@collapse @item "T" ... @end @end</code></td></tr>
+    <tr><td>Charts</td><td><code>@chart(type="bar") ... @end</code></td></tr>
+    <tr><td>Math</td><td><code>$inline$</code> or <code>$$block$$</code></td></tr>
+    <tr><td>Timeline</td><td><code>@timeline ... @end</code></td></tr>
+    <tr><td>Gallery</td><td><code>@gallery {columns=3} ... @end</code></td></tr>
+    <tr><td>TOC</td><td><code>@toc</code></td></tr>
+    <tr><td>Imports</td><td><code>@import "file.mup"</code></td></tr>
+    <tr><td>Comments</td><td><code>@# comment</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="examples">Migration examples</h2>
+
+<h3 id="example-readme">A typical README</h3>
+
+<div class="example">
+  <div class="example-header">
+    <span>Original README.md</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Markdown</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-readme-before.mup"></code></pre>
+  </div>
+</div>
+
+<p>The same file works unchanged. To improve it, you can add variables and alerts:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Improved README.mup</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/mig-readme-after.mup" title="README migration" loading="lazy" style="width:100%;min-height:500px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-readme-after.mup"></code></pre>
+  </div>
+</div>
+
+<h3 id="example-docs">Documentation page</h3>
+
+<p>Long documentation pages benefit from a TOC and variables:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Documentation with TOC</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="preview">Preview</button>
+      <button class="example-tab" data-panel="mup">.mup</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="preview">
+    <iframe class="example-iframe" data-mup-file="../mup-sources/mig-docs.mup" title="Docs migration" loading="lazy" style="width:100%;min-height:500px;border:none;background:white;display:block;"></iframe>
+  </div>
+  <div class="example-panel" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-docs.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="batch">Batch migration</h2>
+
+<p>To migrate all files in a folder, just point Markup+ at them:</p>
+
+<div class="example">
+  <div class="example-header">
+    <span>Batch convert</span>
+    <div class="example-tabs">
+      <button class="example-tab active" data-panel="mup">Terminal</button>
+    </div>
+  </div>
+  <div class="example-panel active" data-panel="mup">
+    <pre class="example-code"><code class="language-markup" data-src="../mup-sources/mig-batch.mup"></code></pre>
+  </div>
+</div>
+
+<h2 id="compatibility">Compatibility guarantees</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Concern</th>
+      <th>Answer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Will my existing Markdown still render?</td><td>Yes — every Markdown file works as a Markup+ file</td></tr>
+    <tr><td>Do I need to change syntax?</td><td>No — migration is optional</td></tr>
+    <tr><td>Can I mix Markdown and Markup+?</td><td>Yes — they coexist in the same file</td></tr>
+    <tr><td>Can I convert Markup+ back to Markdown?</td><td>Markdown export is planned for a future version</td></tr>
+    <tr><td>Will Markdown-specific extensions break?</td><td>No — all common extensions are supported</td></tr>
+    <tr><td>Can I use both renderers side by side?</td><td>Yes — keep your old renderer and add Markup+ for new files</td></tr>
+  </tbody>
+</table>
+
+<h2 id="best-practices">Migration best practices</h2>
+
+<ol>
+  <li><strong>Don't rewrite everything</strong> — start with one file, migrate incrementally</li>
+  <li><strong>Keep <code>.md</code> if it works</strong> — rename later if you want</li>
+  <li><strong>Add features when they help</strong> — variables for repeated values, tabs for multi-language code</li>
+  <li><strong>Test with real content</strong> — some Markdown renderers have quirks that Markup+ handles differently</li>
+  <li><strong>Use the CLI for batch operations</strong> — convert an entire <code>docs/</code> folder at once</li>
+  <li><strong>Keep your old renderer around</strong> — Markup+ works alongside any other tool</li>
+  <li><strong>Watch for edge cases</strong> — nested lists and complex tables may render differently</li>
+</ol>
+
+<h2 id="common-issues">Common issues</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Cause</th>
+      <th>Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Nested lists not rendering</td>
+      <td>Not yet supported in v0.6.4</td>
+      <td>Flatten the lists, or use flat bullets</td>
+    </tr>
+    <tr>
+      <td>HTML tags showing as text</td>
+      <td>HTML escaping is stricter</td>
+      <td>Use Markup+ syntax instead of raw HTML</td>
+    </tr>
+    <tr>
+      <td>Table cell alignment differs</td>
+      <td>Alignment defaults to left</td>
+      <td>Add explicit <code>:---:</code> or <code>---:</code></td>
+    </tr>
+    <tr>
+      <td>Footnotes not working</td>
+      <td>Syntax variations across Markdown flavors</td>
+      <td>Use <code>[^1]</code> and <code>[^1]: text</code> syntax</td>
+    </tr>
+    <tr>
+      <td>Front matter parsed as content</td>
+      <td>Must start at first line</td>
+      <td>Ensure <code>---</code> is the very first line</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Command</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Convert existing <code>.md</code> file</td>
+      <td><code>mup-js file.md</code></td>
+    </tr>
+    <tr>
+      <td>Rename to <code>.mup</code></td>
+      <td><code>ren file.md file.mup</code> (Windows)</td>
+    </tr>
+    <tr>
+      <td>Batch convert</td>
+      <td><code>mup-js docs/*.md</code></td>
+    </tr>
+    <tr>
+      <td>Check compatibility</td>
+      <td><code>mup-js check file.md</code></td>
+    </tr>
+    <tr>
+      <td>Add a variable</td>
+      <td><code>@let name = "value"</code></td>
+    </tr>
+    <tr>
+      <td>Add an alert</td>
+      <td><code>@note ... @end</code></td>
+    </tr>
+    <tr>
+      <td>Add a TOC</td>
+      <td><code>@toc</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  </div>
+  <div class="callout-content">
+    <div class="callout-title">Next</div>
+    <p>Explore for editor integration, or go back to <a href="getting-started.html">Getting Started</a> to review.</p>
+  </div>
+</div>
+
+</article>
+
+<nav class="page-nav">
+  <a href="chatbot.html" class="nav-prev"><span>← Previous</span><strong>Building a Chatbot</strong></a>
+  <a href="vs-code.html" class="nav-next"><span>Next →</span><strong>VS Code Setup</strong></a>
+</nav>
+
+<footer class="footer">
+  <p><strong>Markup+</strong> — Non-Commercial License — © 2026 Hossein Ataee</p>
+  <p style="margin-top: 8px;">
+    <a href="https://github.com/ataee-dev/markup-plus-js">GitHub (JS)</a> ·
+    <a href="https://github.com/ataee-dev/markup-plus">GitHub (Python)</a> ·
+    <a href="https://www.npmjs.com/package/markup-plus-js">npm</a> ·
+    <a href="https://pypi.org/project/markup-plus/">PyPI</a> ·
+    <a href="mailto:hosseinataee2009@gmail.com">Email</a>
+  </p>
+</footer>
+
+</main>
+
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <h4>On this page</h4>
+  <ul id="toc-list"></ul>
+</aside>
+
+</div>
+
+<script src="../assets/js/search.js"></script>
+<script src="../assets/js/docs.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var trigger = document.getElementById('searchTrigger');
+  if (trigger && window.MarkupSearch) {
+    trigger.addEventListener('click', function () { window.MarkupSearch.open(); });
+  }
+
+  async function loadMupSources() {
+    var codes = document.querySelectorAll('code[data-src]');
+    await Promise.all(Array.from(codes).map(async function (el) {
+      var url = el.getAttribute('data-src');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        el.textContent = await res.text();
+        if (window.Prism) window.Prism.highlightElement(el);
+      } catch (err) {
+        el.textContent = 'Failed to load: ' + url;
+      }
+    }));
+  }
+
+  async function renderPreviews() {
+    if (!window.MarkupPlus) return;
+    var iframes = document.querySelectorAll('iframe[data-mup-file]');
+    await Promise.all(Array.from(iframes).map(async function (iframe) {
+      var url = iframe.getAttribute('data-mup-file');
+      try {
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var source = await res.text();
+        var html = window.MarkupPlus.toHTML(source, {
+          title: 'Markup+ Example',
+          theme: 'light',
+          includeCDN: true,
+          includeScripts: true,
+          autoDarkMode: false
+        });
+        iframe.srcdoc = html;
+      } catch (err) {
+        iframe.srcdoc = '<pre style="padding:20px;color:#ef4444;">Failed: ' + url + '</pre>';
+      }
+    }));
+  }
+
+  loadMupSources();
+  if (window.MarkupPlus) { renderPreviews(); }
+  else { window.addEventListener('load', renderPreviews); }
+});
+</script>
+
+</body>
+</html>

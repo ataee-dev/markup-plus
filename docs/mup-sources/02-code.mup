@@ -1,0 +1,51 @@
+# Code Block Options
+
+## Basic code block
+
+```python
+def hello(name):
+    print(f"Hello, {name}!")
+```
+
+## JavaScript
+
+```javascript
+const greet = (name) => {
+    console.log("Hello, " + name + "!");
+};
+greet("World");
+```
+
+## Bash
+
+```bash
+npm install markup-plus-js
+mup-js hello.mup
+```
+
+## JSON
+
+```json
+{
+  "name": "markup-plus-js",
+  "version": "0.6.4"
+}
+```
+
+## HTML
+
+```html
+<div class="example">
+  <p>Hello</p>
+</div>
+```
+
+## CSS
+
+```css
+.button {
+  background: #667eea;
+  color: white;
+  border-radius: 8px;
+}
+```

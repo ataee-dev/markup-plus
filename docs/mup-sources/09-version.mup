@@ -1,0 +1,15 @@
+# Version Update
+
+@let version = "0.6.4"
+
+@success
+You are running the latest version ({version}).
+@end
+
+@warning
+A newer version will be released soon.
+@end
+
+@note
+To check for updates, run `mup-js --version` in your terminal.
+@end
